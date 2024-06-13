@@ -21,7 +21,7 @@
 /**
  * @swagger
  * tags:
- *   name: E-invoicing
+ *   name: E-invoicing (Authentication)
  *   description: The Invoice management service (Authentication)
  * /login:
  *   post:
