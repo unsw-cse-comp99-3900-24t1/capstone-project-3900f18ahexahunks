@@ -340,7 +340,7 @@
  *   description: The Invoice management service (Validation)
  * /validation-report/{type}/{id}:
  *   get:
- *     summary: Get validation report for UBL or PDF
+ *     summary: Get validation report for UBL (Report linked to pdf and ubl id)
  *     tags: [E-invoicing (Validation)]
  *     parameters:
  *       - in: path
