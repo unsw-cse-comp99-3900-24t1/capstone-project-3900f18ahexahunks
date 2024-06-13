@@ -13,6 +13,9 @@
  *           description: The email of the user
  *         password:
  *           type: string
+ *         token:
+ *           type: string
+ *           description: A token with valid time of 8hrs sent as cookies
  *       example:
  *         email: 'user@example.com'
  *         password: 'password123'
@@ -39,7 +42,14 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Login'
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: A token with valid time of 8hrs sent as cookies
+ *                   example: 'a-sha256-token-signed-with-user-creds'
+ *                 user:
+ *                   $ref: '#/components/schemas/Login'
  *       400:
  *         description: Invalid Email or password
  *         content:
@@ -101,7 +111,14 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Register'
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: A token with valid time of 8hrs sent as cookies
+ *                   example: 'a-sha256-token-signed-with-user-creds'
+ *                 user:
+ *                   $ref: '#/components/schemas/Login'
  *       400:
  *         description: Invalid Email or password
  *         content:
