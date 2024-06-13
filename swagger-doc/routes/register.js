@@ -2,20 +2,24 @@
  * @swagger
  * components:
  *   schemas:
- *     Login:
+ *     Register:
  *       type: object
  *       required:
  *         - email
  *         - password
+ *         - password-check
  *       properties:
  *         email:
  *           type: string
  *           description: The email of the user
  *         password:
  *           type: string
+ *         password-check:
+ *           type: string
  *       example:
  *         email: 'user@example.com'
  *         password: 'password123'
+ *         password-check: 'password123'
  */
 
 /**
@@ -23,23 +27,23 @@
  * tags:
  *   name: E-invoicing
  *   description: The Invoice management service (Authentication)
- * /login:
+ * /register:
  *   post:
  *     summary: Logs registered user into the website
- *     tags: [Login]
+ *     tags: [Register]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Login'
+ *             $ref: '#/components/schemas/Register'
  *     responses:
  *       200:
  *         description: User successfully logged in
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Login'
+ *               $ref: '#/components/schemas/Register'
  *       400:
  *         description: Invalid Email or password
  *         content:
@@ -47,6 +51,13 @@
  *             schema:
  *               type: string
  *               example: Invalid Email or password
+ *       402:
+ *         description: Passwords do not match
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Passwords do not match
  *       500:
  *         description: Some server error
  *         content:
