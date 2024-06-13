@@ -7,6 +7,7 @@
  *       required:
  *         - email
  *         - password
+ *         - token
  *       properties:
  *         email:
  *           type: string
