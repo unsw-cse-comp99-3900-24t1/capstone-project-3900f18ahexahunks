@@ -1,16 +1,29 @@
 import { styled } from '@mui/system';
 import signUpImage from './register.jpg'; // Adjust the path as necessary
 
-const Container = styled('div')({
+const BackgroundContainer = styled('div')({
   backgroundImage: `url(${signUpImage})`,
-  backgroundSize: 'cover', // This ensures the image covers the entire container
-  backgroundPosition: 'center', // This centers the image
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
   width: '100%',
   height: '100vh',
-  display: 'flex',
+  position: 'relative',
+});
+
+const Container = styled('div')({
+  width: '450px',
+  height: '658px',
+  backgroundColor: '#FFFFFF',
+  position: 'absolute',
+  bottom: '0',
+  right: '16%',
 });
 
 const Register = () => {
-  return <Container>Register</Container>;
+  return (
+    <BackgroundContainer>
+      <Container></Container>
+    </BackgroundContainer>
+  );
 };
 export default Register;
