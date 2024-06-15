@@ -4,21 +4,31 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { fontSize, textAlign } from '@mui/system';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
+import { useAlert } from '../../components/AlertError';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterInputs = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
+
+  const nav = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { showAlert } = useAlert();
 
   const submitRegister = () => {
-    setLoading(true);
+    if (password !== checkPassword) {
+      showAlert('Passwords do not match', 'tomato');
+      return;
+    }
     // Simulate a Register request delay
+    setLoading(true);
     setTimeout(() => {
-      console.log(email, password);
+      console.log(email, password, name);
       setLoading(false);
     }, 10000); // 2 seconds delay to simulate the request
+    nav('/dashboard');
   };
 
   return (
