@@ -10,3 +10,11 @@ services:
     volumes:
       - ./swagger:/app
     command: ['node', 'index.js']
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
