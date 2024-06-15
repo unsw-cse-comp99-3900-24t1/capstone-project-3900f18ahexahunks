@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
-import signUpImage from './login.jpg';
 import LoginInputs from './LoginInputs';
 import LoginText from './LoginText';
 import { useNavigate } from 'react-router-dom';
 
 const BackgroundContainer = styled('div')({
-  backgroundImage: `url(${signUpImage})`,
+  backgroundImage: `url(${process.env.PUBLIC_URL}/login.jpg)`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   width: '100%',

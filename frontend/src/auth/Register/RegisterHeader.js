@@ -1,4 +1,4 @@
-import logo from './logo.png';
+// import logo from './logo.png';
 const RegisterHeader = () => {
   return (
     <div
@@ -10,7 +10,11 @@ const RegisterHeader = () => {
         width: '100%',
       }}
     >
-      <img style={{ width: '64px', height: '64px' }} src={logo} alt="logo" />
+      <img
+        style={{ width: '64px', height: '64px' }}
+        src={`${process.env.PUBLIC_URL}/logo.png`}
+        alt="logo"
+      />
       <h2
         style={{
           color: 'white',

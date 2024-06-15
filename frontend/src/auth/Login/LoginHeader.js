@@ -1,4 +1,3 @@
-import logo from './logo.png';
 const LoginHeader = () => {
   return (
     <div
@@ -10,7 +9,11 @@ const LoginHeader = () => {
         width: '100%',
       }}
     >
-      <img style={{ width: '64px', height: '64px' }} src={logo} alt="logo" />
+      <img
+        style={{ width: '64px', height: '64px' }}
+        src={`${process.env.PUBLIC_URL}/logo.png`}
+        alt="logo"
+      />
       <h2
         style={{
           color: 'white',
