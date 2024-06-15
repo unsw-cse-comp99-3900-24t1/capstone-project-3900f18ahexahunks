@@ -4,6 +4,7 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
+import validator from 'validator';
 
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
@@ -15,6 +16,14 @@ const RegisterInputs = ({ goToDashboard }) => {
   const { showAlert } = useAlert();
 
   const submitRegister = () => {
+    if (name === '') {
+      showAlert('Name cannot be empty', 'tomato');
+      return;
+    }
+    if (!validator.isEmail(email)) {
+      showAlert('Email is not valid', 'tomato');
+      return;
+    }
     if (password !== checkPassword) {
       showAlert('Passwords do not match', 'tomato');
       return;
@@ -24,9 +33,8 @@ const RegisterInputs = ({ goToDashboard }) => {
     setTimeout(() => {
       console.log(email, password, name);
       setLoading(false);
+      goToDashboard();
     }, 10000); // 2 seconds delay to simulate the request
-
-    goToDashboard();
   };
 
   return (

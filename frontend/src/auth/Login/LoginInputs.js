@@ -4,21 +4,28 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
+import validator from 'validator';
+import { useAlert } from '../../components/AlertError';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const { showAlert } = useAlert();
 
   const submitLogin = () => {
     setLoading(true);
+    if (!validator.isEmail(email)) {
+      showAlert('Email is not valid', 'tomato');
+      return;
+    }
     // Simulate a login request delay
     setTimeout(() => {
       console.log(email, password);
       setLoading(false);
+      goToDashboard();
     }, 10000); // 2 seconds delay to simulate the request
-    goToDashboard();
   };
 
   return (
