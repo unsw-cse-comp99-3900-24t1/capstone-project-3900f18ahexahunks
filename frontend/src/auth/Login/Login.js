@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import signUpImage from './login.jpg';
 import LoginInputs from './LoginInputs';
 import LoginText from './LoginText';
+import { useNavigate } from 'react-router-dom';
 
 const BackgroundContainer = styled('div')({
   backgroundImage: `url(${signUpImage})`,
@@ -22,6 +23,7 @@ const Container = styled('div')({
   right: '16%',
   display: 'flex',
   borderRadius: '24px 24px 0 0',
+  transition: 'bottom 0.5s ease',
   '@media (max-width: 1400px)': {
     right: '10%',
   },
@@ -47,6 +49,7 @@ const Container2 = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  transition: 'left 0.5s ease',
   '@media (max-width: 1400px)': {
     left: '10%',
   },
@@ -62,13 +65,25 @@ const Container2 = styled('div')({
 });
 
 const Login = () => {
+  const [exitLeft, setExitLeft] = useState(false);
+  const [exitBottom, setExitBottom] = useState(false);
+  const nav = useNavigate();
+
+  const goToDashboard = () => {
+    setExitLeft(true);
+    setExitBottom(true);
+    setTimeout(() => {
+      nav('/dashboard');
+    }, 500); // Wait for the exit animation to finish before navigating
+  };
+
   return (
     <BackgroundContainer>
-      <Container2>
+      <Container2 style={{ left: exitLeft ? '-100%' : '' }}>
         <LoginText />
       </Container2>
-      <Container>
-        <LoginInputs />
+      <Container style={{ bottom: exitBottom ? '-100%' : '' }}>
+        <LoginInputs goToDashboard={goToDashboard} />
       </Container>
     </BackgroundContainer>
   );

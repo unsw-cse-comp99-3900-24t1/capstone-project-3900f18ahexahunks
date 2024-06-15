@@ -4,15 +4,13 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
-import { useNavigate } from 'react-router-dom';
 
-const RegisterInputs = () => {
+const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
 
-  const nav = useNavigate();
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
@@ -27,7 +25,8 @@ const RegisterInputs = () => {
       console.log(email, password, name);
       setLoading(false);
     }, 10000); // 2 seconds delay to simulate the request
-    nav('/dashboard');
+
+    goToDashboard();
   };
 
   return (

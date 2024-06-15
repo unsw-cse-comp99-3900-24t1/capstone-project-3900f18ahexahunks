@@ -4,14 +4,12 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
-import { useNavigate } from 'react-router-dom';
 
-const LoginInputs = () => {
+const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [loading, setLoading] = useState(false);
-  const nav = useNavigate();
 
   const submitLogin = () => {
     setLoading(true);
@@ -20,7 +18,7 @@ const LoginInputs = () => {
       console.log(email, password);
       setLoading(false);
     }, 10000); // 2 seconds delay to simulate the request
-    nav('/dashboard');
+    goToDashboard();
   };
 
   return (
