@@ -3,6 +3,8 @@ import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { fontSize, textAlign } from '@mui/system';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import ForgotPassword from './ForgotPassword';
+import RedirectToRegister from './RedirectToRegister';
 
 const LoginInputs = () => {
   const [email, setEmail] = useState('');
@@ -51,11 +53,20 @@ const LoginInputs = () => {
         setValue={setPassword}
         value={password}
       />
+      <ForgotPassword />
       <CustomPrimaryButton
-        label="Create Now"
-        additionalStyle={{ width: '92%', height: '50px', fontSize: '14px' }}
+        label="CONTINUE"
+        bgcolour="#651FFF"
+        additionalStyle={{
+          width: '92%',
+          height: '50px',
+          fontSize: '13px',
+        }}
         onClick={submitLogin}
       />
+
+      <RedirectToRegister />
+
       {loading && <LoadingIndicator />}
     </div>
   );

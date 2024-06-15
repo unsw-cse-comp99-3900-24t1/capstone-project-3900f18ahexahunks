@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { darken } from '@mui/material/styles';
 
 // Custom styled button for primary actions within the application.
 const CustomPrimaryButton = ({
@@ -8,18 +9,22 @@ const CustomPrimaryButton = ({
   disabled,
   onClick,
   dataTestid,
+  bgcolour,
 }) => {
   return (
     <Button
       variant="contained"
       sx={{
-        bgcolor: '#228be6',
+        bgcolor: bgcolour,
         color: '#ffffff',
         textTransform: 'none',
         fontSize: '15px',
         fontWeight: 500,
         width: '100%',
         height: '40px',
+        '&:hover': {
+          bgcolor: darken(bgcolour, 0.2),
+        },
         '&:disabled': {
           color: '#666',
         },
