@@ -1,5 +1,5 @@
 import LoginSlider from './LoginSlider';
-
+//
 const LoginBody = () => {
   return (
     <div
