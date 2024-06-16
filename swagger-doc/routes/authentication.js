@@ -183,7 +183,7 @@ export function adminAuthRegister(email, password, passwordCheck) {
     } else if (dataStore.users[authUserIndex].password !== password) {
       return { error: "Invalid Email or password" };
     } else if (dataStore.users[authUserIndex].password !== passwordCheck) {
-        return { error: "Passwords do not match" };
+      return { error: "Passwords do not match" };
     }
     else {
         // Simulate a server error scenario
