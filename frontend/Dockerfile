@@ -60,7 +60,7 @@ FROM node:14
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy all files from the current directory to the working directory
 COPY . .
