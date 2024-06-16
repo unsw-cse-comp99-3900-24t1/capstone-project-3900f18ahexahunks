@@ -9,5 +9,5 @@ module.exports = {
       statements: 80,
     },
   },
-  transformIgnorePatterns: ['/node_modules/(?!bson)/'],
+  transformIgnorePatterns: ['/node_modules/(?!(bson)/)'],
 };
