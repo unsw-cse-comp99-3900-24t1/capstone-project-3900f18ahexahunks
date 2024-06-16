@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
 const mongoose = require('mongoose');
-
+// SAFETY
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
 
 const app = express();
