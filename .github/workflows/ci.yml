@@ -34,7 +34,7 @@ jobs:
 
       - name: Run tests and check coverage
         working-directory: backend # Set the working directory to 'backend'
-        run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
+        run: npm test -- --coverage
 # name: Backend Tests
 
 # on:
