@@ -2,6 +2,7 @@ import { styled } from '@mui/system';
 import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
 import FeatureInfo from './FeatureInfo/FeatureInfo';
+import InfoCards from './Info/InfoCards';
 
 const Container = styled('div')({
   color: '#ffffff',
@@ -23,6 +24,7 @@ const Home = () => {
         <Navbar />
         <Hero />
         <FeatureInfo />
+        <InfoCards />
         <div>Home</div>
       </Container>
     </div>
