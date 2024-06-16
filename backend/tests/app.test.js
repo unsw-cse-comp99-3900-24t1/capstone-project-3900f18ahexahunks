@@ -1,11 +1,13 @@
 const request = require('supertest');
-const app = require('../server'); // Assuming your app is defined in a file named app.js
+const app = require('../server');
 
 describe('Server Test', () => {
   let server;
 
-  beforeAll(() => {
-    server = app.listen(4000); // Listen on a different port for testing
+  beforeAll((done) => {
+    server = app.listen(0, () => {
+      done();
+    });
   });
 
   afterAll((done) => {

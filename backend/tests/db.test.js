@@ -2,10 +2,8 @@ const connectDB = require('../db');
 const mongoose = require('mongoose');
 
 describe('MongoDB Connection', () => {
-  let connection;
-
   beforeAll(async () => {
-    connection = await connectDB();
+    await connectDB();
   });
 
   afterAll(async () => {
