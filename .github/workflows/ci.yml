@@ -1,5 +1,54 @@
+# # name: CI
+# # #
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+# #   pull_request:
+# #     branches:
+# #       - main
+
+# # jobs:
+# #   build:
+# #     runs-on: ubuntu-latest
+
+# #     strategy:
+# #       matrix:
+# #         node-version: [14, 16, 18] # Specify Node.js versions to test against
+
+# #     steps:
+# #       - name: Checkout repository
+# #         uses: actions/checkout@v2
+
+# #       - name: Set up Node.js ${{ matrix.node-version }}
+# #         uses: actions/setup-node@v2
+# #         with:
+# #           node-version: ${{ matrix.node-version }}
+
+# #       - name: Install dependencies
+# #         run: npm install
+
+# #       - name: Run tests
+# #         run: npm test
+
+# #       - name: Run coverage
+# #         run: npm run coverage
+
+# #       - name: Check coverage
+# #         run: |
+# #           COVERAGE=$(grep -oP 'All files.*\K[0-9]+(?=%)' coverage/lcov-report/index.html)
+# #           if [ $COVERAGE -lt 80 ]; then
+# #             echo "Code coverage is below 80%"
+# #             exit 1
+# #           fi
+
+# #       - name: Upload coverage report
+# #         uses: actions/upload-artifact@v2
+# #         with:
+# #           name: coverage-report
+# #           path: coverage/lcov-report
 # name: CI
-# #
+
 # on:
 #   push:
 #     branches:
@@ -28,25 +77,8 @@
 #       - name: Install dependencies
 #         run: npm install
 
-#       - name: Run tests
-#         run: npm test
-
-#       - name: Run coverage
-#         run: npm run coverage
-
-#       - name: Check coverage
-#         run: |
-#           COVERAGE=$(grep -oP 'All files.*\K[0-9]+(?=%)' coverage/lcov-report/index.html)
-#           if [ $COVERAGE -lt 80 ]; then
-#             echo "Code coverage is below 80%"
-#             exit 1
-#           fi
-
-#       - name: Upload coverage report
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: coverage-report
-#           path: coverage/lcov-report
+#       - name: Run tests and check coverage
+#         run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
 name: CI
 
 on:
@@ -68,6 +100,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          path: backend # Checkout the repository to the 'backend' folder
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
@@ -75,7 +109,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --prefix backend # Install dependencies inside the 'backend' folder
 
       - name: Run tests and check coverage
-        run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
+        run: npm test --prefix backend -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
