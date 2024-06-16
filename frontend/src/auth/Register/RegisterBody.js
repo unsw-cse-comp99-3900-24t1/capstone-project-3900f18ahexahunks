@@ -1,6 +1,6 @@
-import LoginSlider from './LoginSlider';
+import RegisterSlider from './RegisterSlider';
 
-const LoginBody = () => {
+const RegisterBody = () => {
   return (
     <div
       style={{
@@ -19,8 +19,8 @@ const LoginBody = () => {
       >
         Building the Future
       </h2>
-      <LoginSlider />
+      <RegisterSlider />
     </div>
   );
 };
-export default LoginBody;
+export default RegisterBody;

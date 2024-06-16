@@ -1,4 +1,5 @@
-const LoginHeader = () => {
+// import logo from './logo.png';
+const RegisterHeader = () => {
   return (
     <div
       style={{
@@ -27,4 +28,4 @@ const LoginHeader = () => {
     </div>
   );
 };
-export default LoginHeader;
+export default RegisterHeader;
