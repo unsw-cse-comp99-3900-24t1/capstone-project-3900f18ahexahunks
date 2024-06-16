@@ -12,6 +12,44 @@ app.use(cors());
 
 const server = http.createServer(app);
 
+// Define the login route
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const response = adminAuthLogin(email, password);
+
+  if ('error' in response) {
+    if (response.error === "Invalid Email or password") {
+      res.status(400);
+    } else if (response.error === "Please try again later") {
+      res.status(500);
+    }
+  } else {
+    res.status(200);
+  }
+
+  return res.json(response);
+});
+
+// Define the register route
+app.post('/register', (req, res) => {
+  const { email, password } = req.body;
+  const response = adminAuthLogin(email, password);
+
+  if ('error' in response) {
+    if (response.error === "Invalid Email or password") {
+      res.status(400);
+    } else if (response.error === "Please try again later") {
+      res.status(500);
+    } else if (response.error === "Passwords do not match") {
+      res.status(402);
+    }
+  } else {
+    res.status(200);
+  }
+
+  return res.json(response);
+});
+
 server.listen(PORT, () => {
   console.log('Server running on port:', PORT);
 });
