@@ -109,7 +109,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install --prefix ./backend # Install dependencies inside the 'backend' folder
+        run: npm install --prefix backend # Install dependencies inside the 'backend' folder
 
       - name: Run tests and check coverage
-        run: npm test --prefix ./backend -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
+        run: npm test --prefix backend -- --coverage && bash <(curl -s https://codecov.io/bash) -c -F unittests
