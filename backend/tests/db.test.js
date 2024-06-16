@@ -7,7 +7,7 @@ describe('MongoDB Connection', () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
+    mongoose.disconnect();
   });
 
   it('should connect to the database', async () => {
