@@ -16,7 +16,7 @@ const CustomPrimaryButton = ({
       variant="contained"
       sx={{
         bgcolor: bgcolour,
-        color: '#ffffff',
+        color: `${bgcolour === '#ffffff' ? '#000' : '#fff'}`,
         textTransform: 'none',
         fontSize: '15px',
         fontWeight: 500,
