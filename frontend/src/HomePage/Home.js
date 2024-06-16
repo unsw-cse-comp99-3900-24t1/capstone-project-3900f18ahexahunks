@@ -1,6 +1,7 @@
 import { styled } from '@mui/system';
 import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
+import FeatureInfo from './FeatureInfo/FeatureInfo';
 
 const Container = styled('div')({
   color: '#ffffff',
@@ -21,6 +22,7 @@ const Home = () => {
       <Container>
         <Navbar />
         <Hero />
+        <FeatureInfo />
         <div>Home</div>
       </Container>
     </div>
