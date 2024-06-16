@@ -3,7 +3,7 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled('div')({
-  width: '100vw',
+  width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
 });

@@ -17,6 +17,10 @@ const Heading = styled('div')({
   gap: '0',
 });
 
+const Image = styled('img')({
+  width: '80%',
+});
+
 const Hero = () => {
   const nav = useNavigate();
 
@@ -61,7 +65,7 @@ const Hero = () => {
           additionalStyle={{ width: '50%' }}
         />
       </Heading>
-      <img src={`${process.env.PUBLIC_URL}/home-hero-2.png`} alt="hero" />
+      <Image src={`${process.env.PUBLIC_URL}/home-hero-2.png`} alt="hero" />
     </Container>
   );
 };
