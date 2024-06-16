@@ -11,6 +11,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get('/test', (req, res) => {
+  res.json({ message: 'Hello World!' });
+});
+
 const server = http.createServer(app);
 
 connectDB().then(() => {
@@ -18,3 +22,5 @@ connectDB().then(() => {
     console.log('Server running on port:', PORT);
   });
 });
+
+module.exports = app;

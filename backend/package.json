@@ -15,7 +15,8 @@
     "express": "^4.19.2",
     "http": "^0.0.1-security",
     "mongodb": "^6.7.0",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.4.1",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
