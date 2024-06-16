@@ -1,15 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import FeatureCard from './FeatureCard';
 
 const FeatureInfo = () => {
-  const h1Ref = useRef(null);
-  const [h1Width, setH1Width] = useState('auto');
-
-  useEffect(() => {
-    if (h1Ref.current) {
-      setH1Width(`${h1Ref.current.offsetWidth}px`);
-    }
-  }, [h1Ref]);
-
   return (
     <div
       style={{
@@ -17,11 +8,10 @@ const FeatureInfo = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '134px',
+        marginTop: '124px',
       }}
     >
       <h1
-        ref={h1Ref}
         style={{
           fontSize: '48px',
           fontFamily: 'Adamina, serif',
@@ -35,31 +25,25 @@ const FeatureInfo = () => {
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'space-around',
-          width: h1Width,
+          width: '90%',
           marginTop: '57px',
         }}
       >
-        <div
-          style={{
-            height: '100px',
-            width: '100px',
-            backgroundColor: '#fff',
-          }}
-        ></div>
-        <div
-          style={{
-            height: '100px',
-            width: '100px',
-            backgroundColor: '#fff',
-          }}
-        ></div>
-        <div
-          style={{
-            height: '100px',
-            width: '100px',
-            backgroundColor: '#fff',
-          }}
-        ></div>
+        <FeatureCard
+          logo={'shield-logo.png'}
+          heading="Convert"
+          text="Create electronic invoices by converting data from various sources (CSV, SQL, PDF, or manual input) into UBL 2.1 XML format using our API."
+        />
+        <FeatureCard
+          logo={'circle-logo.png'}
+          heading="Validate"
+          text="Validate UBL 2.1 XML invoices using our API, providing detailed reports in JSON, PDF, or HTML on rule compliance and indicating any validation errors."
+        />
+        <FeatureCard
+          logo={'block-logo.png'}
+          heading="Share"
+          text="Send UBL invoices via email using our API, with detailed communication reports in JSON, HTML, or PDF formats indicating delivery success or failure."
+        />
       </div>
     </div>
   );

@@ -73,7 +73,7 @@ const Register = () => {
     setExitBottom(true);
     setTimeout(() => {
       nav('/dashboard');
-    }, 500); // Wait for the exit animation to finish before navigating
+    }, 500);
   };
 
   return (

@@ -1,4 +1,3 @@
-// import logo from './logo.png';
 const RegisterHeader = () => {
   return (
     <div
