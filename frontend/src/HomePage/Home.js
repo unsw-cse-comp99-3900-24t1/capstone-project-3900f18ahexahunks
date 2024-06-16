@@ -3,6 +3,7 @@ import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
 import FeatureInfo from './FeatureInfo/FeatureInfo';
 import InfoCards from './Info/InfoCards';
+import Process from './Process/Process';
 
 const Container = styled('div')({
   color: '#ffffff',
@@ -25,6 +26,7 @@ const Home = () => {
         <Hero />
         <FeatureInfo />
         <InfoCards />
+        <Process />
         <div>Home</div>
       </Container>
     </div>

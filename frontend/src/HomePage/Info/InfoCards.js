@@ -1,4 +1,5 @@
 import Card from './Card';
+import PurpleCard from './PurpleCard';
 
 const InfoCards = () => {
   return (
@@ -53,7 +54,9 @@ const InfoCards = () => {
             marginTop: '32px',
             borderRadius: '24px',
           }}
-        ></div>
+        >
+          <PurpleCard />
+        </div>
       </div>
     </div>
   );
