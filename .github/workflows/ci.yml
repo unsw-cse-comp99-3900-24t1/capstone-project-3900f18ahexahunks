@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          path: backend # Checkout the repository to the 'backend' folder
+        # with:
+        #   path: backend # Checkout the repository to the 'backend' folder
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
@@ -28,8 +28,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: backend # Set the working directory to 'backend'
-        run: npm install # Install dependencies inside the 'backend' folder
+        run: |
+          cd backend
+          npm install
 
       - name: Run tests and check coverage
         working-directory: backend # Set the working directory to 'backend'
