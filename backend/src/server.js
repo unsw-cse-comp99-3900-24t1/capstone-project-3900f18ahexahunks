@@ -12,6 +12,12 @@ app.use(cors());
 
 const server = http.createServer(app);
 
+// add more in mongoDB or other functions
+const mongoose = require('mongoose');
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabaseName';
+
+const { adminAuthLogin, adminAuthRegister } = require('./src/authentication');
+
 // Define the login route
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
