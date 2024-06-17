@@ -16,8 +16,9 @@
 // };
 
 // FAKE USING WHILE BACKEND WORK IN PROGRESS
-import apiClient from './client';
 import CryptoJS from 'crypto-js';
+import userStore from '../zustand/userStore';
+import Cookies from 'js-cookie';
 
 // Utility function to generate SHA256 token
 const generateToken = (user) => {
@@ -44,17 +45,36 @@ const mockApiClient = {
     throw new Error('Unknown URL');
   },
 };
-
 // Performs login operation using the provided credentials.
 export const login = async (data) => {
-  return await mockApiClient.post('/login', data);
+  const { setUser, setError } = userStore.getState();
+  try {
+    const response = await mockApiClient.post('/login', data);
+    const { user, token } = response.data;
+    setUser(user, token);
+    return response;
+  } catch (error) {
+    setError(error.message);
+    return { error: true, message: error.message };
+  }
+};
+
+// Set user token in cookies
+const setUserTokenInCookies = (token) => {
+  Cookies.set('token', token, { expires: 7 }); // Expires in 7 days
 };
 
 // Registers a new user with the given data.
 export const register = async (data) => {
+  const { setUser, setError } = userStore.getState();
   try {
-    return await mockApiClient.post('/register', data);
-  } catch (e) {
-    return { error: true, e };
+    const response = await mockApiClient.post('/register', data);
+    const { user, token } = response.data;
+    setUser(user, token);
+    setUserTokenInCookies(token);
+    return response;
+  } catch (error) {
+    setError(error.message);
+    return { error: true, message: error.message };
   }
 };

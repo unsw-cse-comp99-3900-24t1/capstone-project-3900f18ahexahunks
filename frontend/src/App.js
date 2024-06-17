@@ -6,6 +6,7 @@ import { AlertProvider } from './components/AlertError.js';
 import Login from './auth/Login/Login.js';
 import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 const App = () => {
   return (
@@ -20,14 +21,14 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* Example protected route */}
-              {/* <Route
+              <Route
                 path="/home"
                 element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
             </Routes>
           </BrowserRouter>
         </LoadingProvider>
