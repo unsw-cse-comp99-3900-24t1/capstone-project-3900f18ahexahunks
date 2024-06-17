@@ -5,7 +5,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
-import { validateEmail } from '../../shared/validators';
+import { login } from '../../services/api';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
@@ -14,18 +14,24 @@ const LoginInputs = ({ goToDashboard }) => {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
-  const submitLogin = () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    if (!validateEmail(email)) {
-      showAlert('Email is not valid', 'tomato');
-      return;
-    }
+    // setError(null);
 
-    setTimeout(() => {
-      console.log(email, password);
+    try {
+      const response = await login({ email, password });
+      if (response.error) {
+        showAlert(response.message, 'tomato');
+      } else {
+        showAlert('Welcome back', 'green');
+        goToDashboard();
+      }
+    } catch (e) {
+      showAlert('An unexpected error occurred.', 'tomato');
+    } finally {
       setLoading(false);
-      goToDashboard();
-    }, 10000);
+    }
   };
 
   return (
@@ -70,7 +76,7 @@ const LoginInputs = ({ goToDashboard }) => {
           height: '50px',
           fontSize: '13px',
         }}
-        onClick={submitLogin}
+        onClick={handleLogin}
       />
 
       <RedirectToRegister />

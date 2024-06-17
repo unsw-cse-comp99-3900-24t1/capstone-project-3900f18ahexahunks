@@ -43,7 +43,7 @@ const Hero = () => {
           }}
           h1
         >
-          Next Revolution <span style={{ color: '#ffe0e5' }}>#Industry4.0</span>
+          Next Revolution <span style={{ color: '#FFE0E5' }}>#Industry4.0</span>
         </h1>
         <h4
           style={{
