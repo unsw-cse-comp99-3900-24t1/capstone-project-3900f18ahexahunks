@@ -34,20 +34,6 @@ const LoginInputs = ({ goToDashboard }) => {
     }
   };
 
-  // const submitLogin = () => {
-  //   setLoading(true);
-  //   if (!validateEmail(email)) {
-  //     showAlert('Email is not valid', 'tomato');
-  //     return;
-  //   }
-
-  //   setTimeout(() => {
-  //     console.log(email, password);
-  //     setLoading(false);
-  //     goToDashboard();
-  //   }, 10000);
-  // };
-
   return (
     <div
       style={{
