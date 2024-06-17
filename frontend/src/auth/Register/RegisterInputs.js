@@ -6,6 +6,7 @@ import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
 import { validateEmail } from '../../shared/validators';
 
+/** hiiiii  testing the master*/
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -42,8 +43,7 @@ const RegisterInputs = ({ goToDashboard }) => {
       style={{
         padding: '40px',
         width: '100%',
-      }}
-    >
+      }}>
       <p style={{ margin: '0', fontSize: '12.8px' }}>LET'S GET YOU STARTED</p>
       <h2
         style={{
@@ -51,8 +51,7 @@ const RegisterInputs = ({ goToDashboard }) => {
           fontSize: '25px',
           marginTop: '16px',
           marginBottom: '50px',
-        }}
-      >
+        }}>
         Create an Account
       </h2>
       <CustomInputBox
