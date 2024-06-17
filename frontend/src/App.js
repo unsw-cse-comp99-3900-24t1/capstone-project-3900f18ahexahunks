@@ -5,6 +5,7 @@ import { LoadingProvider } from './components/useLoading.js';
 import { AlertProvider } from './components/AlertError.js';
 import Login from './auth/Login/Login.js';
 import Register from './auth/Register/Register.js';
+import Dashboard from './Dashboard/Dashboard.js';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               {/* Example protected route */}
               {/* <Route
                 path="/home"
