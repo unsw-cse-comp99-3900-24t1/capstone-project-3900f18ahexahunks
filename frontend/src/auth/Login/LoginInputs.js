@@ -5,7 +5,6 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
-import { validateEmail } from '../../shared/validators';
 import { login } from '../../services/api';
 
 const LoginInputs = ({ goToDashboard }) => {
