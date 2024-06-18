@@ -4,8 +4,8 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
-import validator from 'validator';
 import { useAlert } from '../../components/AlertError';
+import { login } from '../../services/api';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
@@ -14,18 +14,24 @@ const LoginInputs = ({ goToDashboard }) => {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
-  const submitLogin = () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    if (!validator.isEmail(email)) {
-      showAlert('Email is not valid', 'tomato');
-      return;
-    }
-    // Simulate a login request delay
-    setTimeout(() => {
-      console.log(email, password);
+    // setError(null);
+
+    try {
+      const response = await login({ email, password });
+      if (response.error) {
+        showAlert(response.message, 'tomato');
+      } else {
+        showAlert('Welcome back', 'green');
+        goToDashboard();
+      }
+    } catch (e) {
+      showAlert('An unexpected error occurred.', 'tomato');
+    } finally {
       setLoading(false);
-      goToDashboard();
-    }, 10000); // 2 seconds delay to simulate the request
+    }
   };
 
   return (
@@ -70,7 +76,7 @@ const LoginInputs = ({ goToDashboard }) => {
           height: '50px',
           fontSize: '13px',
         }}
-        onClick={submitLogin}
+        onClick={handleLogin}
       />
 
       <RedirectToRegister />

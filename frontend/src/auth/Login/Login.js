@@ -71,9 +71,9 @@ const Login = () => {
   const goToDashboard = () => {
     setExitLeft(true);
     setExitBottom(true);
-    setTimeout(() => {
-      nav('/dashboard');
-    }, 500); // Wait for the exit animation to finish before navigating
+    // setTimeout(() => {
+    nav('/dashboard');
+    // }, 500);
   };
 
   return (

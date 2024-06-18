@@ -4,8 +4,9 @@ import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
-import validator from 'validator';
+import { validateEmail } from '../../shared/validators';
 
+/** hiiiii  testing the master*/
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ const RegisterInputs = ({ goToDashboard }) => {
       showAlert('Name cannot be empty', 'tomato');
       return;
     }
-    if (!validator.isEmail(email)) {
+    if (!validateEmail(email)) {
       showAlert('Email is not valid', 'tomato');
       return;
     }
@@ -28,13 +29,13 @@ const RegisterInputs = ({ goToDashboard }) => {
       showAlert('Passwords do not match', 'tomato');
       return;
     }
-    // Simulate a Register request delay
+
     setLoading(true);
     setTimeout(() => {
       console.log(email, password, name);
       setLoading(false);
       goToDashboard();
-    }, 10000); // 2 seconds delay to simulate the request
+    }, 10000);
   };
 
   return (
@@ -42,8 +43,7 @@ const RegisterInputs = ({ goToDashboard }) => {
       style={{
         padding: '40px',
         width: '100%',
-      }}
-    >
+      }}>
       <p style={{ margin: '0', fontSize: '12.8px' }}>LET'S GET YOU STARTED</p>
       <h2
         style={{
@@ -51,8 +51,7 @@ const RegisterInputs = ({ goToDashboard }) => {
           fontSize: '25px',
           marginTop: '16px',
           marginBottom: '50px',
-        }}
-      >
+        }}>
         Create an Account
       </h2>
       <CustomInputBox
