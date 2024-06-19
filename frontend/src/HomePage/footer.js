@@ -19,9 +19,8 @@ const Footer = () => {
   const footerStyle = {
     backgroundColor: '#333',
     color: '#fff',
-    padding: windowWidth <= 768 ? '10px 0' : '20px 0',
+    padding: windowWidth <= 768 ? '10px 0' : '0px 0',
     textAlign: 'center',
-    // position: 'absolute',
     width: '100%',
     bottom: '0',
     fontSize: windowWidth <= 768 ? '14px' : '16px',
