@@ -71,9 +71,9 @@ const Register = () => {
   const goToDashboard = () => {
     setExitLeft(true);
     setExitBottom(true);
-    setTimeout(() => {
-      nav('/dashboard');
-    }, 500);
+    // setTimeout(() => {
+    nav('/dashboard');
+    // }, 500);
   };
 
   return (

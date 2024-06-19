@@ -6,7 +6,7 @@ import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
 import { login } from '../../services/api';
-
+//
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,12 +17,11 @@ const LoginInputs = ({ goToDashboard }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // setError(null);
 
     try {
       const response = await login({ email, password });
       if (response.error) {
-        showAlert(response.message, 'tomato');
+        showAlert(response.data, 'tomato');
       } else {
         showAlert('Welcome back', 'green');
         goToDashboard();
