@@ -32,11 +32,15 @@ const RegisterInputs = ({ goToDashboard }) => {
 
     setLoading(true);
     try {
-      await register({ name, email, password });
-      goToDashboard();
-    } catch (error) {
-      // Show the error message received from the login function
-      showAlert(error.message, 'tomato');
+      const response = await register({ username: name, email, password });
+      if (response.error) {
+        showAlert(response.data, 'tomato');
+      } else {
+        showAlert('Welcome back', 'green');
+        goToDashboard();
+      }
+    } catch (e) {
+      showAlert('An unexpected error occurred.', 'tomato');
     } finally {
       setLoading(false);
     }
