@@ -4,6 +4,7 @@ import Board from './MainBoard/Board';
 import { useParams } from 'react-router-dom';
 import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
+import useUserStore from '../zustand/useUserStore';
 
 const Container = styled('div')({
   width: ' 100vw',
@@ -22,7 +23,17 @@ const Container2 = styled('div')({
   backgroundColor: '#F9F9F9',
 });
 
+const HeaderContainer = styled('div')({
+  height: '10vh',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'right',
+});
+
 const Dashboard = () => {
+  const { setUser, getUser } = useUserStore();
+  const username = getUser().username;
   const { process } = useParams();
   let content;
   switch (process) {
@@ -36,13 +47,26 @@ const Dashboard = () => {
       content = <Board />;
   }
 
-  // return <div>{content}</div>;
   return (
     <Container>
       <Container1>
         <Selector />
       </Container1>
-      <Container2>{content}</Container2>
+      <Container2>
+        <HeaderContainer>
+          <p
+            style={{
+              fontWeight: '900',
+              fontSize: '14px',
+              fontFamily: 'Almarai, serif',
+              paddingRight: '20%',
+            }}
+          >
+            {username}
+          </p>
+        </HeaderContainer>
+        <div>{content}</div>
+      </Container2>
     </Container>
   );
 };

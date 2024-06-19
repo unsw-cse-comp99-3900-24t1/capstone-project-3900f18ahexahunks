@@ -6,6 +6,7 @@ import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
 import { login } from '../../services/api';
+import useUserStore from '../../zustand/useUserStore';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,8 @@ const LoginInputs = ({ goToDashboard }) => {
 
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
+
+  const { setUser, getUser } = useUserStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,6 +27,9 @@ const LoginInputs = ({ goToDashboard }) => {
         showAlert(response.data, 'tomato');
       } else {
         showAlert('Welcome back', 'green');
+        console.log(response.data, 'THIS IS LOL');
+        setUser({ user: response.data });
+        console.log(getUser(), 'TISI IS THE FROM STORE');
         goToDashboard();
       }
     } catch (e) {
