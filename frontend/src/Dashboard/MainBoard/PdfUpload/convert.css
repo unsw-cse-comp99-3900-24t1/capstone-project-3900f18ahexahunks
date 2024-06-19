@@ -1,0 +1,31 @@
+/* Board.css */
+.board-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+.pdf-box {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-box {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.upload-label {
+  font-size: 3em;
+  color: #ccc;
+}

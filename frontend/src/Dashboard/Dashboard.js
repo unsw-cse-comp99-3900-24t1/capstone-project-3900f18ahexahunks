@@ -1,6 +1,9 @@
 import { styled } from '@mui/system';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
+import { useParams } from 'react-router-dom';
+import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
+import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 
 const Container = styled('div')({
   width: ' 100vw',
@@ -20,14 +23,26 @@ const Container2 = styled('div')({
 });
 
 const Dashboard = () => {
+  const { process } = useParams();
+  let content;
+  switch (process) {
+    case 'convert':
+      content = <PdfUploadBoard />;
+      break;
+    case 'validate':
+      content = <ValidateBoard />;
+      break;
+    default:
+      content = <Board />;
+  }
+
+  // return <div>{content}</div>;
   return (
     <Container>
       <Container1>
         <Selector />
       </Container1>
-      <Container2>
-        <Board />
-      </Container2>
+      <Container2>{content}</Container2>
     </Container>
   );
 };
