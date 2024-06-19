@@ -5,6 +5,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
 import { validateEmail } from '../../shared/validators';
+import { register } from '../../services/api';
 
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
@@ -15,7 +16,7 @@ const RegisterInputs = ({ goToDashboard }) => {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
-  const submitRegister = () => {
+  const submitRegister = async () => {
     if (name === '') {
       showAlert('Name cannot be empty', 'tomato');
       return;
@@ -30,11 +31,15 @@ const RegisterInputs = ({ goToDashboard }) => {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      console.log(email, password, name);
-      setLoading(false);
+    try {
+      await register({ name, email, password });
       goToDashboard();
-    }, 10000);
+    } catch (error) {
+      // Show the error message received from the login function
+      showAlert(error.message, 'tomato');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
