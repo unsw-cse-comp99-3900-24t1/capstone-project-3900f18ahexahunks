@@ -32,7 +32,7 @@ const HeaderContainer = styled('div')({
 });
 
 const Dashboard = () => {
-  const { setUser, getUser } = useUserStore();
+  const { getUser } = useUserStore();
   const username = getUser().username;
   const { process } = useParams();
   let content;
