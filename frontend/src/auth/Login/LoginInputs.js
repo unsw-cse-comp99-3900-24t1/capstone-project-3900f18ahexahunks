@@ -17,7 +17,6 @@ const LoginInputs = ({ goToDashboard }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // setError(nuasdasll);
 
     try {
       const response = await login({ email, password });
