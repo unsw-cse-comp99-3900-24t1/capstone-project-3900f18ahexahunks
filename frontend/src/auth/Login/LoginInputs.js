@@ -22,7 +22,7 @@ const LoginInputs = ({ goToDashboard }) => {
     try {
       const response = await login({ email, password });
       if (response.error) {
-        showAlert(response.message, 'tomato');
+        showAlert(response.data, 'tomato');
       } else {
         showAlert('Welcome back', 'green');
         goToDashboard();
