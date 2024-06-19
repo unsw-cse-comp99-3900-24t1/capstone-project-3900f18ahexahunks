@@ -76,6 +76,11 @@ const LoginInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={handleLogin}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleLogin(e);
+          }
+        }}
       />
 
       <RedirectToRegister />

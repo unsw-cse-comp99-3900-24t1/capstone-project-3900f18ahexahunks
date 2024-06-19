@@ -103,6 +103,11 @@ const RegisterInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={submitRegister}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            submitRegister(e);
+          }
+        }}
       />
 
       <RedirectToLogin />
