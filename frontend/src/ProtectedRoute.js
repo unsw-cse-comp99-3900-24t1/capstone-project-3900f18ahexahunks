@@ -1,20 +1,20 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+// import React from 'react';
+// import { Navigate } from 'react-router-dom';
+// import Cookies from 'js-cookie';
 
-const ProtectedRoute = ({ children }) => {
-  const token = Cookies.get('token');
+// const ProtectedRoute = ({ children }) => {
+//   const token = Cookies.get('token');
 
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
+//   if (!token) {
+//     return <Navigate to="/login" />;
+//   }
 
-  return children;
-};
+//   return children;
+// };
 
-export default ProtectedRoute;
+// export default ProtectedRoute;
 
-// THIS ALSO WORKS
+// // THIS ALSO WORKS
 // import React, { useEffect } from 'react';
 // import { Navigate } from 'react-router-dom';
 // // import { initializeStore } from './zustandStore/usePresentationListStore';
@@ -26,8 +26,10 @@ export default ProtectedRoute;
 
 //   const token = Cookies.get('token'); // Retrieve authentication token from local storage.
 
+//   console.log(token);
+
 //   // If no token is found, redirect to login page.
-//   if (!token) {
+//   if (token == null || token === '') {
 //     return <Navigate to="/login" />;
 //   }
 
