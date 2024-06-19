@@ -4,7 +4,7 @@ import Hero from './Hero/Hero';
 import FeatureInfo from './FeatureInfo/FeatureInfo';
 import InfoCards from './Info/InfoCards';
 import Process from './Process/Process';
-
+import Footer from './footer';
 const Container = styled('div')({
   color: '#ffffff',
   backgroundColor: '#000',
@@ -19,8 +19,7 @@ const Container = styled('div')({
 const Home = () => {
   return (
     <div
-      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/login.jpg)` }}
-    >
+      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/login.jpg)` }}>
       <Container>
         <Navbar />
         <Hero />
@@ -28,6 +27,7 @@ const Home = () => {
         <InfoCards />
         <Process />
         <div>Home</div>
+        <Footer />
       </Container>
     </div>
   );
