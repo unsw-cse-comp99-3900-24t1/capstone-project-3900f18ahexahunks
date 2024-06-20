@@ -72,7 +72,7 @@ const Register = () => {
     setExitLeft(true);
     setExitBottom(true);
     // setTimeout(() => {
-    nav('/dashboard');
+    nav('/dashboard/main');
     // }, 500);
   };
 
