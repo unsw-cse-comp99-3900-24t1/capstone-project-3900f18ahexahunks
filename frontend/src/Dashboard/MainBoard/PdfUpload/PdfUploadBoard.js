@@ -1,5 +1,14 @@
-import { useState } from 'react';
-import './convert.css';
+import React, { useState } from 'react';
+import { styled } from '@mui/system';
+import UploadBox from './UploadBox';
+import ShowPdf from './ShowPdf';
+
+const BoardContainer = styled('div')({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '10px',
+  padding: '10px',
+});
 
 const PdfUploadBoard = () => {
   const [pdfs, setPdfs] = useState([]);
@@ -13,25 +22,11 @@ const PdfUploadBoard = () => {
   };
 
   return (
-    <div className="board-container">
-      {pdfs.map((pdf, index) => (
-        <div key={index} className="pdf-box">
-          <embed src={pdf} type="application/pdf" width="100%" height="100%" />
-        </div>
-      ))}
-      <div className="upload-box">
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={handleUpload}
-          style={{ display: 'none' }}
-          id="pdf-upload"
-        />
-        <label htmlFor="pdf-upload" className="upload-label">
-          +
-        </label>
-      </div>
-    </div>
+    <BoardContainer>
+      <ShowPdf pdfs={pdfs} />
+      <UploadBox handleUpload={handleUpload} />
+    </BoardContainer>
   );
 };
+
 export default PdfUploadBoard;
