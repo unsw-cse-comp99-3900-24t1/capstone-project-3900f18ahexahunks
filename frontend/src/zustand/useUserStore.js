@@ -10,10 +10,10 @@ import { create } from 'zustand';
 const useUserStore = create((set, get) => ({
   user: JSON.parse(localStorage.getItem('user')) || null,
   setUser: (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
-    set((state) => {
-      return { ...state.user, user };
-    });
+    const currentUser = get().user;
+    const updatedUser = { ...currentUser, ...user };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    set({ user: updatedUser });
   },
   clearUser: () => {
     console.log('Clearing user');
