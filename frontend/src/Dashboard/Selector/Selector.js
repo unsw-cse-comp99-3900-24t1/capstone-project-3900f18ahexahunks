@@ -1,7 +1,7 @@
 // const Selector = () => {
 //   return <div>Selector</div>;
 // };
-// export default Selector;
+// expor default Selector;
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
