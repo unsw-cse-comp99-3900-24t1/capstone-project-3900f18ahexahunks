@@ -5,12 +5,15 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 const Selector = () => {
   // const classes = useStyles();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Perform any necessary logout logic here, like clearing authentication tokens
+    localStorage.clear();
+    Cookies.remove('token', { path: '/' });
     navigate('/');
   };
   return (
@@ -30,19 +33,19 @@ const Selector = () => {
       </h1>
       <nav>
         <button>
-          <Link to="Dashboard">Dashboard</Link>
+          <Link to="/dashboard/main">Dashboard</Link>
         </button>
         <button>
-          <Link to="Validate">Validate</Link>
+          <Link to="/dashboard/validate">Validate</Link>
         </button>
         <button>
-          <Link to="Invoices">Invoices</Link>
+          <Link to="/dashboard/convert">Invoices</Link>
         </button>
         <button>
-          <Link to="Settings">Settings</Link>
+          <Link to="/settings">Settings</Link>
         </button>
         <button>
-          <Link to="Help">Help</Link>
+          <Link to="/help">Help</Link>
         </button>
         <button onClick={handleLogout}>Logout</button>
       </nav>
