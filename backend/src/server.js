@@ -4,10 +4,13 @@ require('dotenv').config();
 const http = require('http');
 const connectDB = require('./db');
 const { adminAuthLogin, adminAuthRegister } = require('./src/authentication');
+const { MongoClient } = require('mongodb');
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
+let isServerBusy = false; // Simulating server busy state
 
 app.use(express.json());
 app.use(cors());
@@ -16,10 +19,12 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Hello World!' });
 });
 
-const server = http.createServer(app);
-
 // Define the login route
 app.post('/login', (req, res) => {
+  if (isServerBusy) {
+    return res.status(500).json({ error: "Please try again later" });
+  }
+
   const { email, password } = req.body;
   const response = adminAuthLogin(email, password);
 
@@ -38,6 +43,10 @@ app.post('/login', (req, res) => {
 
 // Define the register route
 app.post('/register', (req, res) => {
+  if (isServerBusy) {
+    return res.status(500).json({ error: "Please try again later" });
+  }
+
   const { email, password, passwordCheck } = req.body;
   const response = adminAuthRegister(email, password, passwordCheck);
 
@@ -55,6 +64,42 @@ app.post('/register', (req, res) => {
 
   return res.json(response);
 });
+
+// Define the data route
+app.get('/data', async (req, res, next) => {
+  if (isServerBusy) {
+    return res.status(500).json({ error: "Please try again later" });
+  }
+
+  const client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+    await client.connect();
+    const database = client.db('mydatabase');
+    const collection = database.collection('mycollection');
+
+    // Simulate an operation that could fail
+    const result = await collection.findOne({ _id: 'nonexistentId' });
+
+    if (!result) {
+      throw new Error('Document not found');
+    }
+
+    res.json(result);
+  } catch (error) {
+    next(error);
+  } finally {
+    await client.close();
+  }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Server error, please try again later' });
+});
+
+const server = http.createServer(app);
 
 connectDB().then(() => {
   server.listen(PORT, () => {
