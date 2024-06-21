@@ -21,10 +21,13 @@ export function adminAuthLogin(email, password) {
   } else if (dataStore.users[authUserIndex].password !== password) {
     return { error: "Invalid Email or password" };
   } else {
-    return {
+    const newUser = {
       email: email,
       password: password
     };
+    dataStore.users.push(newUser);
+    setData(dataStore);
+    return newUser;
   }
 }
 
@@ -50,11 +53,16 @@ export function adminAuthRegister(email, password, passwordCheck) {
     return { error: "Invalid Email or password" };
   } else if (dataStore.users[authUserIndex].password !== passwordCheck) {
     return { error: "Passwords do not match" };
-  } else {
-    return {
+  } 
+  
+  if (findEmail && dataStore.users[authUserIndex].password !== password && dataStore.users[authUserIndex].password !== passwordCheck) {
+    const newUser = {
       email: email,
       password: password,
-      "password-check": passwordCheck
+      passwordCheck: passwordCheck
     };
+    dataStore.users.push(newUser);
+    setData(dataStore);
+    return newUser;
   }
 }

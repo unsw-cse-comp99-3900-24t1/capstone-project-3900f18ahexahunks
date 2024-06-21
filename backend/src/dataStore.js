@@ -1,17 +1,23 @@
-const fs = require('fs');
-// Use get() to access the data
-function getData() {
-    if (fs.existsSync('./currData.json')) {
-      const storedData = fs.readFileSync('./currData.json', { flag: 'r' });
-      data = JSON.parse(storedData.toString());
-    }
-    return data;
+export function createUser(email, password) {
+  return {
+    email: email,
+    password: password,
+  };
 }
 
-// Use set(newData) to pass in the entire data object
-function setData(newData) {
-    data = newData;
-    fs.writeFileSync('./currData.json', JSON.stringify(data), { flag: 'w' });
+let dataStore = {
+  users: []
+};
+
+export function getData() {
+  return dataStore;
 }
-  
-export { getData, setData };
+
+export function setData(newData) {
+  dataStore = newData;
+}
+
+export function clear() {
+  dataStore = { users: [] };
+  return dataStore;
+}

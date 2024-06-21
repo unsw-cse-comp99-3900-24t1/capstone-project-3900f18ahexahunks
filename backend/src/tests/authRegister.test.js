@@ -1,26 +1,25 @@
+import { clear, createUser } from '../dataStore';
 import { adminAuthRegister } from '../authentication';
 
-test('Check successful regisration', () => {
+describe('Tests for adminAuthRegister', () => {
+  test("Successfully registered", () => {
     clear();
-  
-    let user = adminAuthRegister("zhechengyao123@gmail.com", "12345abcde", "12345abcde");
-  
-    expect(user).toMatchObject({ 
-        "email ": "zhechengyao123@gmail.com",
-        "password ": "12345abcde"
-    });
-});
+    const user = adminAuthRegister("zhechengyao123@gmail.com", "12345abcde", "12345abcde");
+    const userCreated = createUser("zhechengyao123@gmail.com", "12345abcde")
+    expect(userCreated.email).toBe("zhechengyao123@gmail.com");
+    expect(userCreated.password).toBe("12345abcde");
+  });
 
-test('Check fail on wrong in email format', () => {
+  test("Passwords do not match", () => {
     clear();
-  
-    let user1 = adminAuthRegister("123", "12345abcde", "12345abcde");
-    expect(user1).toMatchObject({ error: "Invalid Email or password" });
-});
+    const user = adminAuthRegister("zhechengyao123@gmail.com", "12345abcde", "wrongpassword");
+    expect(user).toStrictEqual({ error: "Invalid Email or password" });
+  });
 
-test('Check fail on wrong in password format', () => {
+  test('Email already exists', () => {
     clear();
-  
-    let user1 = adminAuthRegister("zhechengyao123@gmail.com", "12345abcde", "12345");
-    expect(user1).toMatchObject({ error: "Invalid Email or password" });
+    adminAuthRegister("zhechengyao123@gmail.com", "12345abcde", "12345abcde");
+    const user = adminAuthRegister("zhechengyao123@gmail.com", "anotherpassword", "anotherpassword");
+    expect(user).toStrictEqual({ error: "Invalid Email or password" });
+  });
 });
