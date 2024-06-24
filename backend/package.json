@@ -4,6 +4,7 @@
   "description": "This is the backend for our project",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "jest",
     "coverage": "jest --coverage"
   },
@@ -13,9 +14,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "gridfs-stream": "^1.1.1",
     "http": "^0.0.1-security",
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.1",
+    "multer-gridfs-storage": "^5.0.2",
     "supertest": "^7.0.0"
   },
   "devDependencies": {
