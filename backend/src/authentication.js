@@ -1,68 +1,65 @@
-import { getData, setData } from './dataStore';
+const User = require('./models/user');
+const bcrypt = require('bcrypt');
 
 // Define the adminAuthLogin function
-export function adminAuthLogin(email, password) {
-  const dataStore = getData();
-  let findEmail = false;
-  let authUserIndex = 0;
+async function adminAuthLogin(email, password) {
+  try {
+      const user = await User.findOne({ email });
 
-  // Find the index of the user
-  for (const index in dataStore.users) {
-    if (dataStore.users[index].email === email) {
-      findEmail = true;
-      authUserIndex = index;
-      break;
-    }
-  }
+      if (!user) {
+          return { error: "Invalid Email or password" };
+      }
 
-  // Check if the email was found and if the password is correct
-  if (!findEmail) {
-    return { error: "Invalid Email or password" };
-  } else if (dataStore.users[authUserIndex].password !== password) {
-    return { error: "Invalid Email or password" };
-  } else {
-    const newUser = {
-      email: email,
-      password: password
-    };
-    dataStore.users.push(newUser);
-    setData(dataStore);
-    return newUser;
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+          return { error: "Invalid Email or password" };
+      }
+
+      return {
+          email: user.email,
+          password: password
+      };
+  } catch (error) {
+      console.error('Error during login:', error);
+      return { error: "Please try again later" };
   }
 }
 
-// Define the adminAuthRegister function
-export function adminAuthRegister(email, password, passwordCheck) {
-  const dataStore = getData();
-  let findEmail = false;
-  let authUserIndex = 0;
+async function adminAuthRegister(userName, email, password, passwordCheck) {
+    try {
+        if (password !== passwordCheck) {
+            return { error: "Passwords do not match" };
+        }
 
-  // Find the index of the user
-  for (const index in dataStore.users) {
-    if (dataStore.users[index].email === email) {
-      findEmail = true;
-      authUserIndex = index;
-      break;
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return { error: "Email already registered" };
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({
+            userName,
+            email,
+            password: hashedPassword,
+            passwordCheck: hashedPassword  // Ensure passwordCheck is the same as the hashed password
+        });
+
+        await newUser.save();
+
+        return {
+            email: newUser.email,
+            password: password,  // Return plain password
+            passwordCheck: passwordCheck  // Return plain passwordCheck
+        };
+    } catch (error) {
+        console.error('Error during registration:', error);
+        return { error: "Please try again later" };
     }
-  }
-
-  // Check if the email was found and if the password is correct
-  if (!findEmail) {
-    return { error: "Invalid Email or password" };
-  } else if (dataStore.users[authUserIndex].password !== password) {
-    return { error: "Invalid Email or password" };
-  } else if (dataStore.users[authUserIndex].password !== passwordCheck) {
-    return { error: "Passwords do not match" };
-  } 
-  
-  if (findEmail && dataStore.users[authUserIndex].password !== password && dataStore.users[authUserIndex].password !== passwordCheck) {
-    const newUser = {
-      email: email,
-      password: password,
-      passwordCheck: passwordCheck
-    };
-    dataStore.users.push(newUser);
-    setData(dataStore);
-    return newUser;
-  }
 }
+
+module.exports = {
+    adminAuthLogin,
+    adminAuthRegister
+};
+

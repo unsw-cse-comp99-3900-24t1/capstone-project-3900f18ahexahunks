@@ -1,110 +1,74 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const http = require('http');
+const { adminAuthLogin, adminAuthRegister } = require('./authentication');
+const userRoutes = require('./routes/userRoutes');
 const connectDB = require('./db');
-const { adminAuthLogin, adminAuthRegister } = require('./src/authentication');
-const { MongoClient } = require('mongodb');
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
-const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
-let isServerBusy = false; // Simulating server busy state
+
+let isServerBusy = false;
+
+// Connect to MongoDB
+connectDB();
 
 app.use(express.json());
 app.use(cors());
 
 app.get('/test', (req, res) => {
-  res.json({ message: 'Hello World!' });
+    res.json({ message: 'Hello World!' });
 });
 
-// Define the login route
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   if (isServerBusy) {
-    return res.status(500).json({ error: "Please try again later" });
+      return res.status(500).json({ error: "Please try again later" });
   }
 
   const { email, password } = req.body;
-  const response = adminAuthLogin(email, password);
+  const response = await adminAuthLogin(email, password);
 
-  if ('error' in response) {
-    if (response.error === "Invalid Email or password") {
-      res.status(400);
-    } else if (response.error === "Please try again later") {
-      res.status(500);
-    }
-  } else {
-    res.status(200);
+  if (response.error) {
+      if (response.error === "Invalid Email or password") {
+          return res.status(400).json(response);
+      } else {
+          return res.status(500).json(response);
+      }
   }
 
-  return res.json(response);
+  return res.status(200).json(response);
 });
 
-// Define the register route
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
   if (isServerBusy) {
-    return res.status(500).json({ error: "Please try again later" });
+      return res.status(500).json({ error: "Please try again later" });
   }
 
-  const { email, password, passwordCheck } = req.body;
-  const response = adminAuthRegister(email, password, passwordCheck);
+  const { userName, email, password, passwordCheck } = req.body;
+  const response = await adminAuthRegister(email, password, passwordCheck);
 
-  if ('error' in response) {
-    if (response.error === "Invalid Email or password") {
-      res.status(400);
-    } else if (response.error === "Please try again later") {
-      res.status(500);
-    } else if (response.error === "Passwords do not match") {
-      res.status(402);
-    }
-  } else {
-    res.status(200);
+  if (response.error) {
+      let status;
+      if (response.error === "Passwords do not match") {
+          status = 402;
+      } else if (response.error === "Email already registered") {
+          status = 400;
+      } else {
+          status = 500;
+      }
+      return res.status(status).json(response);
   }
 
-  return res.json(response);
+  return res.status(200).json(response);
 });
 
-// Define the data route
-app.get('/data', async (req, res, next) => {
-  if (isServerBusy) {
-    return res.status(500).json({ error: "Please try again later" });
-  }
+// Use user routes
+app.use('/users', userRoutes);
 
-  const client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  try {
-    await client.connect();
-    const database = client.db('mydatabase');
-    const collection = database.collection('mycollection');
-
-    // Simulate an operation that could fail
-    const result = await collection.findOne({ _id: 'nonexistentId' });
-
-    if (!result) {
-      throw new Error('Document not found');
-    }
-
-    res.json(result);
-  } catch (error) {
-    next(error);
-  } finally {
-    await client.close();
-  }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Server error, please try again later' });
-});
-
-const server = http.createServer(app);
-
-connectDB().then(() => {
-  server.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
-  });
 });
 
-module.exports = app;
+module.exports = { app, server };
