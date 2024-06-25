@@ -6,7 +6,7 @@ import { AlertProvider } from './components/AlertError.js';
 import Login from './auth/Login/Login.js';
 import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
-
+// import Login from './auth/Login/Login.js';
 const App = () => {
   return (
     <div>
