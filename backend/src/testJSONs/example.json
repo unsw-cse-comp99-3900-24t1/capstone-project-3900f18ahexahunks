@@ -1,0 +1,39 @@
+{
+    "invoiceNumber": "INV-12345",
+    "issueDate": "2023-06-15",
+    "currencyCode": "USD",
+    "supplier": {
+      "name": "Supplier Company Name",
+      "address": {
+        "street": "Main Street",
+        "city": "Supplier City",
+        "postalCode": "12345",
+        "country": "US"
+      },
+      "taxId": "US123456789"
+    },
+    "customer": {
+      "name": "Customer Company Name",
+      "address": {
+        "street": "Customer Street",
+        "city": "Customer City",
+        "postalCode": "54321",
+        "country": "US"
+      },
+      "taxId": "US987654321"
+    },
+    "items": [
+      {
+        "id": "1",
+        "description": "Product Description",
+        "quantity": 10,
+        "unitPrice": 50.0,
+        "lineExtensionAmount": 500.0,
+        "price": 50.0
+      }
+    ],
+    "totalAmount": 500.0,
+    "taxAmount": 50.0,
+    "payableAmount": 550.0
+  }
+  
