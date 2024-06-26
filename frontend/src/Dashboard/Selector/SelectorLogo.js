@@ -1,6 +1,12 @@
 const SelectorLogo = () => {
   return (
-    <h1>
+    <h1
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <img
         src={`${process.env.PUBLIC_URL}/Path_1929.png`}
         alt="icon"
@@ -11,7 +17,7 @@ const SelectorLogo = () => {
           marginRight: '8px',
         }}
       />
-      Hexa Hunks
+      HexaHunks.
     </h1>
   );
 };
