@@ -14,8 +14,10 @@ const Selector = () => {
   const handleLogout = () => {
     localStorage.clear();
     Cookies.remove('token', { path: '/' });
+    localStorage.clear();
     navigate('/');
   };
+
   return (
     <div>
       <h1>

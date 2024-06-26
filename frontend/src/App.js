@@ -6,6 +6,7 @@ import { AlertProvider } from './components/AlertError.js';
 import Login from './auth/Login/Login.js';
 import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 const App = () => {
   return (
@@ -18,7 +19,15 @@ const App = () => {
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard/:process" element={<Dashboard />} />
+              <Route
+                path="/dashboard/:process"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Home />} />
             </Routes>
           </BrowserRouter>
         </LoadingProvider>
