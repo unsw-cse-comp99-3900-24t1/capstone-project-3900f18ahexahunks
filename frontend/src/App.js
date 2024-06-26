@@ -7,6 +7,7 @@ import Login from './auth/Login/Login.js';
 import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
 import ProtectedRoute from './ProtectedRoute.js';
+import PageNotFound from './PageNotFound/PageNotFound.js';
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
         </LoadingProvider>
