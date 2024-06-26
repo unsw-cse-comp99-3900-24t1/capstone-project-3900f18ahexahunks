@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import SelectorLinks from './SelectorLinks';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Button from '@mui/material/Button';
 
 const SelectorContainer = styled('div')(() => ({
   display: 'flex',
@@ -10,16 +12,30 @@ const SelectorContainer = styled('div')(() => ({
   height: '100%',
   paddingLeft: '20px',
   paddingRight: '20px',
+  alignContent: 'center',
 }));
 
 const SelectorContainer1 = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
+  alignContent: 'center',
 }));
 
 const SelectorContainer2 = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
+  alignContent: 'center',
+  alignItems: 'center',
+}));
+
+const StyledLogoutButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#999',
+  color: '#fff',
+  marginTop: '5px',
+  width: '150px',
+  '&:hover': {
+    backgroundColor: '#D50000',
+  },
 }));
 
 const MainSelectors = ({ handleLogout }) => {
@@ -34,9 +50,9 @@ const MainSelectors = ({ handleLogout }) => {
     } else if (process === 'convert') {
       setSelectedRoute('/dashboard/convert');
     } else if (process === 'settings') {
-      setSelectedRoute('/settings');
+      setSelectedRoute('/dashboard/settings');
     } else if (process === 'help') {
-      setSelectedRoute('/help');
+      setSelectedRoute('/dashboard/help');
     } else {
       setSelectedRoute('/dashboard/main');
     }
@@ -64,20 +80,27 @@ const MainSelectors = ({ handleLogout }) => {
           onClick={() => setSelectedRoute('/dashboard/convert')}
         />
         <SelectorLinks
-          routeTo="/settings"
+          routeTo="/dashboard/settings"
           text="Settings"
-          isSelected={selectedRoute === '/settings'}
-          onClick={() => setSelectedRoute('/settings')}
+          isSelected={selectedRoute === '/dashboard/settings'}
+          onClick={() => setSelectedRoute('/dashboard/settings')}
+          additionalStyle={{ marginTop: '50px' }}
         />
       </SelectorContainer1>
       <SelectorContainer2>
         <SelectorLinks
-          routeTo="/help"
+          routeTo="/dashboard/help"
           text="Help"
-          isSelected={selectedRoute === '/help'}
-          onClick={() => setSelectedRoute('/help')}
+          isSelected={selectedRoute === '/dashboard/help'}
+          onClick={() => setSelectedRoute('/dashboard/help')}
         />
-        <button onClick={handleLogout}>Logout</button>
+        <StyledLogoutButton
+          variant="contained"
+          startIcon={<LogoutIcon />}
+          onClick={handleLogout}
+        >
+          Logout
+        </StyledLogoutButton>
       </SelectorContainer2>
     </SelectorContainer>
   );

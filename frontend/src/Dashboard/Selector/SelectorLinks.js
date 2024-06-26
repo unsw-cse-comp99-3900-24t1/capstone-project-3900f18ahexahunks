@@ -16,9 +16,20 @@ const StyledLink = styled(Link)(({ isSelected }) => ({
   },
 }));
 
-const SelectorLinks = ({ routeTo, text, isSelected, onClick }) => {
+const SelectorLinks = ({
+  routeTo,
+  text,
+  isSelected,
+  onClick,
+  additionalStyle,
+}) => {
   return (
-    <StyledLink to={routeTo} isSelected={isSelected} onClick={onClick}>
+    <StyledLink
+      to={routeTo}
+      isSelected={isSelected}
+      onClick={onClick}
+      style={additionalStyle}
+    >
       {text}
     </StyledLink>
   );
