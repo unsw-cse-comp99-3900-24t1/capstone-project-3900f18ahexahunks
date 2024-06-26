@@ -16,6 +16,7 @@ const SelectorLogo = () => {
           verticalAlign: 'middle',
           marginRight: '8px',
         }}
+        loading="lazy"
       />
       <h1 style={{ fontSize: '32px' }}>HexaHunks.</h1>
     </div>
