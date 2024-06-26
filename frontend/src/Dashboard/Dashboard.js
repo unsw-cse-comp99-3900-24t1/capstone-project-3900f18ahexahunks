@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
+import SettingsBoard from './Settings/SettingsBoard';
+import HelpBoard from './Help/HelpBoard';
 
 const Container = styled('div')({
   width: ' 100vw',
@@ -42,6 +44,12 @@ const Dashboard = () => {
       break;
     case 'validate':
       content = <ValidateBoard />;
+      break;
+    case 'settings':
+      content = <SettingsBoard />;
+      break;
+    case 'help':
+      content = <HelpBoard />;
       break;
     default:
       content = <Board />;

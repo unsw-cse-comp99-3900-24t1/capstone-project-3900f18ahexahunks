@@ -34,7 +34,7 @@ const SelectorContainer2 = styled('div')(() => ({
 }));
 
 const StyledLogoutButton = styled(Button)(({ theme }) => ({
-  backgroundColor: '#999',
+  backgroundColor: '#555555',
   color: '#fff',
   marginTop: '5px',
   width: '150px',
