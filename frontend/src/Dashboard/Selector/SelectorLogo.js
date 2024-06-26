@@ -1,6 +1,6 @@
 const SelectorLogo = () => {
   return (
-    <h1
+    <div
       style={{
         display: 'flex',
         justifyContent: 'center',
@@ -8,17 +8,17 @@ const SelectorLogo = () => {
       }}
     >
       <img
-        src={`${process.env.PUBLIC_URL}/Path_1929.png`}
+        src={`${process.env.PUBLIC_URL}/hexahunkLogoBlack.png`}
         alt="icon"
         style={{
-          width: '50px',
-          height: '50px',
+          width: '42px',
+          height: '42px',
           verticalAlign: 'middle',
           marginRight: '8px',
         }}
       />
-      HexaHunks.
-    </h1>
+      <h1 style={{ fontSize: '32px' }}>HexaHunks.</h1>
+    </div>
   );
 };
 export default SelectorLogo;
