@@ -8,7 +8,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
+  // boxShadow: theme.shadows[3],
   margin: '0 auto',
   textAlign: 'center',
   display: 'flex',
@@ -17,7 +17,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
   justifyContent: 'space-around',
   height: '80vh',
   overflow: 'auto',
-  width: '90%',
+  width: '80%',
 }));
 
 const Heading = styled('h1')(({ theme }) => ({

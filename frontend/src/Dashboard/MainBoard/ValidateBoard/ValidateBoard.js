@@ -3,10 +3,10 @@ import './../PdfUpload/convert.css';
 import { styled } from '@mui/material/styles';
 
 const BoardContainer = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+  // backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
+  // boxShadow: theme.shadows[3],
   margin: '0 auto',
   textAlign: 'center',
   display: 'flex',
