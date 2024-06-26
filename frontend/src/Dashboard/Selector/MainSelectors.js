@@ -3,6 +3,11 @@ import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import SelectorLinks from './SelectorLinks';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import SettingsIcon from '@mui/icons-material/Settings';
+import HelpIcon from '@mui/icons-material/Help';
 import Button from '@mui/material/Button';
 
 const SelectorContainer = styled('div')(() => ({
@@ -66,18 +71,21 @@ const MainSelectors = ({ handleLogout }) => {
           text="Dashboard"
           isSelected={selectedRoute === '/dashboard/main'}
           onClick={() => setSelectedRoute('/dashboard/main')}
+          icon={<DashboardIcon />}
         />
         <SelectorLinks
           routeTo="/dashboard/validate"
           text="Validate"
           isSelected={selectedRoute === '/dashboard/validate'}
           onClick={() => setSelectedRoute('/dashboard/validate')}
+          icon={<CheckCircleIcon />}
         />
         <SelectorLinks
           routeTo="/dashboard/convert"
           text="Invoices"
           isSelected={selectedRoute === '/dashboard/convert'}
           onClick={() => setSelectedRoute('/dashboard/convert')}
+          icon={<ReceiptIcon />}
         />
         <SelectorLinks
           routeTo="/dashboard/settings"
@@ -85,6 +93,7 @@ const MainSelectors = ({ handleLogout }) => {
           isSelected={selectedRoute === '/dashboard/settings'}
           onClick={() => setSelectedRoute('/dashboard/settings')}
           additionalStyle={{ marginTop: '50px' }}
+          icon={<SettingsIcon />}
         />
       </SelectorContainer1>
       <SelectorContainer2>
@@ -93,6 +102,7 @@ const MainSelectors = ({ handleLogout }) => {
           text="Help"
           isSelected={selectedRoute === '/dashboard/help'}
           onClick={() => setSelectedRoute('/dashboard/help')}
+          icon={<HelpIcon />}
         />
         <StyledLogoutButton
           variant="contained"

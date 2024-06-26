@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 const StyledLink = styled(Link)(({ isSelected }) => ({
-  display: 'block',
+  display: 'flex',
+  alignItems: 'center',
   backgroundColor: isSelected ? '#651FFF' : '#FFF',
   color: isSelected ? '#FFF' : '#000',
   textDecoration: 'none',
@@ -22,6 +23,7 @@ const SelectorLinks = ({
   isSelected,
   onClick,
   additionalStyle,
+  icon,
 }) => {
   return (
     <StyledLink
@@ -30,7 +32,8 @@ const SelectorLinks = ({
       onClick={onClick}
       style={additionalStyle}
     >
-      {text}
+      {icon}
+      <span style={{ marginLeft: '10px' }}>{text}</span>
     </StyledLink>
   );
 };
