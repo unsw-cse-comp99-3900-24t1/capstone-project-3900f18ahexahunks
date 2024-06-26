@@ -1,77 +1,3 @@
-// import { useEffect, useState } from 'react';
-// import { fetchWeather } from '../../services/api';
-// import useUserStore from '../../zustand/useUserStore';
-
-// const Weather = () => {
-//   const { user, setUser } = useUserStore();
-//   const [weather, setWeather] = useState(user.weather || null);
-//   const [error, setError] = useState(null);
-//   const [loading, setLoading] = useState(!weather);
-
-//   useEffect(() => {
-//     const getWeather = async (lat, lon) => {
-//       try {
-//         const data = await fetchWeather(lat, lon);
-//         setWeather(data);
-//         setUser({ weather: data });
-//       } catch (error) {
-//         setError(error.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     if (!weather) {
-//       if ('geolocation' in navigator) {
-//         navigator.geolocation.getCurrentPosition(
-//           (position) => {
-//             const { latitude, longitude } = position.coords;
-//             getWeather(latitude, longitude);
-//           },
-//           (error) => {
-//             setError('Permission to access location was denied');
-//             setLoading(false);
-//           }
-//         );
-//       } else {
-//         setError('Geolocation is not supported by this browser');
-//         setLoading(false);
-//       }
-//     } else {
-//       setLoading(false);
-//     }
-//   }, [weather, setUser]);
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
-
-//   return (
-//     <div>
-//       <h2>Local Weather in {weather.location.name}</h2>
-//       <p>Region: {weather.location.region}</p>
-//       <p>Country: {weather.location.country}</p>
-//       <p>Temperature: {weather.current.temp_c} °C</p>
-//       <p>Weather: {weather.current.condition.text}</p>
-//       <img
-//         src={`https:${weather.current.condition.icon}`}
-//         alt={weather.current.condition.text}
-//       />
-//       <p>Humidity: {weather.current.humidity}%</p>
-//       <p>
-//         Wind: {weather.current.wind_kph} kph {weather.current.wind_dir}
-//       </p>
-//       <p>Pressure: {weather.current.pressure_mb} mb</p>
-//       <p>Visibility: {weather.current.vis_km} km</p>
-//     </div>
-//   );
-// };
-
-// export default Weather;
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { fetchWeather } from '../../services/api';
@@ -106,8 +32,8 @@ const WeatherText = styled('p')(({ theme }) => ({
 }));
 
 const WeatherIcon = styled('img')({
-  width: '50px',
-  height: '50px',
+  width: '60px',
+  height: '60px',
   margin: '0 10px',
 });
 
