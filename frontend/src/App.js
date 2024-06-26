@@ -1,5 +1,4 @@
 import Home from './HomePage/Home.js';
-// import ProtectedRoute from './ProtectedRoutes.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoadingProvider } from './components/useLoading.js';
 import { AlertProvider } from './components/AlertError.js';

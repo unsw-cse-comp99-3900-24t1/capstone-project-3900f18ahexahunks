@@ -1,14 +1,8 @@
-// const Selector = () => {
-//   return <div>Selector</div>;
-// };
-// expor default Selector;
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const Selector = () => {
-  // const classes = useStyles();
   const navigate = useNavigate();
 
   const handleLogout = () => {
