@@ -23,4 +23,3 @@ const SelectorLogo = () => {
   );
 };
 export default SelectorLogo;
-//
