@@ -60,8 +60,20 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
-const API_KEY = 'ac9b9c9cdde741b99b310610242006';
+export const validateUBL = async (formData) => {
+  try {
+    const response = await apiClient.post('/validate/validate-ubl', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
 
+const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {
     const response = await axios.get(
