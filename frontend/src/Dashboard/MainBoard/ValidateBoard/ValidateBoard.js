@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import './../PdfUpload/convert.css';
 import { styled } from '@mui/material/styles';
+import UblUploadBox from './UblUploadBox';
+import ShowUblBox from './ShowUblBox';
 
 const BoardContainer = styled('div')(({ theme }) => ({
-  // backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
-  // boxShadow: theme.shadows[3],
   margin: '0 auto',
   textAlign: 'center',
   display: 'flex',
@@ -14,8 +13,18 @@ const BoardContainer = styled('div')(({ theme }) => ({
   alignItems: 'normal',
   height: '80vh',
   overflow: 'auto',
-  width: '90%',
+  width: '80%',
 }));
+
+const BoardWrapper = styled('div')({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '10px',
+  padding: '10px',
+  width: '100%',
+});
 
 const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
@@ -30,26 +39,12 @@ const ValidateBoard = () => {
 
   return (
     <BoardContainer>
-      <div className="board-container">
-        {xmlFiles.map((xml, index) => (
-          <div key={index} className="xml-box">
-            <embed src={xml} type="text/xml" width="100%" height="100%" />
-          </div>
-        ))}
-        <div className="upload-box">
-          <input
-            type="file"
-            accept="text/xml"
-            onChange={handleUpload}
-            style={{ display: 'none' }}
-            id="xml-upload"
-          />
-          <label htmlFor="xml-upload" className="upload-label">
-            +
-          </label>
-        </div>
-      </div>
+      <BoardWrapper>
+        <ShowUblBox xmlFiles={xmlFiles} />
+        <UblUploadBox handleUpload={handleUpload} />
+      </BoardWrapper>
     </BoardContainer>
   );
 };
+
 export default ValidateBoard;
