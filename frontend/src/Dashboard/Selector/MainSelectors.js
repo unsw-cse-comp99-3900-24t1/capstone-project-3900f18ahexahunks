@@ -59,7 +59,7 @@ const MainSelectors = ({ handleLogout }) => {
     } else if (process === 'help') {
       setSelectedRoute('/dashboard/help');
     } else {
-      setSelectedRoute('/dashboard/main');
+      setSelectedRoute(null);
     }
   }, [process]);
 
