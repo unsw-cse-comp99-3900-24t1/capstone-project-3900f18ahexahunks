@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import UploadBox from './UploadBox';
 import ShowPdf from './ShowPdf';
 import useUserStore from '../../../zustand/useUserStore';
 import { pdfToUblConvert } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 
-const BoardContainer = styled('div')({
+const BoardContainer = styled('div')(({ theme }) => ({
+  // backgroundColor: theme.palette.background.default,
+  padding: theme.spacing(4),
+  borderRadius: theme.shape.borderRadius,
+  // boxShadow: theme.shadows[3],
+  margin: '0 auto',
+  textAlign: 'center',
   display: 'flex',
-  flexWrap: 'wrap',
-  gap: '10px',
-  padding: '10px',
-});
+  flexDirection: 'column',
+  alignItems: 'normal',
+  height: '80vh',
+  overflow: 'auto',
+  width: '90%',
+}));
 
 const PdfUploadBoard = () => {
   const [pdfs, setPdfs] = useState([]);

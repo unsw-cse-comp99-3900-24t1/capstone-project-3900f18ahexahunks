@@ -8,8 +8,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
-  maxWidth: '800px',
+  // boxShadow: theme.shadows[3],
   margin: '0 auto',
   textAlign: 'center',
   display: 'flex',
@@ -17,18 +16,18 @@ const BoardContainer = styled('div')(({ theme }) => ({
   alignItems: 'normal',
   justifyContent: 'space-around',
   height: '80vh',
+  overflow: 'auto',
+  width: '80%',
 }));
 
 const Heading = styled('h1')(({ theme }) => ({
   color: '#000',
   margin: theme.spacing(2, 0),
-  // marginTop: '10vh',
 }));
 
 const SubHeading = styled('h1')(({ theme }) => ({
   color: '#000',
   margin: theme.spacing(1, 0),
-  // marginBottom: '10vh',
 }));
 
 const Board = () => {

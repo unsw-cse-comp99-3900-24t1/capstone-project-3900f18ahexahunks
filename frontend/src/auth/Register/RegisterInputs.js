@@ -51,6 +51,12 @@ const RegisterInputs = ({ goToDashboard }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      submitRegister(e);
+    }
+  };
+
   return (
     <div
       style={{
@@ -73,6 +79,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setName}
         value={name}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         placeholder="johnsondoe@nomail.com"
@@ -80,6 +87,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setEmail}
         value={email}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -88,6 +96,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setPassword}
         value={password}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -96,6 +105,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setCheckPassword}
         value={checkPassword}
+        onKeyDown={handleKeyDown}
       />
       <CustomPrimaryButton
         label="CONTINUE"
