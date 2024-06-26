@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "This is the backend for our project",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.16.0 <19",
+    "npm": ">=9.5.1 <10"
+  },
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "postinstall": "node check-versions.js"
   },
   "author": "HexaHunks",
   "license": "ISC",
