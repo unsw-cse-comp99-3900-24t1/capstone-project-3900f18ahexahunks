@@ -30,14 +30,14 @@ const SelectorContainer2 = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignContent: 'center',
-  alignItems: 'center',
 }));
 
 const StyledLogoutButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#555555',
   color: '#fff',
   marginTop: '5px',
-  width: '150px',
+  width: '100%',
+  alignSelf: 'center',
   '&:hover': {
     backgroundColor: '#D50000',
   },
