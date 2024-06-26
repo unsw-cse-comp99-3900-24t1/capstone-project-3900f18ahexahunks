@@ -24,7 +24,7 @@ const PageNotFound = () => {
     }, 1000);
 
     const redirectTimeout = setTimeout(() => {
-      navigate('/home');
+      navigate('/dashboard/main');
     }, 10000);
 
     return () => {
@@ -48,7 +48,7 @@ const PageNotFound = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => navigate('/home')}
+        onClick={() => navigate('/dashboard/main')}
         sx={{ mt: 2 }}
       >
         Go to Home Now
