@@ -39,6 +39,12 @@ const LoginInputs = ({ goToDashboard }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
+    }
+  };
+
   return (
     <div
       style={{
@@ -63,6 +69,7 @@ const LoginInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setEmail}
         value={email}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -71,6 +78,7 @@ const LoginInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setPassword}
         value={password}
+        onKeyDown={handleKeyDown}
       />
       <ForgotPassword />
       <CustomPrimaryButton
@@ -82,11 +90,6 @@ const LoginInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={handleLogin}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleLogin(e);
-          }
-        }}
       />
 
       <RedirectToRegister />
