@@ -6,6 +6,7 @@ import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
 import { validateEmail } from '../../shared/validators';
 import { register } from '../../services/api';
+import useUserStore from '../../zustand/useUserStore';
 
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
@@ -15,6 +16,8 @@ const RegisterInputs = ({ goToDashboard }) => {
 
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
+
+  const { setUser, getUser } = useUserStore();
 
   const submitRegister = async () => {
     if (name === '') {
@@ -36,7 +39,8 @@ const RegisterInputs = ({ goToDashboard }) => {
       if (response.error) {
         showAlert(response.data, 'tomato');
       } else {
-        showAlert('Welcome back', 'green');
+        showAlert(`Welcome ${name}`, 'green');
+        setUser({ user: response.data });
         goToDashboard();
       }
     } catch (e) {
