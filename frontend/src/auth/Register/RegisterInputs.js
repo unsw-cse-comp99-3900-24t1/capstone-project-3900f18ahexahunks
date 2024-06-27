@@ -5,6 +5,8 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
 import { validateEmail } from '../../shared/validators';
+import { register } from '../../services/api';
+import useUserStore from '../../zustand/useUserStore';
 
 /** hiiiii  testing the master*/
 const RegisterInputs = ({ goToDashboard }) => {
@@ -16,7 +18,9 @@ const RegisterInputs = ({ goToDashboard }) => {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
-  const submitRegister = () => {
+  const { setUser } = useUserStore();
+
+  const submitRegister = async () => {
     if (name === '') {
       showAlert('Name cannot be empty', 'tomato');
       return;
@@ -31,11 +35,26 @@ const RegisterInputs = ({ goToDashboard }) => {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      console.log(email, password, name);
+    try {
+      const response = await register({ username: name, email, password });
+      if (response.error) {
+        showAlert(response.data, 'tomato');
+      } else {
+        showAlert(`Welcome ${name}`, 'green');
+        setUser({ user: response.data });
+        goToDashboard();
+      }
+    } catch (e) {
+      showAlert('An unexpected error occurred.', 'tomato');
+    } finally {
       setLoading(false);
-      goToDashboard();
-    }, 10000);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      submitRegister(e);
+    }
   };
 
   return (
@@ -60,6 +79,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setName}
         value={name}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         placeholder="johnsondoe@nomail.com"
@@ -67,6 +87,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setEmail}
         value={email}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -75,6 +96,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setPassword}
         value={password}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -83,6 +105,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setCheckPassword}
         value={checkPassword}
+        onKeyDown={handleKeyDown}
       />
       <CustomPrimaryButton
         label="CONTINUE"
@@ -93,6 +116,11 @@ const RegisterInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={submitRegister}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            submitRegister(e);
+          }
+        }}
       />
 
       <RedirectToLogin />

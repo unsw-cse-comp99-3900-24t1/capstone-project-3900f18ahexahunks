@@ -6,6 +6,7 @@ import ForgotPassword from './ForgotPassword';
 import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
 import { login } from '../../services/api';
+import useUserStore from '../../zustand/useUserStore';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
@@ -14,23 +15,33 @@ const LoginInputs = ({ goToDashboard }) => {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
 
+  const { setUser, getUser } = useUserStore();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // setError(null);
 
     try {
       const response = await login({ email, password });
       if (response.error) {
-        showAlert(response.message, 'tomato');
+        showAlert(response.data, 'tomato');
       } else {
         showAlert('Welcome back', 'green');
+        console.log(response.data, 'THIS IS LOL');
+        setUser({ user: response.data });
+        console.log(getUser(), 'TISI IS THE FROM STORE');
         goToDashboard();
       }
     } catch (e) {
       showAlert('An unexpected error occurred.', 'tomato');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
     }
   };
 
@@ -58,6 +69,7 @@ const LoginInputs = ({ goToDashboard }) => {
         type="text"
         setValue={setEmail}
         value={email}
+        onKeyDown={handleKeyDown}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -66,6 +78,7 @@ const LoginInputs = ({ goToDashboard }) => {
         type="password"
         setValue={setPassword}
         value={password}
+        onKeyDown={handleKeyDown}
       />
       <ForgotPassword />
       <CustomPrimaryButton
