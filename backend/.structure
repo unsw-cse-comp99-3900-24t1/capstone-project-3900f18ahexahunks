@@ -1,0 +1,22 @@
+hexaHunks-api
+├── config
+│   └── db.js
+├── controllers
+│   ├── authController.js
+│   ├── invoiceController.js
+│   ├── pdfController.js
+│   ├── userController.js
+│   └── validationController.js
+├── models
+│   ├── User.js
+│   ├── Invoice.js
+│   ├── Pdf.js
+│   └── ValidationReport.js
+├── routes
+│   ├── authRoutes.js
+│   ├── invoiceRoutes.js
+│   ├── pdfRoutes.js
+│   ├── userRoutes.js
+│   └── validationRoutes.js
+├── app.js
+└── server.js
