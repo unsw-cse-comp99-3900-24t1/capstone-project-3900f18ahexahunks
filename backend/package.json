@@ -8,20 +8,21 @@
     "npm": ">=9.5.1 <10"
   },
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage",
-    "preinstall": "check-node-version --node '>=18.16.0 <19' --npm '>=9.5.1 <10'",
-    "postinstall": "node check-versions.js"
+    "test": "mocha src/tests/*.js"
   },
   "author": "HexaHunks",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "chai": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mocha": "^10.5.2",
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.4",
     "supertest": "^7.0.0"
