@@ -1,14 +1,24 @@
-const mongoose = require('mongoose');
+const { MongoClient, GridFSBucket } = require('mongodb');
 require('dotenv').config();
 
+let db, bucket;
+
 const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
+    const client = new MongoClient(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    await client.connect();
+    db = client.db(process.env.DB_NAME);
+    bucket = new GridFSBucket(db, {
+        bucketName: 'uploads',
+    });
+
     console.log('MongoDB connected');
-  } catch (err) {
-    console.error('Database connection failed:', err.message);
-    process.exit(1);
-  }
 };
 
-module.exports = connectDB;
+const getDb = () => db;
+const getBucket = () => bucket;
+
+module.exports = { connectDB, getDb, getBucket };

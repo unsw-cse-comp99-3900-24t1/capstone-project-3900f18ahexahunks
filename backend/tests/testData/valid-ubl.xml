@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidateUbl>
+    <UBL>
+        <Invoice>
+            <ID>12345</ID>
+            <IssueDate>2024-06-13</IssueDate>
+            <SupplierParty>
+                <Party>
+                    <PartyName>
+                        <Name>Supplier Name</Name>
+                    </PartyName>
+                    <PostalAddress>
+                        <StreetName>Street Name</StreetName>
+                        <CityName>City</CityName>
+                        <PostalZone>12345</PostalZone>
+                        <Country>
+                            <IdentificationCode>AU</IdentificationCode>
+                        </Country>
+                    </PostalAddress>
+                    <PartyTaxScheme>
+                        <CompanyID>ABN123456789</CompanyID>
+                    </PartyTaxScheme>
+                </Party>
+            </SupplierParty>
+            <CustomerParty>
+                <Party>
+                    <PartyName>
+                        <Name>Customer Name</Name>
+                    </PartyName>
+                    <PostalAddress>
+                        <StreetName>Street Name</StreetName>
+                        <CityName>City</CityName>
+                        <PostalZone>12345</PostalZone>
+                        <Country>
+                            <IdentificationCode>AU</IdentificationCode>
+                        </Country>
+                    </PostalAddress>
+                </Party>
+            </CustomerParty>
+            <LegalMonetaryTotal>
+                <PayableAmount currencyID="AUD">1000.00</PayableAmount>
+            </LegalMonetaryTotal>
+            <TaxTotal>
+                <TaxAmount currencyID="AUD">100.00</TaxAmount>
+            </TaxTotal>
+            <Signature>
+                <ID>12345</ID>
+            </Signature>
+        </Invoice>
+    </UBL>
+</ValidateUbl>

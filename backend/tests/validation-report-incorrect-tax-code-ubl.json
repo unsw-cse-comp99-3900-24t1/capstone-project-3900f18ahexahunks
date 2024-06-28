@@ -1,0 +1,67 @@
+{
+  "fileName": "incorrect-tax-code-ubl.xml",
+  "validationResults": {
+    "validationStatus": "Failed",
+    "totalChecksPerformed": 7,
+    "checksPassed": 7,
+    "checksFailed": 1,
+    "detailedFindings": [
+      {
+        "id": "1-1719487705298",
+        "field": "Invoice.ID",
+        "validationStatus": "Passed",
+        "description": "Invoice ID is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/ID"
+      },
+      {
+        "id": "2-1719487705299",
+        "field": "Invoice.IssueDate",
+        "validationStatus": "Passed",
+        "description": "Invoice Issue Date is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/IssueDate"
+      },
+      {
+        "id": "3-1719487705300",
+        "field": "Invoice.SupplierParty.Party.PartyTaxScheme.CompanyID",
+        "validationStatus": "Passed",
+        "description": "Supplier Company ID is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/SupplierParty/Party/PartyTaxScheme/CompanyID"
+      },
+      {
+        "id": "4-1719487705301",
+        "field": "Invoice.CustomerParty.Party",
+        "validationStatus": "Passed",
+        "description": "Customer Party is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/CustomerParty/Party"
+      },
+      {
+        "id": "5-1719487705301",
+        "field": "Invoice.LegalMonetaryTotal.PayableAmount",
+        "validationStatus": "Passed",
+        "description": "Total Payable Amount is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/LegalMonetaryTotal/PayableAmount"
+      },
+      {
+        "id": "6-1719487705302",
+        "field": "Invoice.TaxTotal.TaxAmount",
+        "validationStatus": "Passed",
+        "description": "Total Tax Amount is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/TaxTotal/TaxAmount"
+      },
+      {
+        "id": "7-1719487705302",
+        "field": "Invoice.Signature.ID",
+        "validationStatus": "Passed",
+        "description": "Signature ID is present and correctly formatted.",
+        "location": "/ValidateUbl/UBL/Invoice/Signature/ID"
+      },
+      {
+        "id": "8-1719487705302",
+        "field": "Invoice.TaxTotal.TaxAmount",
+        "validationStatus": "Failed",
+        "description": "Total Tax Amount is zero, which is not acceptable.",
+        "location": "/ValidateUbl/UBL/Invoice/TaxTotal/TaxAmount"
+      }
+    ]
+  }
+}
