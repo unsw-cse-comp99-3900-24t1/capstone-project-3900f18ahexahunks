@@ -11,13 +11,18 @@ const app = express();
 const mongoURI = process.env.MONGO_URI;
 const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let gfs;
+let db, gfs;
 client.connect((err) => {
   if (err) throw err;
-  const db = client.db();
+  db = client.db();
   gfs = new GridFSBucket(db, { bucketName: 'uploads' });
   console.log('Connected to MongoDB');
 });
+
+// Generate file URL
+const generateFileUrl = (req, fileId) => {
+  return `${req.protocol}://${req.get('host')}/files/${fileId}`;
+};
 
 // Setup GridFsStorage for PDFs
 const storagePdf = new GridFsStorage({
@@ -30,12 +35,24 @@ const storagePdf = new GridFsStorage({
       }
 
       const filename = `pdf-${Date.now()}-${file.originalname}`;
+      const fileId = new ObjectId();
+      const fileUrl = generateFileUrl(req, fileId);
+
       const fileInfo = {
+        _id: fileId,
         filename: filename,
-        metadata: { userId: new ObjectId(userId) },
+        metadata: { 
+          userId: new ObjectId(userId),
+          url: fileUrl
+        },
         bucketName: 'uploads',
         contentType: file.mimetype,
       };
+
+      // Log the fileId and fileUrl for verification
+      console.log('Generated fileId:', fileId.toHexString());
+      console.log('Generated fileUrl:', fileUrl);
+
       resolve(fileInfo);
     });
   },
@@ -52,12 +69,24 @@ const storageXml = new GridFsStorage({
       }
 
       const filename = `xml-${Date.now()}-${file.originalname}`;
+      const fileId = new ObjectId();
+      const fileUrl = generateFileUrl(req, fileId);
+
       const fileInfo = {
+        _id: fileId,
         filename: filename,
-        metadata: { userId: new ObjectId(userId) },
+        metadata: { 
+          userId: new ObjectId(userId),
+          url: fileUrl
+        },
         bucketName: 'uploads',
         contentType: file.mimetype,
       };
+
+      // Log the fileId and fileUrl for verification
+      console.log('Generated fileId:', fileId.toHexString());
+      console.log('Generated fileUrl:', fileUrl);
+
       resolve(fileInfo);
     });
   },
@@ -78,11 +107,19 @@ app.post('/upload/pdf', uploadPdf.single('file'), (req, res) => {
     return res.status(400).json({ error: 'PDF file is required' });
   }
 
+  const fileInfo = {
+    id: req.file.id,
+    length: req.file.size,
+    timestamp: new Date(),
+    filename: req.file.filename,
+    url: req.file.metadata.url
+  };
+
   console.log('Uploaded PDF file:', req.file);
 
   res.status(201).json({
     message: 'PDF file uploaded successfully',
-    pdfFile: req.file,
+    pdfFile: fileInfo,
   });
 });
 
@@ -94,12 +131,32 @@ app.post('/upload/xml', uploadXml.single('file'), (req, res) => {
     return res.status(400).json({ error: 'XML file is required' });
   }
 
+  const fileInfo = {
+    id: req.file.id,
+    length: req.file.size,
+    timestamp: new Date(),
+    filename: req.file.filename,
+    url: req.file.metadata.url
+  };
+
   console.log('Uploaded XML file:', req.file);
 
   res.status(201).json({
     message: 'XML file uploaded successfully',
-    xmlFile: req.file,
+    xmlFile: fileInfo,
   });
+});
+
+// API to serve files
+app.get('/files/:id', (req, res) => {
+  const fileId = req.params.id;
+  
+  try {
+    const _id = new ObjectId(fileId);
+    gfs.openDownloadStream(_id).pipe(res);
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid file ID' });
+  }
 });
 
 // Start the server

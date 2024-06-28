@@ -12,7 +12,7 @@ const testUploadPdf = async () => {
   form.append('userId', userId);
 
   // Append PDF file to form data
-  form.append('file', fs.createReadStream(path.join(__dirname, 'test7.pdf')), 'test7.pdf');
+  form.append('file', fs.createReadStream(path.join(__dirname, 'test13.pdf')), 'test13.pdf');
 
   try {
     const response = await axios.post('http://localhost:5003/upload/pdf', form, {
