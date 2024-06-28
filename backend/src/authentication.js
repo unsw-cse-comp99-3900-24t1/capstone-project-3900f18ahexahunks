@@ -1,62 +1,69 @@
-const User = require('./models/user');
+const User = require('./models/User');
 const bcrypt = require('bcrypt');
+const sendInfoToDB = require('./sendInfoToDB');
+const connectDB = require('../db');
 
-// Define the adminAuthLogin function
-async function adminAuthLogin(email, password) {
-  try {
-      const user = await User.findOne({ email });
-
-      if (!user) {
-          return { error: "Invalid Email or password" };
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-          return { error: "Invalid Email or password" };
-      }
-
-      return {
-          email: user.email,
-          password: password
-      };
-  } catch (error) {
-      console.error('Error during login:', error);
-      return { error: "Please try again later" };
-  }
-}
-
-async function adminAuthRegister(userName, email, password, passwordCheck) {
+const adminAuthLogin = async (email, password) => {
+    let client;
     try {
-        if (password !== passwordCheck) {
-            return { error: "Passwords do not match" };
+        client = await connectDB();
+        const db = client.db();
+        const user = await db.collection('users').findOne({ email });
+
+        if (!user) {
+            return { error: "Invalid Email or password" };
         }
 
-        const existingUser = await User.findOne({ email });
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return { error: "Invalid Email or password" };
+        }
 
+        return {
+            email: user.email,
+            userName: user.userName
+        };
+    } catch (error) {
+        console.error('Error during login:', error);
+        return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
+};
+
+const adminAuthRegister = async (email, password, passwordCheck) => {
+    if (password !== passwordCheck) {
+        return { error: "Passwords do not match" };
+    }
+
+    let client;
+    try {
+        client = await connectDB();
+        const db = client.db();
+        const existingUser = await db.collection('users').findOne({ email });
         if (existingUser) {
             return { error: "Email already registered" };
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({
-            userName,
-            email,
-            password: hashedPassword,
-            passwordCheck: hashedPassword  // Ensure passwordCheck is the same as the hashed password
-        });
-
-        await newUser.save();
+        const result = await db.collection('users').insertOne({ email, password: hashedPassword });
 
         return {
-            email: newUser.email,
-            password: password,  // Return plain password
-            passwordCheck: passwordCheck  // Return plain passwordCheck
+            email: email,
+            password: password,
+            "password-check": passwordCheck
         };
     } catch (error) {
         console.error('Error during registration:', error);
         return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
-}
+};
 
 module.exports = {
     adminAuthLogin,

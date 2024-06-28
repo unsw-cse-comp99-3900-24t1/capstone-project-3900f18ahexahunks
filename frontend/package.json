@@ -2,6 +2,10 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.16.0 <19",
+    "npm": ">=9.5.1 <10"
+  },
   "dependencies": {
     "@babel/plugin-transform-class-properties": "^7.24.7",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.24.7",
@@ -16,18 +20,35 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
+    "cypress": "^13.12.0",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
+    "react-cookie": "^7.1.4",
     "react-dom": "^18.3.1",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
+<<<<<<< HEAD
     "react-scripts": "^3.0.1",
     "svgo": "^3.3.2",
     "web-vitals": "^2.1.4"
+=======
+    "react-scripts": "5.0.1",
+    "react-typist": "^2.0.5",
+    "universal-cookie": "^7.1.4",
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.2"
+>>>>>>> origin/main
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open",
+    "preinstall": "check-node-version --node '>=18.16.0 <19' --npm '>=9.5.1 <10'",
+    "postinstall": "node check-versions.js"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +67,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.12.39",
+    "babel-plugin-istanbul": "^6.1.1",
+    "check-node-version": "^4.2.1",
+    "istanbul-lib-coverage": "^3.2.2",
+    "nyc": "^17.0.0"
   }
 }

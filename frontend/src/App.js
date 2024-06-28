@@ -1,8 +1,12 @@
 import Home from './HomePage/Home.js';
-// import ProtectedRoute from './ProtectedRoutes.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoadingProvider } from './components/useLoading.js';
 import { AlertProvider } from './components/AlertError.js';
+import Login from './auth/Login/Login.js';
+import Register from './auth/Register/Register.js';
+import Dashboard from './Dashboard/Dashboard.js';
+import ProtectedRoute from './ProtectedRoute.js';
+import PageNotFound from './PageNotFound/PageNotFound.js';
 
 const App = () => {
   return (
@@ -13,15 +17,17 @@ const App = () => {
             <Routes>
               <Route index element={<Home />} />
               <Route path="/home" element={<Home />} />
-              {/* Example protected route */}
-              {/* <Route
-                path="/home"
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/dashboard/:process"
                 element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
         </LoadingProvider>
