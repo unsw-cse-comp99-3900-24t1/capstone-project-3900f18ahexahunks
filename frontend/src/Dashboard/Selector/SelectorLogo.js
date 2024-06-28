@@ -1,12 +1,21 @@
+import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+
+const StyledLink = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer',
+});
+
 const SelectorLogo = () => {
+  const nav = useNavigate();
+  const handleGoToDashboard = () => {
+    nav('/dashboard/main');
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <StyledLink onClick={handleGoToDashboard}>
       <img
         src={`${process.env.PUBLIC_URL}/hexahunkLogoBlack.png`}
         alt="icon"
@@ -19,7 +28,7 @@ const SelectorLogo = () => {
         loading="lazy"
       />
       <h1 style={{ fontSize: '32px' }}>HexaHunks.</h1>
-    </div>
+    </StyledLink>
   );
 };
 export default SelectorLogo;
