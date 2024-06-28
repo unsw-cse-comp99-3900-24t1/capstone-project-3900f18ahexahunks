@@ -14,14 +14,13 @@ const adminAuthLogin = async (email, password) => {
             return { error: "Invalid Email or password" };
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
+        if (password !== user.password) {
             return { error: "Invalid Email or password" };
         }
 
         return {
             email: user.email,
-            userName: user.userName
+            password: user.password
         };
     } catch (error) {
         console.error('Error during login:', error);
@@ -32,6 +31,7 @@ const adminAuthLogin = async (email, password) => {
         }
     }
 };
+
 
 const adminAuthRegister = async (email, password, passwordCheck) => {
     if (password !== passwordCheck) {
@@ -44,11 +44,10 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
         const db = client.db();
         const existingUser = await db.collection('users').findOne({ email });
         if (existingUser) {
-            return { error: "Email already registered" };
+            return { error: "Email already exists" };
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const result = await db.collection('users').insertOne({ email, password: hashedPassword });
+        const result = await db.collection('users').insertOne({ email, password: password });
 
         return {
             email: email,
@@ -69,4 +68,3 @@ module.exports = {
     adminAuthLogin,
     adminAuthRegister
 };
-

@@ -39,7 +39,7 @@ app.post('/register', async (req, res) => {
         case "Passwords do not match":
           status = 402;
           break;
-        case "Email already registered":
+        case "Invalid Email or password":
           status = 400;
           break;
         default:
