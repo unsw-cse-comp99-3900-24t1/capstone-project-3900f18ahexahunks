@@ -19,8 +19,8 @@ client.connect((err) => {
   console.log('Connected to MongoDB');
 });
 
-// Setup GridFsStorage
-const storage = new GridFsStorage({
+// Setup GridFsStorage for PDFs
+const storagePdf = new GridFsStorage({
   url: mongoURI,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ const storage = new GridFsStorage({
         return reject(new Error('Invalid userId'));
       }
 
-      const filename = `${Date.now()}-${file.originalname}`;
+      const filename = `pdf-${Date.now()}-${file.originalname}`;
       const fileInfo = {
         filename: filename,
         metadata: { userId: new ObjectId(userId) },
@@ -41,27 +41,64 @@ const storage = new GridFsStorage({
   },
 });
 
-const upload = multer({ storage });
+// Setup GridFsStorage for XMLs
+const storageXml = new GridFsStorage({
+  url: mongoURI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      const userId = req.body.userId;
+      if (!ObjectId.isValid(userId)) {
+        return reject(new Error('Invalid userId'));
+      }
+
+      const filename = `xml-${Date.now()}-${file.originalname}`;
+      const fileInfo = {
+        filename: filename,
+        metadata: { userId: new ObjectId(userId) },
+        bucketName: 'uploads',
+        contentType: file.mimetype,
+      };
+      resolve(fileInfo);
+    });
+  },
+});
+
+const uploadPdf = multer({ storage: storagePdf });
+const uploadXml = multer({ storage: storageXml });
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API to upload files
-app.post('/upload', upload.fields([{ name: 'pdf', maxCount: 1 }, { name: 'xml', maxCount: 1 }]), (req, res) => {
+// API to upload PDF
+app.post('/upload/pdf', uploadPdf.single('file'), (req, res) => {
   const userId = req.body.userId;
 
-  if (!req.files || !req.files['pdf'] || !req.files['xml']) {
-    return res.status(400).json({ error: 'PDF and XML files are required' });
+  if (!req.file) {
+    return res.status(400).json({ error: 'PDF file is required' });
   }
 
-  console.log('Uploaded PDF file:', req.files['pdf'][0]);
-  console.log('Uploaded XML file:', req.files['xml'][0]);
+  console.log('Uploaded PDF file:', req.file);
 
   res.status(201).json({
-    message: 'Files uploaded successfully',
-    pdfFile: req.files['pdf'][0],
-    xmlFile: req.files['xml'][0],
+    message: 'PDF file uploaded successfully',
+    pdfFile: req.file,
+  });
+});
+
+// API to upload XML
+app.post('/upload/xml', uploadXml.single('file'), (req, res) => {
+  const userId = req.body.userId;
+
+  if (!req.file) {
+    return res.status(400).json({ error: 'XML file is required' });
+  }
+
+  console.log('Uploaded XML file:', req.file);
+
+  res.status(201).json({
+    message: 'XML file uploaded successfully',
+    xmlFile: req.file,
   });
 });
 
