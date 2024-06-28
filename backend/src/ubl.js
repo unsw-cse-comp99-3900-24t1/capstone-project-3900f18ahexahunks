@@ -66,13 +66,13 @@ async function getPdfUbl(userId) {
 }
 
 // Delete PDFs and UBLs
-async function deletePdfUbl(ublId, pdfId) {
+async function deletePdfUbl(pdfId, ublId) {
   // Validate UBL and PDF IDs
-  if (!ublId || !pdfId) {
+  if (!pdfId || !ublId) {
     return {
       status: 400,
       json: {
-        error: ['UBL Id and PDF Id are required'],
+        error: ['PDF Id and UBL Id are required'],
         details: "As errors"
       }
     };
@@ -83,8 +83,8 @@ async function deletePdfUbl(ublId, pdfId) {
 
   try {
     // Convert IDs to ObjectId
-    const ublObjectId = new ObjectId(ublId);
     const pdfObjectId = new ObjectId(pdfId);
+    const ublObjectId = new ObjectId(ublId);
 
     // Perform the delete operation
     const pdfResult = await db.collection('uploads.files').deleteOne({ _id: pdfObjectId });
@@ -94,7 +94,7 @@ async function deletePdfUbl(ublId, pdfId) {
       return {
         status: 400,
         json: {
-          error: ['Unable to delete UBL or PDF'],
+          error: ['Unable to delete PDF and UBL'],
           details: "As errors"
         }
       };
@@ -107,9 +107,9 @@ async function deletePdfUbl(ublId, pdfId) {
     return {
       status: 200,
       json: {
-        "UBL-id": ublId,
         "PDF-id": pdfId,
-        message: 'Successfully deleted UBL and PDF references'
+        "UBL-id": ublId,
+        message: 'Successfully deleted PDF and UBL references'
       }
     };
   } catch (error) {

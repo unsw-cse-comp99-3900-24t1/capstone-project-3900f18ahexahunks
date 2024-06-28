@@ -34,8 +34,8 @@ app.delete('/delete-pdf-ubl', async (req, res) => {
     return res.status(500).json({ error: "Please try again later" });
   }
 
-  const { "UBL-id": ublId, "PDF-id": pdfId } = req.body;
-  const response = await deletePdfUbl(ublId, pdfId);
+  const { "PDF-id": pdfId, "UBL-id": ublId } = req.body;
+  const response = await deletePdfUbl(pdfId, ublId);
 
   return res.status(response.status).json(response.json);
 });
