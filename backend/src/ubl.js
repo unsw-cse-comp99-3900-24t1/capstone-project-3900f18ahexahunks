@@ -100,6 +100,10 @@ async function deletePdfUbl(ublId, pdfId) {
       };
     }
 
+    // Perform the delete operation for chunks
+    await db.collection('uploads.chunks').deleteMany({ files_id: pdfObjectId });
+    await db.collection('uploads.chunks').deleteMany({ files_id: ublObjectId });
+
     return {
       status: 200,
       json: {
