@@ -1,52 +1,47 @@
-import { deleteUbl } from './ubl';
-
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const http = require('http');
 const connectDB = require('./db');
-
-const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
-
+const { getPdfUbl, deletePdfUbl } = require('./ubl');
+const PORT = 5003;
 const app = express();
+
+let isServerBusy = false;
+connectDB();
 
 app.use(express.json());
 app.use(cors());
 
 app.get('/test', (req, res) => {
-  res.json({ message: 'Hello World!' });
+    res.json({ message: 'Hello World!' });
 });
 
-const server = http.createServer(app);
+// Route for fetching PDFs and UBLs
+app.get('/get-pdf-ubl/:userId', async (req, res) => {
+  if (isServerBusy) {
+    return res.status(500).json({ error: "Please try again later" });
+  }
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connected successfully');
+  const { userId } = req.params;
+  const response = await getPdfUbl(userId);
 
-    // Optionally, you can add a ping or a simple query to ensure the connection is working
-    return mongoose.connection.db.admin().ping();
-  })
-  .then((result) => {
-    console.log('Ping result:', result);
-
-    server.listen(PORT, () => {
-      console.log('Server running on port:', PORT);
-    });
-
-    // app.delete('/delete-ubl', (req, res) => {
-    //   const { "UBL-id": ublId, "PDF-id": pdfId } = req.body;
-    //   const response = deleteUbl(ublId, pdfId);
-    //   res.status(response.status).json(response.json);
-    // });
-  })
-  .catch((err) => {
-    console.log('Database connection failed with error:', err);
-
-// connectDB().then(() => {
-//   server.listen(PORT, () => {
-//     console.log('Server running on port:', PORT);
-// });
+  return res.status(response.status).json(response.json);
 });
 
-module.exports = app;
+// Route for deleting PDFs and UBLs
+app.delete('/delete-pdf-ubl', async (req, res) => {
+  if (isServerBusy) {
+    return res.status(500).json({ error: "Please try again later" });
+  }
+
+  const { "UBL-id": ublId, "PDF-id": pdfId } = req.body;
+  const response = await deletePdfUbl(ublId, pdfId);
+
+  return res.status(response.status).json(response.json);
+});
+
+const server = app.listen(PORT, () => {
+  console.log('Server running on port:', PORT);
+});
+
+module.exports = { app, server };
