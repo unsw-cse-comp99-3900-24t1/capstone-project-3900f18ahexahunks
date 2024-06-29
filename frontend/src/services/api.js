@@ -92,8 +92,40 @@ export const fetchWeather = async (lat, lon) => {
   }
 };
 
+// export async function getThoughtOfTheDay() {
+//   try {
+//     const response = await axios({
+//       method: 'GET',
+//       url: 'https://thought-of-the-day.p.rapidapi.com/thought',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         'x-rapidapi-ua': 'RapidAPI-Playground',
+//         'x-rapidapi-key': '932c70556bmshcd7268d8daf9f23p1fc442jsnb178dc8066e1',
+//         'x-rapidapi-host': 'thought-of-the-day.p.rapidapi.com',
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('There was a problem with your fetch request:', error);
+//     return null;
+//   }
+// }
+const STORAGE_KEY = 'thoughtOfTheDay';
+
 export async function getThoughtOfTheDay() {
   try {
+    // Check if there is a cached thought in localStorage and if it's still valid
+    const cachedThought = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (cachedThought) {
+      const { timestamp, thought } = cachedThought;
+      // Check if the cached thought is still valid for today (until midnight)
+      if (isSameDay(new Date(timestamp), new Date())) {
+        return thought;
+      }
+    }
+
+    // If no valid cached thought, fetch from API
     const response = await axios({
       method: 'GET',
       url: 'https://thought-of-the-day.p.rapidapi.com/thought',
@@ -105,9 +137,27 @@ export async function getThoughtOfTheDay() {
         'x-rapidapi-host': 'thought-of-the-day.p.rapidapi.com',
       },
     });
-    return response.data;
+
+    // Save the fetched thought in localStorage with a timestamp
+    const thought = response.data;
+    const currentTimestamp = new Date().getTime();
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ timestamp: currentTimestamp, thought })
+    );
+
+    return thought;
   } catch (error) {
     console.error('There was a problem with your fetch request:', error);
     return null;
   }
+}
+
+// Helper function to check if two dates are the same day
+function isSameDay(date1, date2) {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
 }
