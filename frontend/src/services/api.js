@@ -115,17 +115,15 @@ const STORAGE_KEY = 'thoughtOfTheDay';
 
 export async function getThoughtOfTheDay() {
   try {
-    // Check if there is a cached thought in localStorage and if it's still valid
     const cachedThought = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (cachedThought) {
       const { timestamp, thought } = cachedThought;
-      // Check if the cached thought is still valid for today (until midnight)
+
       if (isSameDay(new Date(timestamp), new Date())) {
         return thought;
       }
     }
 
-    // If no valid cached thought, fetch from API
     const response = await axios({
       method: 'GET',
       url: 'https://thought-of-the-day.p.rapidapi.com/thought',
@@ -138,7 +136,6 @@ export async function getThoughtOfTheDay() {
       },
     });
 
-    // Save the fetched thought in localStorage with a timestamp
     const thought = response.data;
     const currentTimestamp = new Date().getTime();
     localStorage.setItem(

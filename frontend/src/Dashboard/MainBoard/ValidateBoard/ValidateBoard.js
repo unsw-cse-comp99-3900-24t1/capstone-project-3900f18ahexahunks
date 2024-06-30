@@ -34,8 +34,7 @@ const ValidateBoard = () => {
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
 
-  const handleUpload = async (event) => {
-    const file = event.target.files[0];
+  const handleUpload = async (file) => {
     const user = getUser();
     const userId = user._id;
 
