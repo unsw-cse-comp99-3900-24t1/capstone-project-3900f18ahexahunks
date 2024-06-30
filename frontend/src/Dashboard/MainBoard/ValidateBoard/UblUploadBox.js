@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import CustomInputBox from '../../../components/CustomInputBox';
+import CustomPrimaryButton from '../../../components/CustomPrimaryButton';
 
 const UploadBox = styled('div')({
   width: '200px',
@@ -66,14 +66,6 @@ const FileInput = styled('input')({
   },
 });
 
-const SubmitButton = styled(Button)({
-  backgroundColor: '#007BFF',
-  color: '#fff',
-  '&:hover': {
-    backgroundColor: '#0056b3',
-  },
-});
-
 const UblUploadBox = ({ handleUpload }) => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
@@ -88,7 +80,7 @@ const UblUploadBox = ({ handleUpload }) => {
 
   const handleSubmit = () => {
     if (file) {
-      handleUpload(file);
+      handleUpload(file, name);
       handleClose();
     }
     setFile(null);
@@ -121,9 +113,17 @@ const UblUploadBox = ({ handleUpload }) => {
             onChange={handleFileChange}
             id="xml-upload"
           />
-          <SubmitButton variant="contained" onClick={handleSubmit}>
-            Submit
-          </SubmitButton>
+          <CustomPrimaryButton
+            label="Upload"
+            bgcolour="#651FFF"
+            additionalStyle={{
+              width: '92%',
+              height: '50px',
+              fontSize: '13px',
+            }}
+            disabled={name === '' || file === null}
+            onClick={handleSubmit}
+          />
         </Box>
       </Modal>
     </>
