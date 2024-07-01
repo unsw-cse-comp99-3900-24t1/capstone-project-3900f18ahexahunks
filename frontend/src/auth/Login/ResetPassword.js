@@ -1,26 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { resetPassword } from '../../services/api';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAlert } from '../../components/AlertError';
+import { styled } from '@mui/material/styles';
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Paper,
+} from '@mui/material';
+
+const FormContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  marginTop: theme.spacing(8),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.shadows[5],
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(3, 0, 2),
+  backgroundColor: '#3f51b5',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#303f9f',
+  },
+}));
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { token } = useParams();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { showAlert } = useAlert();
 
   useEffect(() => {
     if (!token) {
-      nav('*'); // Navigate to a different route if no token is found
+      navigate('*');
     }
-  }, [token, nav]); // [token, navigate] in React Router v6
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setError('');
-    // setSuccess('');
 
     if (password !== confirmPassword) {
       showAlert('Passwords do not match', 'tomato');
@@ -36,8 +61,7 @@ const ResetPassword = () => {
         );
       } else {
         showAlert('Password reset successfully', 'green');
-        // Optionally navigate to the login page or another route
-        // navigate('/login');
+        navigate('/login');
       }
     } catch (e) {
       showAlert(
@@ -48,32 +72,39 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="password">New Password:</label>
-          <input
-            type="password"
+    <Container component="main" maxWidth="xs">
+      <FormContainer>
+        <Typography component="h1" variant="h5">
+          Reset Password
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="password"
+            label="New Password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            autoFocus
           />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="confirmPassword"
+            label="Confirm Password"
+            type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
           />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
-    </div>
+          <StyledButton type="submit" fullWidth variant="contained">
+            Reset Password
+          </StyledButton>
+        </Box>
+      </FormContainer>
+    </Container>
   );
 };
 
