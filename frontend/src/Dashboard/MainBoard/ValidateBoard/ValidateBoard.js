@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import UblUploadBox from './UblUploadBox';
 import ShowUblBox from './ShowUblBox';
 import useUserStore from '../../../zustand/useUserStore';
-import { validateUBL } from '../../../services/api';
+import { getAllValidationUblInfo, validateUBL } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
+import useValidatorStore from '../../../zustand/useValidatorStore';
 
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -33,6 +34,32 @@ const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
+  const addValidatorData = useValidatorStore((state) => state.addValidatorData);
+
+  useEffect(() => {
+    const fetchInitialXmlFiles = async () => {
+      try {
+        const user = getUser();
+        const userId = user._id;
+        const result = await getAllValidationUblInfo({ userId });
+        if (result.error) {
+          console.error('Error fetching initial XML files:', result);
+          showAlert('Error fetching initial XML files', 'tomato');
+        } else {
+          setXmlFiles(result); // Assuming result.xmlFiles contains the initial XML files
+          addValidatorData(result);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred:', error);
+        showAlert(
+          'An unexpected error occurred while fetching initial XML files. Please try again later.',
+          'tomato'
+        );
+      }
+    };
+
+    fetchInitialXmlFiles();
+  }, []);
 
   const handleUpload = async (file, name) => {
     try {
@@ -40,21 +67,30 @@ const ValidateBoard = () => {
       const userId = user._id;
 
       if (file && file.type === 'text/xml') {
-        const fileURL = URL.createObjectURL(file);
-        setXmlFiles((prevXmlFiles) => [...prevXmlFiles, fileURL]);
+        // const fileURL = URL.createObjectURL(file);
+        // setXmlFiles((prevXmlFiles) => [...prevXmlFiles, fileURL]);
 
         const formData = new FormData();
         formData.append('file', file);
         formData.append('userId', userId);
-        // formData.append('name', name);
+        formData.append('name', name);
 
         const result = await validateUBL(formData);
         if (result.error) {
-          console.error('Error converting PDF to UBL:', result.data);
+          console.error('Error converting PDF to UBL:', result);
           showAlert('Error converting/uploading PDF', 'tomato'); // Show alert on error
         } else {
           showAlert('UBL successfully validated', 'green');
           console.log('Conversion successful:', result);
+          const data = {
+            _id: result.newObjectId,
+            ublId: result.ublId,
+            validationId: result.validatorId,
+            validationReport: result.validationReport,
+            name,
+          };
+          setXmlFiles((prevXmlFiles) => [...prevXmlFiles, data]);
+          addValidatorData(data);
         }
       } else {
         showAlert('Invalid file type. Please upload an XML file.', 'tomato');

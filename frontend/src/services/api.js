@@ -44,6 +44,16 @@ export const validateUBL = async (formData) => {
   }
 };
 
+export const getAllValidationUblInfo = async (data) => {
+  try {
+    const response = await apiClient.get('/validate/get-all-validation-data', {
+      params: { userId: data.userId },
+    });
+    console.log(response.data);
+    return response.data.ublValidation;
+  } catch (error) {}
+};
+
 const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {
