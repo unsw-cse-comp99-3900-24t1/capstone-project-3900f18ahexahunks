@@ -8,6 +8,7 @@ import Dashboard from './Dashboard/Dashboard.js';
 import ProtectedRoute from './ProtectedRoute.js';
 import PageNotFound from './PageNotFound/PageNotFound.js';
 import FileManagerDashboard from './FileManagerDashboard/FileManagerDashboard.js';
+import ResetPassword from './auth/Login/ResetPassword.js';
 
 const App = () => {
   return (
@@ -35,6 +36,10 @@ const App = () => {
                     <FileManagerDashboard />
                   </ProtectedRoute>
                 }
+              />
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPassword />}
               />
               <Route path="*" element={<PageNotFound />} />
             </Routes>

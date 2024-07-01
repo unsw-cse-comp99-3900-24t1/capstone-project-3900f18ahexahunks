@@ -17,6 +17,22 @@ export const register = async (data) => {
   }
 };
 
+export const forgotPassword = async (data) => {
+  try {
+    return await apiClient.post('/auth/forgot-password', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
+export const resetPassword = async (data) => {
+  try {
+    return await apiClient.post('/auth/reset-password', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 export const pdfToUblConvert = async (formData) => {
   try {
     const response = await apiClient.post('/convert/upload-pdf', formData, {
