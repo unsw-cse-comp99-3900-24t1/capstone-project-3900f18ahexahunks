@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles';
-import useValidatorStore from '../../../zustand/useValidatorStore';
-import { useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const PdfBox = styled('div')({
   width: '200px',
@@ -11,14 +10,7 @@ const PdfBox = styled('div')({
   alignItems: 'center',
   cursor: 'pointer',
 });
-const ShowUblBox = ({ xmlFiles }) => {
-  console.log(xmlFiles, 'xmlFiles');
-  const getValidatorData = useValidatorStore((state) => state.getValidatorData);
-  useEffect(() => {
-    const validatorData = getValidatorData();
-    console.log('Validator Data:', validatorData);
-  }, [getValidatorData]);
-
+const ShowUblBox = ({ xmlFiles, isLoading }) => {
   const handleOpenValidationReport = (xml) => {
     console.log('PRINT', xml);
   };
@@ -30,6 +22,11 @@ const ShowUblBox = ({ xmlFiles }) => {
           <h1>{xml.name}</h1>
         </PdfBox>
       ))}
+      {isLoading && (
+        <PdfBox>
+          <CircularProgress /> {/* Display loading spinner */}
+        </PdfBox>
+      )}
     </>
   );
 };

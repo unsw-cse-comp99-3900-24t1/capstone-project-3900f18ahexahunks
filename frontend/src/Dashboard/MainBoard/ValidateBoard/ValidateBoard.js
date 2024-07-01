@@ -34,6 +34,7 @@ const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
+  const [isLoading, setIsLoading] = useState(false);
   const addValidatorData = useValidatorStore((state) => state.addValidatorData);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const ValidateBoard = () => {
   }, []);
 
   const handleUpload = async (file, name) => {
+    setIsLoading(true);
     try {
       const user = getUser();
       const userId = user._id;
@@ -101,13 +103,15 @@ const ValidateBoard = () => {
         'An unexpected error occurred. Please try again later.',
         'tomato'
       );
+    } finally {
+      setIsLoading(false); // Set loading state to false
     }
   };
 
   return (
     <BoardContainer>
       <BoardWrapper>
-        <ShowUblBox xmlFiles={xmlFiles} />
+        <ShowUblBox xmlFiles={xmlFiles} isLoading={isLoading} />
         <UblUploadBox handleUpload={handleUpload} />
       </BoardWrapper>
     </BoardContainer>
