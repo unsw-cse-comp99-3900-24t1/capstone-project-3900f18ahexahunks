@@ -10,6 +10,13 @@ const PdfBox = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
+  transition: 'all 0.2s',
+  borderRadius: '9px',
+  '&:hover': {
+    border: '1px solid #000',
+    backgroundColor: '#027BFF',
+    color: '#fff',
+  },
 });
 const ShowUblBox = ({ xmlFiles, isLoading }) => {
   const nav = useNavigate();

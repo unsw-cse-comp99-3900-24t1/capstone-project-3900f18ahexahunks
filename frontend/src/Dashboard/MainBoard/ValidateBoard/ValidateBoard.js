@@ -37,6 +37,7 @@ const ValidateBoard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const addValidatorData = useValidatorStore((state) => state.addValidatorData);
 
+  //! MAJOR FLAW DISCOVERED THAT THIS CODE RERUNS EACH TIME WE COME BACK TO THIS PAGE HENCE WE NEED TO MOVE THIS EITHER IN LOGIN REGISTER OR INSIDE THE ZUSTAND (FLAW IS THAT DUE TO RERUNS SEVERAL COPIES OF SAME THINGS ARE BEIG SAVED IN THE ZUSTAND WHICH IS NOT RIGHT)
   useEffect(() => {
     const fetchInitialXmlFiles = async () => {
       try {
@@ -61,6 +62,7 @@ const ValidateBoard = () => {
 
     fetchInitialXmlFiles();
   }, []);
+  //! THE FLAW ENDS HERE
 
   const handleUpload = async (file, name) => {
     setIsLoading(true);
