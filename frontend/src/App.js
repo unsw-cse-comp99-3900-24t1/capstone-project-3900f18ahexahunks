@@ -7,6 +7,7 @@ import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
 import ProtectedRoute from './ProtectedRoute.js';
 import PageNotFound from './PageNotFound/PageNotFound.js';
+import FileManagerDashboard from './FileManagerDashboard/FileManagerDashboard.js';
 
 const App = () => {
   return (
@@ -24,6 +25,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/handle-files/:process/:id"
+                element={
+                  <ProtectedRoute>
+                    <FileManagerDashboard />
                   </ProtectedRoute>
                 }
               />

@@ -54,6 +54,16 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+export const getAnyFile = async (data) => {
+  try {
+    const response = await apiClient.get('/getFile', {
+      params: { userId: data.fileId },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
 const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {

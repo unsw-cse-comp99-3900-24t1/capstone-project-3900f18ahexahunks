@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 const PdfBox = styled('div')({
   width: '200px',
@@ -11,7 +12,10 @@ const PdfBox = styled('div')({
   cursor: 'pointer',
 });
 const ShowUblBox = ({ xmlFiles, isLoading }) => {
+  const nav = useNavigate();
+
   const handleOpenValidationReport = (xml) => {
+    nav(`/handle-files/validation-reports/${xml._id}`);
     console.log('PRINT', xml);
   };
 

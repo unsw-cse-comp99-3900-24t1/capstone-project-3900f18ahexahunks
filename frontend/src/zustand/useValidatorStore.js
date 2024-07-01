@@ -15,6 +15,11 @@ const useValidatorStore = create((set, get) => ({
     }));
   },
 
+  getValidatorDataById: (id) => {
+    const state = get();
+    return state.validatorData.find((data) => data._id === id);
+  },
+
   getValidatorData: () => {
     const state = get();
     return state.validatorData;
