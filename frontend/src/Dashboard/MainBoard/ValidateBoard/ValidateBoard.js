@@ -34,26 +34,37 @@ const ValidateBoard = () => {
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
 
-  const handleUpload = async (file) => {
-    const user = getUser();
-    const userId = user._id;
+  const handleUpload = async (file, name) => {
+    try {
+      const user = getUser();
+      const userId = user._id;
 
-    if (file && file.type === 'text/xml') {
-      const fileURL = URL.createObjectURL(file);
-      setXmlFiles((prevXmlFiles) => [...prevXmlFiles, fileURL]);
+      if (file && file.type === 'text/xml') {
+        const fileURL = URL.createObjectURL(file);
+        setXmlFiles((prevXmlFiles) => [...prevXmlFiles, fileURL]);
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('userId', userId); // Append user ID
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('userId', userId);
+        // formData.append('name', name);
 
-      const result = await validateUBL(formData);
-      if (result.error) {
-        console.error('Error converting PDF to UBL:', result.data);
+        const result = await validateUBL(formData);
+        if (result.error) {
+          console.error('Error converting PDF to UBL:', result.data);
+          showAlert('Error converting/uploading PDF', 'tomato'); // Show alert on error
+        } else {
+          showAlert('UBL successfully validated', 'green');
+          console.log('Conversion successful:', result);
+        }
       } else {
-        console.log('Conversion successful:', result);
+        showAlert('Invalid file type. Please upload an XML file.', 'tomato');
       }
-    } else {
-      showAlert('Error converting/uploading PDF', 'tomato');
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
+      showAlert(
+        'An unexpected error occurred. Please try again later.',
+        'tomato'
+      );
     }
   };
 

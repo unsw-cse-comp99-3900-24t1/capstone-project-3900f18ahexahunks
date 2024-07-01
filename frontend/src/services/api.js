@@ -1,36 +1,6 @@
 import axios from 'axios';
 import apiClient from './client';
 
-// // Performs login operation using the provided credentials.
-// export const login = async (data) => {
-//   try {
-//     const response = await apiClient.post('/auth/login', data);
-//     return response.data;
-//   } catch (error) {
-//     // Handle different error statuses or default to a generic error message
-//     // const errorMessage =
-//     //   error.response && error.response.data
-//     //     ? error.response.data.message
-//     //     : 'Something went wrong';
-//     return { error: true, message: error };
-//   }
-// };
-
-// // Registers a new user with the given data.
-// export const register = async (data) => {
-//   try {
-//     const response = await apiClient.post('/auth/register', data);
-//     return response.data;
-//   } catch (error) {
-//     // Handle different error statuses or default to a generic error message
-//     const errorMessage =
-//       error.response && error.response.data
-//         ? error.response.data.message
-//         : 'Something went wrong';
-//     return { error: true, message: errorMessage };
-//   }
-// };
-
 export const login = async (data) => {
   try {
     return await apiClient.post('/auth/login', data);
@@ -67,6 +37,7 @@ export const validateUBL = async (formData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
+    console.log(response);
     return response.data;
   } catch (error) {
     return { error: true, data: error.response.data };
@@ -92,27 +63,7 @@ export const fetchWeather = async (lat, lon) => {
   }
 };
 
-// export async function getThoughtOfTheDay() {
-//   try {
-//     const response = await axios({
-//       method: 'GET',
-//       url: 'https://thought-of-the-day.p.rapidapi.com/thought',
-//       headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
-//         'x-rapidapi-ua': 'RapidAPI-Playground',
-//         'x-rapidapi-key': '932c70556bmshcd7268d8daf9f23p1fc442jsnb178dc8066e1',
-//         'x-rapidapi-host': 'thought-of-the-day.p.rapidapi.com',
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error('There was a problem with your fetch request:', error);
-//     return null;
-//   }
-// }
 const STORAGE_KEY = 'thoughtOfTheDay';
-
 export async function getThoughtOfTheDay() {
   try {
     const cachedThought = JSON.parse(localStorage.getItem(STORAGE_KEY));
