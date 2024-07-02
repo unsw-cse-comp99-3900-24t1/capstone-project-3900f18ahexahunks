@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import UblUploadBox from './UblUploadBox';
@@ -61,7 +62,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  }, []);
+  });
 
   const handleUpload = async (file, name) => {
     setIsLoading(true);

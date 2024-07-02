@@ -1,17 +1,12 @@
 {
+  "extends": "@istanbuljs/nyc-config-babel",
   "all": true,
   "include": [
-    "src/**/*.js"
+    "src/**/*.js",
+    "src/**/*.jsx"
   ],
   "reporter": [
     "html",
     "text-summary"
-  ],
-  "instrument": true,
-  "sourceMap": false,
-  "parser-plugins": [
-    "jsx",
-    "classProperties",
-    "dynamicImport"
   ]
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import Home from './HomePage/Home.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoadingProvider } from './components/useLoading.js';

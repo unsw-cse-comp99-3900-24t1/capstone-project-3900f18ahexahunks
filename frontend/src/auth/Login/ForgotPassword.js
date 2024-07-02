@@ -99,12 +99,15 @@ const ForgotPassword = () => {
       );
     }
   };
+  console.log('App component loaded');
 
   return (
     <div>
       <ForgotPasswordWrapper onClick={handleClickOpen}>
         <LockResetIcon />
-        <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
+        <ForgotPasswordText data-testid={'forgot-password-button'}>
+          Forgot Password?
+        </ForgotPasswordText>
       </ForgotPasswordWrapper>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Reset Password</DialogTitle>

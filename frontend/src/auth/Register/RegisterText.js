@@ -1,3 +1,4 @@
+import React from 'react';
 import RegisterBody from './RegisterBody';
 import RegisterHeader from './RegisterHeader';
 

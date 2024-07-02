@@ -1,7 +1,8 @@
+import React from 'react';
 import { styled } from '@mui/system';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
