@@ -3,7 +3,7 @@ describe('template spec', () => {
     cy.visit('http://localhost:3000/');
   });
 });
-describe('Beautiful Testing', () => {
+describe('Auth Testing', () => {
   let uniqueEmail;
   let timestamp;
   let name = 'Raghav Agarwal';
