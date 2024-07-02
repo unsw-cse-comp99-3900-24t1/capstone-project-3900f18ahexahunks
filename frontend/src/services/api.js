@@ -73,7 +73,7 @@ export const getAllValidationUblInfo = async (data) => {
 export const getAnyFile = async (data) => {
   try {
     const response = await apiClient.get('/getFile', {
-      params: { userId: data.fileId },
+      params: { fileId: data.fileId },
     });
     console.log(response.data);
     return response.data;
