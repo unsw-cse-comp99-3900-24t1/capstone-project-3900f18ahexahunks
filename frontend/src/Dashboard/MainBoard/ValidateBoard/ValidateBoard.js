@@ -62,7 +62,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  });
+  },[]);
 
   const handleUpload = async (file, name) => {
     setIsLoading(true);

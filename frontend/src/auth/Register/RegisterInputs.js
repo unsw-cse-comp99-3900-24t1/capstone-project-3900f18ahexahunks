@@ -1,13 +1,14 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
-import { validateEmail } from '../../shared/validators';
+import { validateEmail, validatePassword } from '../../shared/validators';
 import { register } from '../../services/api';
 import useUserStore from '../../zustand/useUserStore';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
 
 const RegisterInputs = ({ goToDashboard }) => {
   const [name, setName] = useState('');
@@ -31,6 +32,11 @@ const RegisterInputs = ({ goToDashboard }) => {
     }
     if (password !== checkPassword) {
       showAlert('Passwords do not match', 'tomato');
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      showAlert('Password does not match criteria', 'tomato');
       return;
     }
 
@@ -93,16 +99,28 @@ const RegisterInputs = ({ goToDashboard }) => {
         onKeyDown={handleKeyDown}
         data-testid={'register-email'}
       />
-      <CustomInputBox
-        style={{ marginTop: '30px' }}
-        placeholder="########"
-        label="Password"
-        type="password"
-        setValue={setPassword}
-        value={password}
-        onKeyDown={handleKeyDown}
-        data-testid={'register-password'}
-      />
+      <div style={{ position: 'relative', marginTop: '30px' }}>
+        <CustomInputBox
+          placeholder="########"
+          label="Password"
+          type="password"
+          setValue={setPassword}
+          value={password}
+          onKeyDown={handleKeyDown}
+          data-testid={'register-password'}
+        />
+        <Tooltip title="Password must be at least 8 characters long and include at least one number, one special character, and one uppercase letter">
+          <InfoIcon
+            style={{
+              position: 'absolute',
+              right: '40px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              cursor: 'pointer',
+            }}
+          />
+        </Tooltip>
+      </div>
       <CustomInputBox
         style={{ marginTop: '30px' }}
         placeholder="########"
