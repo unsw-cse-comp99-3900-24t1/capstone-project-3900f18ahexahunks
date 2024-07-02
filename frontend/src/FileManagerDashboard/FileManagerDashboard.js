@@ -13,7 +13,7 @@ const FileManagerDashboard = () => {
 
   useEffect(() => {
     const ans = getValidatorData();
-    console.log(ans, 'THIS IS ANS');
+    console.log(ans, 'THIS IS ANSwer');
   });
 
   return (
