@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useValidatorStore from '../../../zustand/useValidatorStore';
 import { styled } from '@mui/material/styles';
-import { getAllValidationUblInfo, getAnyFile } from '../../../services/api';
+import { getAnyFile } from '../../../services/api';
 import useUserStore from '../../../zustand/useUserStore';
 import Button from '@mui/material/Button';
 
@@ -31,26 +31,16 @@ const UblBoard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const user = getUser();
-        const userId = user._id;
-        console.log(userId, 'IEIEIJRIEJRIEJRIEJ');
-        const result = await getAllValidationUblInfo({ userId });
-        setLatestData(result);
         const data = getValidatorDataById(id);
-        if (result.error) {
-          console.error('Error fetching initial XML files:', result);
-          console.log('Error fetching initial XML files', 'tomato');
-        } else {
-          console.log('CAME HERE');
-          const file = await getAnyFile({ fileId: data.ublId });
-          console.log(file);
-          console.log(typeof file);
 
-          // Convert the file content to a string if it's not already
-          const fileString =
-            typeof file === 'string' ? file : new TextDecoder().decode(file);
-          setXmlData(fileString);
-        }
+        console.log('CAME HERE');
+        const file = await getAnyFile({ fileId: data.ublId });
+        console.log(file);
+        console.log(typeof file);
+
+        const fileString =
+          typeof file === 'string' ? file : new TextDecoder().decode(file);
+        setXmlData(fileString);
       } catch (error) {
         console.error('An unexpected error occurred:', error);
         console.log(
