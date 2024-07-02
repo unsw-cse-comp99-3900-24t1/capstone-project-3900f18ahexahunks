@@ -9,10 +9,10 @@ const StyledLink = styled('div')({
   cursor: 'pointer',
 });
 
-const SelectorLogo = () => {
+const SelectorLogo = ({ link }) => {
   const nav = useNavigate();
   const handleGoToDashboard = () => {
-    nav('/dashboard/main');
+    nav(link);
   };
 
   return (

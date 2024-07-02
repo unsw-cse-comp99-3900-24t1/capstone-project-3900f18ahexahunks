@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SelectorLogo from './SelectorLogo';
+import SelectorLogo from '../../components/SelectorLogo';
 import MainSelectors from './MainSelectors';
 import useValidatorStore from '../../zustand/useValidatorStore';
 import useUserStore from '../../zustand/useUserStore';
@@ -24,7 +24,7 @@ const Selector = () => {
 
   return (
     <div style={{ height: '80%' }}>
-      <SelectorLogo />
+      <SelectorLogo link={'/dashboard/main'} />
       <MainSelectors handleLogout={handleLogout} />
     </div>
   );

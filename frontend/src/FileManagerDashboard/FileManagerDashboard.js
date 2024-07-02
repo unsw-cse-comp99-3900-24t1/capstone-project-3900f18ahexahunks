@@ -53,7 +53,7 @@ const FileManagerDashboard = () => {
   switch (process) {
     case 'validation-reports':
       content = <UblValidBoard />;
-      selector = <UblValidSelector />;
+      selector = <UblValidSelector id={id} />;
       break;
     case 'conversion-reports':
       content = <></>;
