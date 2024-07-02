@@ -4,7 +4,7 @@ import axios from 'axios';
 // Creates an Axios instance configured with base settings.
 const apiClient = axios.create({
   baseURL: 'http://localhost:5003', // Base URL for all requests.
-  timeout: 1000, // Request timeout set to 1000 milliseconds.
+  // timeout: 1000, // Request timeout set to 1000 milliseconds.
   withCredentials: true, // Ensure cookies are sent with requests.
 });
 apiClient.interceptors.response.use(

@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginBody from './LoginBody';
 import LoginHeader from './LoginHeader';
 

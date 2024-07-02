@@ -1,3 +1,4 @@
+import React from 'react';
 const HelpBoard = () => {
   return <div>HelpBoard</div>;
 };

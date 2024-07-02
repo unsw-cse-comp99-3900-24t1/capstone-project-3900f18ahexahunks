@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
@@ -70,6 +71,7 @@ const LoginInputs = ({ goToDashboard }) => {
         setValue={setEmail}
         value={email}
         onKeyDown={handleKeyDown}
+        data-testid={'login-email'}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -79,6 +81,7 @@ const LoginInputs = ({ goToDashboard }) => {
         setValue={setPassword}
         value={password}
         onKeyDown={handleKeyDown}
+        data-testid={'login-password'}
       />
       <ForgotPassword />
       <CustomPrimaryButton
@@ -90,6 +93,7 @@ const LoginInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={handleLogin}
+        dataTestid={'login-submit'}
       />
 
       <RedirectToRegister />

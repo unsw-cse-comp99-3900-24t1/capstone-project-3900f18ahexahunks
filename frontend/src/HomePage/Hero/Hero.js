@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from '@mui/system';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { useNavigate } from 'react-router-dom';
@@ -41,7 +42,6 @@ const Hero = () => {
             marginTop: '5px',
             marginBottom: '0',
           }}
-          h1
         >
           Next Revolution <span style={{ color: '#FFE0E5' }}>#Industry4.0</span>
         </h1>

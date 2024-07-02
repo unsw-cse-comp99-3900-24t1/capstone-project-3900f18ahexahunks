@@ -1,36 +1,6 @@
 import axios from 'axios';
 import apiClient from './client';
 
-// // Performs login operation using the provided credentials.
-// export const login = async (data) => {
-//   try {
-//     const response = await apiClient.post('/auth/login', data);
-//     return response.data;
-//   } catch (error) {
-//     // Handle different error statuses or default to a generic error message
-//     // const errorMessage =
-//     //   error.response && error.response.data
-//     //     ? error.response.data.message
-//     //     : 'Something went wrong';
-//     return { error: true, message: error };
-//   }
-// };
-
-// // Registers a new user with the given data.
-// export const register = async (data) => {
-//   try {
-//     const response = await apiClient.post('/auth/register', data);
-//     return response.data;
-//   } catch (error) {
-//     // Handle different error statuses or default to a generic error message
-//     const errorMessage =
-//       error.response && error.response.data
-//         ? error.response.data.message
-//         : 'Something went wrong';
-//     return { error: true, message: errorMessage };
-//   }
-// };
-
 export const login = async (data) => {
   try {
     return await apiClient.post('/auth/login', data);
@@ -42,6 +12,22 @@ export const login = async (data) => {
 export const register = async (data) => {
   try {
     return await apiClient.post('/auth/register', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
+export const forgotPassword = async (data) => {
+  try {
+    return await apiClient.post('/auth/forgot-password', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
+export const resetPassword = async (data) => {
+  try {
+    return await apiClient.post('/auth/reset-password', data);
   } catch (e) {
     return { error: true, data: e.response.data };
   }
@@ -60,8 +46,41 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
-const API_KEY = 'ac9b9c9cdde741b99b310610242006';
+export const validateUBL = async (formData) => {
+  try {
+    const response = await apiClient.post('/validate/validate-ubl', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
 
+export const getAllValidationUblInfo = async (data) => {
+  try {
+    const response = await apiClient.get('/validate/get-all-validation-data', {
+      params: { userId: data.userId },
+    });
+    console.log(response.data);
+    return response.data.ublValidation;
+  } catch (error) {}
+};
+
+export const getAnyFile = async (data) => {
+  try {
+    const response = await apiClient.get('/getFile', {
+      params: { userId: data.fileId },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
+const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {
     const response = await axios.get(
@@ -80,8 +99,18 @@ export const fetchWeather = async (lat, lon) => {
   }
 };
 
+const STORAGE_KEY = 'thoughtOfTheDay';
 export async function getThoughtOfTheDay() {
   try {
+    const cachedThought = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (cachedThought) {
+      const { timestamp, thought } = cachedThought;
+
+      if (isSameDay(new Date(timestamp), new Date())) {
+        return thought;
+      }
+    }
+
     const response = await axios({
       method: 'GET',
       url: 'https://thought-of-the-day.p.rapidapi.com/thought',
@@ -93,9 +122,26 @@ export async function getThoughtOfTheDay() {
         'x-rapidapi-host': 'thought-of-the-day.p.rapidapi.com',
       },
     });
-    return response.data;
+
+    const thought = response.data;
+    const currentTimestamp = new Date().getTime();
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ timestamp: currentTimestamp, thought })
+    );
+
+    return thought;
   } catch (error) {
     console.error('There was a problem with your fetch request:', error);
     return null;
   }
+}
+
+// Helper function to check if two dates are the same day
+function isSameDay(date1, date2) {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
 }

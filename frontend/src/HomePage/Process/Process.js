@@ -1,3 +1,4 @@
+import React from 'react';
 const Process = () => {
   return (
     <div style={{ marginTop: '106px' }}>

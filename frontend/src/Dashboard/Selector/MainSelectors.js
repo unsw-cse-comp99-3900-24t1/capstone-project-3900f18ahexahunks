@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
@@ -108,6 +109,7 @@ const MainSelectors = ({ handleLogout }) => {
           variant="contained"
           startIcon={<LogoutIcon />}
           onClick={handleLogout}
+          data-testid={'logout-button'}
         >
           Logout
         </StyledLogoutButton>

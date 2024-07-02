@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginSlider from './LoginSlider';
 
 const LoginBody = () => {
