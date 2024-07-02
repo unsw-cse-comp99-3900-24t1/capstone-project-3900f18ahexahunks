@@ -144,7 +144,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|jpeg|gif|svg)$/, // Add this rule to handle images
+        test: /\.(png|jpg|jpeg|gif|svg|ico)$/, // Add this rule to handle images
         use: [
           {
             loader: 'file-loader',
@@ -179,6 +179,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       inject: 'body',
+      favicon: path.resolve(__dirname, 'public', 'favicon.ico'),
     }),
     new webpack.DefinePlugin({
       'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL || ''),
