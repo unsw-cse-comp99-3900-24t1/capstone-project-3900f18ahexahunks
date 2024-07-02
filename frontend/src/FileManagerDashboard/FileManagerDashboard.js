@@ -34,7 +34,7 @@ const HeaderContainer = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'right',
-  paddingRight: '20%',
+  // paddingRight: '20%',
 });
 
 const FileManagerDashboard = () => {
