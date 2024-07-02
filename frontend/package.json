@@ -27,16 +27,18 @@
     "react-typist": "^2.0.5",
     "universal-cookie": "^7.1.4",
     "web-vitals": "^2.1.4",
+    "webpack-cli": "^5.1.4",
     "zustand": "^4.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build2": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "preinstall": "check-node-version --node '>=18.16.0 <19' --npm '>=9.5.1 <10'",
-    "postinstall": "node check-versions.js"
+    "postinstall": "node check-versions.js",
+    "build": "webpack --mode production"
   },
   "eslintConfig": {
     "extends": [
@@ -57,10 +59,14 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
     "@cypress/code-coverage": "^3.12.39",
     "babel-plugin-istanbul": "^6.1.1",
     "check-node-version": "^4.2.1",
+    "css-loader": "^7.1.2",
     "istanbul-lib-coverage": "^3.2.2",
-    "nyc": "^17.0.0"
+    "nyc": "^17.0.0",
+    "style-loader": "^4.0.0",
+    "webpack-dev-server": "^5.0.4"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "all": true,
+  "include": [
+    "src/**/*.js"
+  ],
+  "reporter": [
+    "html",
+    "text-summary"
+  ],
+  "instrument": true,
+  "sourceMap": false,
+  "parser-plugins": [
+    "jsx",
+    "classProperties",
+    "dynamicImport"
+  ]
+}
