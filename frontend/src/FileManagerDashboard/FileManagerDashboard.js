@@ -7,6 +7,8 @@ import { styled } from '@mui/system';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
 import UblBoard from './UblValidation/MainBoard/UblBoard';
 import ValidBoard from './UblValidation/MainBoard/ValidBoard';
+import HelpBoard from '../Dashboard/Help/HelpBoard';
+import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 
 const Container = styled('div')({
   width: '100vw',
@@ -60,6 +62,12 @@ const FileManagerDashboard = () => {
           break;
         case 'validate':
           content = <ValidBoard />;
+          break;
+        case 'share':
+          content = <ShareFilesBoard />;
+          break;
+        case 'help':
+          content = <HelpBoard />;
           break;
         default:
           content = <></>;

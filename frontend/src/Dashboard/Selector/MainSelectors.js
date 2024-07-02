@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
-import SelectorLinks from './SelectorLinks';
+import SelectorLinks from '../../components/SelectorLinks';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
