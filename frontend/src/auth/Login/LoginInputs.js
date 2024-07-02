@@ -71,6 +71,7 @@ const LoginInputs = ({ goToDashboard }) => {
         setValue={setEmail}
         value={email}
         onKeyDown={handleKeyDown}
+        data-testid={'login-email'}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -80,6 +81,7 @@ const LoginInputs = ({ goToDashboard }) => {
         setValue={setPassword}
         value={password}
         onKeyDown={handleKeyDown}
+        data-testid={'login-password'}
       />
       <ForgotPassword />
       <CustomPrimaryButton
@@ -91,6 +93,7 @@ const LoginInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={handleLogin}
+        data-testid={'login-submit'}
       />
 
       <RedirectToRegister />

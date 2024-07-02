@@ -109,6 +109,7 @@ const MainSelectors = ({ handleLogout }) => {
           variant="contained"
           startIcon={<LogoutIcon />}
           onClick={handleLogout}
+          data-testid={'logout-button'}
         >
           Logout
         </StyledLogoutButton>

@@ -82,6 +82,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setName}
         value={name}
         onKeyDown={handleKeyDown}
+        data-testid={'register-name'}
       />
       <CustomInputBox
         placeholder="johnsondoe@nomail.com"
@@ -90,6 +91,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setEmail}
         value={email}
         onKeyDown={handleKeyDown}
+        data-testid={'register-email'}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -99,6 +101,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setPassword}
         value={password}
         onKeyDown={handleKeyDown}
+        data-testid={'register-password'}
       />
       <CustomInputBox
         style={{ marginTop: '30px' }}
@@ -108,6 +111,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setCheckPassword}
         value={checkPassword}
         onKeyDown={handleKeyDown}
+        data-testid={'register-check-password'}
       />
       <CustomPrimaryButton
         label="CONTINUE"
@@ -123,6 +127,7 @@ const RegisterInputs = ({ goToDashboard }) => {
             submitRegister(e);
           }
         }}
+        dataTestid={'register-submit'}
       />
 
       <RedirectToLogin />
