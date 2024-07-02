@@ -7,7 +7,7 @@ const FileManagerDashboard = () => {
   const { process, id } = useParams();
   // const getValidatorDataById = useValidatorStore(
   //   (state) => state.getValidatorDataById
-  // );
+  // )
 
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
 
