@@ -33,7 +33,7 @@ const UblBoard = () => {
       try {
         const data = getValidatorDataById(id);
 
-        console.log('CAME HERE');
+        console.log('CAME HERE', data);
         const file = await getAnyFile({ fileId: data.ublId });
         console.log(file);
         console.log(typeof file);

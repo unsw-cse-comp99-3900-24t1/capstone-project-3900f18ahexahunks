@@ -74,6 +74,7 @@ export const getAnyFile = async (data) => {
   try {
     const response = await apiClient.get('/getFile', {
       params: { fileId: data.fileId },
+      responseType: 'arraybuffer',
     });
     console.log(response.data);
     return response.data;
