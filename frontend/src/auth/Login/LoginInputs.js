@@ -93,7 +93,7 @@ const LoginInputs = ({ goToDashboard }) => {
           fontSize: '13px',
         }}
         onClick={handleLogin}
-        data-testid={'login-submit'}
+        dataTestid={'login-submit'}
       />
 
       <RedirectToRegister />
