@@ -31,7 +31,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/handle-files/:process/:id"
+                path="/handle-files/:process/:file/:id"
                 element={
                   <ProtectedRoute>
                     <FileManagerDashboard />

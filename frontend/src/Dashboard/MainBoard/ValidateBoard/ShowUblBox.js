@@ -23,7 +23,7 @@ const ShowUblBox = ({ xmlFiles, isLoading }) => {
   const nav = useNavigate();
 
   const handleOpenValidationReport = (xml) => {
-    nav(`/handle-files/validation-reports/${xml._id}`);
+    nav(`/handle-files/validation-reports/ubl/${xml._id}`);
     console.log('PRINT', xml);
   };
 

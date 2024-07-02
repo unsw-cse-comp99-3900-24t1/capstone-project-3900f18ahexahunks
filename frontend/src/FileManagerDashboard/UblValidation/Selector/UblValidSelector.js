@@ -23,7 +23,7 @@ const UblValidSelector = ({ id }) => {
 
   return (
     <div style={{ height: '80%' }}>
-      <SelectorLogo link={`/handle-files/validation-reports/${id}`} />
+      <SelectorLogo link={`/handle-files/validation-reports/ubl/${id}`} />
       {/* <MainSelectors handleLogout={handleLogout} /> */}
     </div>
   );

@@ -4,8 +4,9 @@ import useValidatorStore from '../zustand/useValidatorStore';
 import { useEffect } from 'react';
 import useUserStore from '../zustand/useUserStore';
 import { styled } from '@mui/system';
-import UblValidBoard from './UblValidation/MainBoard/UblValidBoard';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
+import UblBoard from './UblValidation/MainBoard/UblBoard';
+import ValidBoard from './UblValidation/MainBoard/ValidBoard';
 
 const Container = styled('div')({
   width: '100vw',
@@ -35,7 +36,7 @@ const HeaderContainer = styled('div')({
 });
 
 const FileManagerDashboard = () => {
-  const { process, id } = useParams();
+  const { process, file, id } = useParams();
   const [user, setUser] = useState({});
 
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
@@ -52,8 +53,17 @@ const FileManagerDashboard = () => {
   let selector;
   switch (process) {
     case 'validation-reports':
-      content = <UblValidBoard />;
       selector = <UblValidSelector id={id} />;
+      switch (file) {
+        case 'ubl':
+          content = <UblBoard />;
+          break;
+        case 'validate':
+          content = <ValidBoard />;
+          break;
+        default:
+          content = <></>;
+      }
       break;
     case 'conversion-reports':
       content = <></>;
