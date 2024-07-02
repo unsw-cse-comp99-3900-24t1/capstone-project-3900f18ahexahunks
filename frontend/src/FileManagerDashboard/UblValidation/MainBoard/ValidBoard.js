@@ -25,17 +25,14 @@ const ValidBoard = () => {
   useEffect(() => {
     const fetchPdf = async () => {
       try {
-        const data = await getValidatorDataById(id); // Fetch the validator data
+        const data = await getValidatorDataById(id);
         console.log('Validator Data:', data);
 
-        // Fetch the PDF file using getAnyFile
         const arrayBuffer = await getAnyFile({ fileId: data.validatorId });
         console.log('File Response as ArrayBuffer:', arrayBuffer);
 
-        // Convert the response to a Blob
         const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
-        // Create a URL for the Blob
         const url = URL.createObjectURL(blob);
         setPdfUrl(url);
       } catch (error) {
