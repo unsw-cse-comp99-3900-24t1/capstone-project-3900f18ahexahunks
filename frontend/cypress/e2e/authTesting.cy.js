@@ -37,7 +37,7 @@ describe('Beautiful Testing', () => {
     cy.visit('/login');
     cy.viewport(1500, 1000);
 
-    // Registering a new user and going to the dashboard
+    // Logging in same user and going to the dashboard
     cy.get('[data-testid="login-email"]').type(uniqueEmail);
     cy.get('[data-testid="login-password"]').type(timestamp);
     cy.get('[data-testid="login-submit"]').click();
@@ -50,13 +50,13 @@ describe('Beautiful Testing', () => {
   });
 
   after(() => {
-    // Make a request to delete the user after each test
+    // Making a request to delete the user after each test
     cy.request({
       method: 'DELETE',
       url: `http://localhost:5003/auth/delete-user/${uniqueEmail}`,
-      failOnStatusCode: false, // Prevent Cypress from failing the test if the delete fails
+      failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.eq(200); // Adjust this based on your API's response
+      expect(response.status).to.eq(200);
     });
   });
 });
