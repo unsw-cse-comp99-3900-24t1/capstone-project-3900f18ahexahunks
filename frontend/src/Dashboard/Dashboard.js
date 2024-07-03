@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/system';
-import { useMediaQuery, Drawer, IconButton } from '@mui/material';
+import { useMediaQuery, Drawer, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
@@ -11,12 +11,33 @@ import useUserStore from '../zustand/useUserStore';
 import SettingsBoard from './Settings/SettingsBoard';
 import HelpBoard from './Help/HelpBoard';
 import ProfileBoard from './Profile/ProfileBoard';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Container = styled('div')(({ theme }) => ({
   width: '100vw',
   height: '100vh',
   display: 'flex',
 }));
+
+const Username = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  fontFamily: 'Arial, sans-serif',
+  color: '#333',
+  padding: '5px 10px',
+  borderRadius: '20px',
+  border: '1px solid #ccc',
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: '#e8e8e8',
+  },
+  '& svg': {
+    marginRight: '8px',
+    color: '#666',
+  },
+});
 
 const DrawerContainer = styled(Drawer)(({ theme }) => ({
   width: '240px',
@@ -99,16 +120,10 @@ const Dashboard = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <p
-            style={{
-              fontWeight: '900',
-              fontSize: '14px',
-              fontFamily: 'Almarai, serif',
-              alignText: 'right',
-            }}
-          >
+          <Username>
+            <AccountCircleIcon />
             {username}
-          </p>
+          </Username>
         </HeaderContainer>
         <div>{content}</div>
       </div>
