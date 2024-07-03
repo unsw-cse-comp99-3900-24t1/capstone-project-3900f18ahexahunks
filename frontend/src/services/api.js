@@ -81,6 +81,14 @@ export const getAnyFile = async (data) => {
   } catch (error) {}
 };
 
+export const sendFileToEmail = async (data) => {
+  try {
+    return await apiClient.post('/sendFile', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {

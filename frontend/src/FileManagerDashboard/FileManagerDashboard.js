@@ -58,12 +58,12 @@ const FileManagerDashboard = () => {
         const userId = user._id;
         console.log(userId, 'IEIEIJRIEJRIEJRIEJ');
         const result = await getAllValidationUblInfo({ userId });
-        setLatestData(result);
         if (result.error) {
           console.error('Error fetching initial XML files:', result);
           console.log('Error fetching initial XML files', 'tomato');
         } else {
-          console.log('CAME HERE');
+          console.log('CAME HERE', result);
+          setLatestData(result);
         }
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
