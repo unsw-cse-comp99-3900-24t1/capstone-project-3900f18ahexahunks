@@ -70,14 +70,36 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+export const deleteOneValidationUblInfo = async (data) => {
+  try {
+    const response = await apiClient.delete(
+      '/validate/delete-one-validation-data',
+      {
+        params: { userId: data.userId, dataId: data.dataId },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
 export const getAnyFile = async (data) => {
   try {
     const response = await apiClient.get('/getFile', {
-      params: { userId: data.fileId },
+      params: { fileId: data.fileId },
+      responseType: 'arraybuffer',
     });
     console.log(response.data);
     return response.data;
   } catch (error) {}
+};
+
+export const sendFileToEmail = async (data) => {
+  try {
+    return await apiClient.post('/sendFile', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
 };
 
 const API_KEY = 'ac9b9c9cdde741b99b310610242006';

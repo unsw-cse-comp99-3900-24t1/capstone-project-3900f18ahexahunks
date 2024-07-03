@@ -1,35 +1,3 @@
-// import React from 'react';
-// import { styled } from '@mui/material/styles';
-// import LockResetIcon from '@mui/icons-material/LockReset'; // Make sure to install @mui/icons-material
-
-// const ForgotPasswordWrapper = styled('div')(({ theme }) => ({
-//   marginBottom: '10px',
-//   fontSize: '14px',
-//   display: 'flex',
-//   alignItems: 'center',
-//   cursor: 'pointer',
-//   color: '#3f51b5',
-//   textDecoration: 'none',
-//   '&:hover': {
-//     color: '#1a237e',
-//     textDecoration: 'underline',
-//   },
-// }));
-
-// const ForgotPasswordText = styled('span')({
-//   marginLeft: '8px',
-// });
-
-// const ForgotPassword = () => {
-//   return (
-//     <ForgotPasswordWrapper>
-//       <LockResetIcon />
-//       <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
-//     </ForgotPasswordWrapper>
-//   );
-// };
-
-// export default ForgotPassword;
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import LockResetIcon from '@mui/icons-material/LockReset';
