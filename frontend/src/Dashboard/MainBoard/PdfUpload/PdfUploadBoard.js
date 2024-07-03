@@ -7,10 +7,9 @@ import { pdfToUblConvert } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 
 const BoardContainer = styled('div')(({ theme }) => ({
-  // backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
-  // boxShadow: theme.shadows[3],
+
   margin: '0 auto',
   textAlign: 'center',
   display: 'flex',
@@ -39,10 +38,9 @@ const PdfUploadBoard = () => {
       const fileURL = URL.createObjectURL(file);
       setPdfs((prevPdfs) => [...prevPdfs, fileURL]);
 
-      // Create a FormData object to send the file
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('userId', userId); // Append user ID
+      formData.append('userId', userId);
 
       const result = await pdfToUblConvert(formData);
       if (result.error) {

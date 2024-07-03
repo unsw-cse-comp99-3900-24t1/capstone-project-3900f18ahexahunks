@@ -70,6 +70,19 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+export const deleteOneValidationUblInfo = async (data) => {
+  try {
+    const response = await apiClient.delete(
+      '/validate/delete-one-validation-data',
+      {
+        params: { userId: data.userId, dataId: data.dataId },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
 export const getAnyFile = async (data) => {
   try {
     const response = await apiClient.get('/getFile', {
