@@ -11,12 +11,36 @@ import HelpBoard from '../Dashboard/Help/HelpBoard';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Container = styled('div')({
   width: '100vw',
   height: '100vh',
   display: 'flex',
 });
+
+const Username = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '17px',
+  fontWeight: '600',
+  fontFamily: 'Roboto, sans-serif',
+  padding: '8px 12px',
+  borderRadius: '30px',
+  background: '#ffffff',
+  cursor: 'pointer',
+  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.1s ease-in-out',
+  '&:hover': {
+    background: '#f0f0f0',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+  },
+
+  '& svg': {
+    marginRight: '5px',
+    fontSize: '1.2rem',
+  },
+}));
 
 const Container1 = styled('div')({
   width: '20%',
@@ -32,7 +56,7 @@ const Container2 = styled('div')({
 
 const HeaderContainer = styled('div')({
   height: '10vh',
-  width: '100%',
+  width: '80%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'right',
@@ -161,16 +185,11 @@ const FileManagerDashboard = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <p
-            style={{
-              fontWeight: '900',
-              fontSize: '14px',
-              fontFamily: 'Almarai, serif',
-              paddingRight: '20%',
-            }}
-          >
+
+          <Username>
+            <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
             {user.username}
-          </p>
+          </Username>
         </HeaderContainer>
         <div>{content}</div>
       </div>

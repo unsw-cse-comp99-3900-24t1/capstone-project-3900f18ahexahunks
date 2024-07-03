@@ -50,7 +50,7 @@ const AllSelectors = () => {
   const nav = useNavigate();
 
   const handleGotoDashboard = () => {
-    nav('/dashboard/main');
+    nav('/dashboard/validate');
     return;
   };
 
