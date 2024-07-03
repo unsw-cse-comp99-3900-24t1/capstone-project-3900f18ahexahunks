@@ -19,25 +19,28 @@ const Container = styled('div')(({ theme }) => ({
   display: 'flex',
 }));
 
-const Username = styled('div')({
+const Username = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  fontFamily: 'Arial, sans-serif',
-  color: '#333',
-  padding: '5px 10px',
-  borderRadius: '20px',
-  border: '1px solid #ccc',
+  fontSize: '17px',
+  fontWeight: '600',
+  fontFamily: 'Roboto, sans-serif',
+  padding: '8px 12px',
+  borderRadius: '30px',
+  background: '#ffffff',
   cursor: 'pointer',
+  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.1s ease-in-out',
   '&:hover': {
-    backgroundColor: '#e8e8e8',
+    background: '#f0f0f0',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
   },
+
   '& svg': {
-    marginRight: '8px',
-    color: '#666',
+    marginRight: '5px',
+    fontSize: '1.2rem',
   },
-});
+}));
 
 const DrawerContainer = styled(Drawer)(({ theme }) => ({
   width: '240px',
@@ -121,7 +124,7 @@ const Dashboard = () => {
             </IconButton>
           )}
           <Username>
-            <AccountCircleIcon />
+            <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
             {username}
           </Username>
         </HeaderContainer>
