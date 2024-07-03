@@ -71,9 +71,7 @@ const Login = () => {
   const goToDashboard = () => {
     setExitLeft(true);
     setExitBottom(true);
-    // setTimeout(() => {
     nav('/dashboard/main');
-    // }, 500);
   };
 
   return (

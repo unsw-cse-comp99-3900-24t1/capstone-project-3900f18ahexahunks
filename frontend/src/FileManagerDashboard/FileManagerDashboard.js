@@ -83,14 +83,14 @@ const FileManagerDashboard = () => {
           console.log('CAME HERE', result);
           setLatestData(result);
         }
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
         console.error('An unexpected error occurred:', error);
         console.log(
           'An unexpected error occurred while fetching initial XML files. Please try again later.',
           'tomato'
         );
-        setLoading(false); // Set loading to false even if there's an error
+        setLoading(false);
       }
     }
 
@@ -101,7 +101,6 @@ const FileManagerDashboard = () => {
   let selector;
 
   if (loading) {
-    // Show a loading indicator while data is being fetched
     content = <div>Loading...</div>;
     selector = <div>Loading...</div>;
   } else {

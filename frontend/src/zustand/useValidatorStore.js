@@ -36,7 +36,6 @@ const useValidatorStore = create((set, get) => ({
     }));
   },
 
-  // Action to clear all validator data
   clearValidatorData: () => set({ validatorData: [] }),
 }));
 
