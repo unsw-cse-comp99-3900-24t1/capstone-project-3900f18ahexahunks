@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useValidatorStore from '../zustand/useValidatorStore';
 import useUserStore from '../zustand/useUserStore';
-import { styled } from '@mui/system';
+import { styled, useTheme } from '@mui/system';
+import { useMediaQuery, Drawer, IconButton } from '@mui/material';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
 import UblBoard from './UblValidation/MainBoard/UblBoard';
 import ValidBoard from './UblValidation/MainBoard/ValidBoard';
 import HelpBoard from '../Dashboard/Help/HelpBoard';
+import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
 
@@ -34,13 +36,29 @@ const HeaderContainer = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'right',
-  // paddingRight: '20%',
+  paddingLeft: '30px',
+
+  '@media (max-width: 1200px)': {
+    justifyContent: 'space-between',
+    right: '10%',
+  },
 });
+const DrawerContainer = styled(Drawer)(({ theme }) => ({
+  width: '240px',
+  flexShrink: 0,
+  '& .MuiDrawer-paper': {
+    width: '240px',
+    boxSizing: 'border-box',
+  },
+}));
 
 const FileManagerDashboard = () => {
   const { process, file, id } = useParams();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const getUser = useUserStore((state) => state.getUser);
@@ -119,9 +137,31 @@ const FileManagerDashboard = () => {
 
   return (
     <Container>
-      <Container1>{selector}</Container1>
-      <Container2>
+      {isMobile ? (
+        <>
+          <DrawerContainer
+            anchor="left"
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+          >
+            {selector}
+          </DrawerContainer>
+        </>
+      ) : (
+        <div style={{ width: '20%', backgroundColor: '#ffffff' }}>
+          {selector}
+        </div>
+      )}
+      <div
+        style={{ width: isMobile ? '100%' : '80%', backgroundColor: '#F9F9F9' }}
+      >
+        {/* <Container2> */}
         <HeaderContainer>
+          {isMobile && (
+            <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+              <MenuIcon />
+            </IconButton>
+          )}
           <p
             style={{
               fontWeight: '900',
@@ -134,7 +174,8 @@ const FileManagerDashboard = () => {
           </p>
         </HeaderContainer>
         <div>{content}</div>
-      </Container2>
+      </div>
+      {/* </Container2> */}
     </Container>
   );
 };
