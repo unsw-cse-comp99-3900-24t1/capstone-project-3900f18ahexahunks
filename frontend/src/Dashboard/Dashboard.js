@@ -4,7 +4,7 @@ import { useMediaQuery, Drawer, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
@@ -70,8 +70,15 @@ const Dashboard = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { getUser } = useUserStore();
-  const username = getUser().username;
+  const user = getUser();
+  const username = user.username;
   const { process } = useParams();
+
+  const nav = useNavigate();
+
+  const handleOpenProfile = () => {
+    nav(`/profile/${user._id}`);
+  };
 
   let content;
   switch (process) {
@@ -87,9 +94,9 @@ const Dashboard = () => {
     case 'help':
       content = <HelpBoard />;
       break;
-    case 'profile':
-      content = <ProfileBoard />;
-      break;
+    // case 'profile':
+    //   content = <ProfileBoard />;
+    //   break;
     case 'main':
       content = <Board />;
       break;
@@ -123,7 +130,7 @@ const Dashboard = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <Username>
+          <Username onClick={handleOpenProfile}>
             <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
             {username}
           </Username>

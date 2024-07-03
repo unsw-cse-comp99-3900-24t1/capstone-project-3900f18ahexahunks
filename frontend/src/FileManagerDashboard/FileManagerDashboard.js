@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useValidatorStore from '../zustand/useValidatorStore';
 import useUserStore from '../zustand/useUserStore';
 import { styled, useTheme } from '@mui/system';
@@ -83,6 +83,12 @@ const FileManagerDashboard = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const nav = useNavigate();
+
+  const handleOpenProfile = () => {
+    nav(`/profile/${user._id}`);
+  };
 
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const getUser = useUserStore((state) => state.getUser);
@@ -186,7 +192,7 @@ const FileManagerDashboard = () => {
             </IconButton>
           )}
 
-          <Username>
+          <Username onClick={handleOpenProfile}>
             <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
             {user.username}
           </Username>
