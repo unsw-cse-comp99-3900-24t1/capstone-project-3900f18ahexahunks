@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useAlert } from '../../../components/AlertError';
 import { sendFileToEmail } from '../../../services/api';
 import { validateEmail } from '../../../shared/validators';
-
+//
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
