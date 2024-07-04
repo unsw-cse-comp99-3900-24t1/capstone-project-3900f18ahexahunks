@@ -8,6 +8,7 @@ import RedirectToRegister from './RedirectToRegister';
 import { useAlert } from '../../components/AlertError';
 import { login } from '../../services/api';
 import useUserStore from '../../zustand/useUserStore';
+import GoogleAuth from '../GoogleAuth';
 
 const LoginInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,7 @@ const LoginInputs = ({ goToDashboard }) => {
   const { showAlert } = useAlert();
 
   const { setUser, getUser } = useUserStore();
+  const [newUser, setNewUser] = useState([]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -97,6 +99,13 @@ const LoginInputs = ({ goToDashboard }) => {
       />
 
       <RedirectToRegister />
+      <div style={{ marginTop: '30px' }}>
+        <GoogleAuth
+          setNewUser={setNewUser}
+          newUser={newUser}
+          goToDashboard={goToDashboard}
+        />
+      </div>
 
       {loading && <LoadingIndicator />}
     </div>

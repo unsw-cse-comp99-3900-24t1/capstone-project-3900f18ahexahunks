@@ -5,6 +5,7 @@ import SelectorLogo from '../../components/SelectorLogo';
 import MainSelectors from './MainSelectors';
 import useValidatorStore from '../../zustand/useValidatorStore';
 import useUserStore from '../../zustand/useUserStore';
+import { googleLogout } from '@react-oauth/google';
 
 const Selector = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Selector = () => {
   const clearUser = useUserStore((state) => state.clearUser);
 
   const handleLogout = () => {
+    googleLogout();
     localStorage.clear();
     Cookies.remove('token', { path: '/' });
     localStorage.clear();

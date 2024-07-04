@@ -9,6 +9,7 @@ import { register } from '../../services/api';
 import useUserStore from '../../zustand/useUserStore';
 import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
+import GoogleAuth from '../GoogleAuth';
 
 /** hiiiii  testing the master*/
 const RegisterInputs = ({ goToDashboard }) => {
@@ -16,6 +17,8 @@ const RegisterInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
+
+  const [newUser, setNewUser] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
@@ -48,6 +51,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         showAlert(response.data, 'tomato');
       } else {
         showAlert(`Welcome ${name}`, 'green');
+        console.log(response.data);
         setUser({ user: response.data });
         goToDashboard();
       }
@@ -148,6 +152,11 @@ const RegisterInputs = ({ goToDashboard }) => {
       />
 
       <RedirectToLogin />
+      <GoogleAuth
+        setNewUser={setNewUser}
+        newUser={newUser}
+        goToDashboard={goToDashboard}
+      />
 
       {loading && <LoadingIndicator />}
     </div>
