@@ -61,6 +61,7 @@ const GoogleAuth = ({ setNewUser, newUser, goToDashboard }) => {
     if (newUser && newUser.length !== 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newUser]);
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setNewUser(codeResponse),
