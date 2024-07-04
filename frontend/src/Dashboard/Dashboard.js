@@ -72,6 +72,7 @@ const Dashboard = () => {
   const { getUser } = useUserStore();
   const user = getUser();
   const username = user.username;
+  console.log('USERNMAE', username, 'THIS IS THE USERNAME');
   const { process } = useParams();
 
   const nav = useNavigate();
