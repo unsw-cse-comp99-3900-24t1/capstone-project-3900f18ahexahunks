@@ -17,6 +17,14 @@ export const register = async (data) => {
   }
 };
 
+export const googleLoginBackend = async (data) => {
+  try {
+    return await apiClient.post('/auth/google-login', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 export const forgotPassword = async (data) => {
   try {
     return await apiClient.post('/auth/forgot-password', data);
@@ -167,3 +175,22 @@ function isSameDay(date1, date2) {
     date1.getDate() === date2.getDate()
   );
 }
+
+// Google API function
+export const fetchGoogleUserInfo = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching Google user info:', error);
+    throw new Error('Failed to fetch Google user info');
+  }
+};
