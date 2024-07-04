@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/system';
-import { useMediaQuery, Drawer, IconButton, Typography } from '@mui/material';
+import { useMediaQuery, Drawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
@@ -10,8 +10,6 @@ import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
 import SettingsBoard from './Settings/SettingsBoard';
 import HelpBoard from './Help/HelpBoard';
-import ProfileBoard from './Profile/ProfileBoard';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Container = styled('div')(({ theme }) => ({
   width: '100vw',
@@ -132,7 +130,17 @@ const Dashboard = () => {
             </IconButton>
           )}
           <Username onClick={handleOpenProfile}>
-            <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
+            <img
+              src={user.googlePicture}
+              // src={`http://localhost:5003${user.googlePicture}`}
+              alt="avatar"
+              style={{
+                height: '26px',
+                width: '26px',
+                borderRadius: '50%',
+                marginRight: '10px',
+              }}
+            />
             {username}
           </Username>
         </HeaderContainer>

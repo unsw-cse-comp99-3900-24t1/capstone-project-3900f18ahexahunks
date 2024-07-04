@@ -54,6 +54,19 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
+export const changeImageProfileEdit = async (formData) => {
+  try {
+    const response = await apiClient.post(
+      '/edit/change-profile-photo',
+      formData
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
+
 export const validateUBL = async (formData) => {
   try {
     const response = await apiClient.post('/validate/validate-ubl', formData, {
