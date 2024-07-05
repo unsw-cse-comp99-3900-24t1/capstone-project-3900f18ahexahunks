@@ -22,8 +22,8 @@ describe('Auth Testing', () => {
     // Registering a new user and going to the dashboard
     cy.get('[data-testid="register-name"]').type(name);
     cy.get('[data-testid="register-email"]').type(uniqueEmail);
-    cy.get('[data-testid="register-password"]').type(timestamp);
-    cy.get('[data-testid="register-check-password"]').type(timestamp);
+    cy.get('[data-testid="register-password"]').type('T@123timestamp');
+    cy.get('[data-testid="register-check-password"]').type('T@123timestamp');
     cy.get('[data-testid="register-submit"]').click();
 
     cy.url().should('include', '/dashboard');
@@ -39,7 +39,7 @@ describe('Auth Testing', () => {
 
     // Logging in same user and going to the dashboard
     cy.get('[data-testid="login-email"]').type(uniqueEmail);
-    cy.get('[data-testid="login-password"]').type(timestamp);
+    cy.get('[data-testid="login-password"]').type('T@123timestamp');
     cy.get('[data-testid="login-submit"]').click();
 
     cy.url().should('include', '/dashboard');

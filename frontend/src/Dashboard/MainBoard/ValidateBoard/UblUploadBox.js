@@ -89,7 +89,7 @@ const UblUploadBox = ({ handleUpload }) => {
 
   return (
     <>
-      <UploadBox onClick={handleOpen}>
+      <UploadBox data-testid={'upload-xml-plus-btn'} onClick={handleOpen}>
         <UploadLabel>+</UploadLabel>
       </UploadBox>
       <Modal
@@ -123,6 +123,7 @@ const UblUploadBox = ({ handleUpload }) => {
             }}
             disabled={name === '' || file === null}
             onClick={handleSubmit}
+            dataTestid={'upload-xml-submit-btn'}
           />
         </Box>
       </Modal>
