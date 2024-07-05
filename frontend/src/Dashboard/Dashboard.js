@@ -65,22 +65,29 @@ const HeaderContainer = styled('div')(({ theme }) => ({
   },
 }));
 
+// Main dashboard component where user comes first to interact with the app
 const Dashboard = () => {
+  // to handle media queries
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Get user info
   const { getUser } = useUserStore();
   const user = getUser();
   const username = user.username;
-  console.log('USERNMAE', username, 'THIS IS THE USERNAME');
+
   const { process } = useParams();
 
   const nav = useNavigate();
 
+  // To go to the profile page
   const handleOpenProfile = () => {
     nav(`/profile/${user._id}`);
   };
 
+  // To set the dashboard according to the params that are set
+  // and the option user has picked on the selectors
   let content;
   switch (process) {
     case 'convert':

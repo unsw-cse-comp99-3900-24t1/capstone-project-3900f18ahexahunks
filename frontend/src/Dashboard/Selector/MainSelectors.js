@@ -44,10 +44,13 @@ const StyledLogoutButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+// The component that contains the left hand side selectors on the
+// main dashboard for users navigation on the main dashboard
 const MainSelectors = ({ handleLogout }) => {
   const { process } = useParams();
   const [selectedRoute, setSelectedRoute] = useState('');
 
+  // Checks the params and sets the mani board accordingly for the main dashboard
   useEffect(() => {
     if (process === 'main') {
       setSelectedRoute('/dashboard/main');
