@@ -1,5 +1,6 @@
 import React from 'react';
 
+// The hexahunks login logo
 const LoginHeader = () => {
   return (
     <div

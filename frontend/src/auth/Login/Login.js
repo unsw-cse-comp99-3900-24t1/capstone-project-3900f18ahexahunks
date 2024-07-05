@@ -63,15 +63,20 @@ const Container2 = styled('div')({
   },
 });
 
+// The main component for user login interface
 const Login = () => {
   const [exitLeft, setExitLeft] = useState(false);
   const [exitBottom, setExitBottom] = useState(false);
   const nav = useNavigate();
 
+  // To send the user to dashboard on successful login
   const goToDashboard = () => {
+    // Just some animation on login success
     setExitLeft(true);
     setExitBottom(true);
-    nav('/dashboard/main');
+    setTimeout(() => {
+      nav('/dashboard/main');
+    }, 400);
   };
 
   return (

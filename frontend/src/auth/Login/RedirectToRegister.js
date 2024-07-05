@@ -10,6 +10,7 @@ const RedirectInfo = styled('p')({
   },
 });
 
+// If user clicks on register then user taken to the register page
 const RedirectToRegister = () => {
   const nav = useNavigate();
 
