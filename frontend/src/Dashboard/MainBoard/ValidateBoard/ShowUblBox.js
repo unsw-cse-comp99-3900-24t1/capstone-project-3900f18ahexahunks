@@ -47,6 +47,7 @@ const DeleteButton = styled(IconButton)({
   },
 });
 
+// To show all the ubl's and handle deleting the reports/report
 const ShowUblBox = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
@@ -61,31 +62,36 @@ const ShowUblBox = ({ isLoading }) => {
   const getUser = useUserStore((state) => state.getUser);
   const xmlFiles = getValidatorData();
 
+  // when user opens a particular record they are taken to the xml file first and that dashboard
   const handleOpenValidationReport = (xml) => {
     nav(`/handle-files/validation-reports/ubl/${xml._id}`);
   };
 
+  // to open modal to confirm delete a particular record
   const handleDeleteClick = (xml) => {
     setSelectedXml(xml);
     setOpenDialog(true);
   };
 
+  // to finally delete the record when user has confirmed deletion
   const handleConfirmDelete = async () => {
-    console.log('DELETE', selectedXml);
+    // getting the current user to get the userId
     const user = getUser();
-    console.log('USERUSER', user);
     try {
+      // Finally calling the delete record api
       await deleteOneValidationUblInfo({
         userId: user._id,
         dataId: selectedXml._id,
       });
-      deleteValidatorDataById(selectedXml._id);
-      showAlert('Deleted record successfully', 'green');
 
+      // Deleting the record from zustand as well
+      deleteValidatorDataById(selectedXml._id);
+
+      // Confirmation notice to user (feedback)
+      showAlert('Deleted record successfully', 'green');
       setOpenDialog(false);
     } catch (error) {
-      console.error('Error while deleting UBL validation data:', error);
-
+      // Error handling
       showAlert(
         'Failed to delete the validation data. Please try again.',
         'tomato'
@@ -93,6 +99,7 @@ const ShowUblBox = ({ isLoading }) => {
     }
   };
 
+  // To close the modal
   const handleClose = () => {
     setOpenDialog(false);
   };

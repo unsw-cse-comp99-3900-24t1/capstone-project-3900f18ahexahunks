@@ -27,43 +27,54 @@ const StyledGoogleButton = styled(Button)({
   },
 });
 
+// Component to handle google auth users login
 const GoogleAuth = ({ setNewUser, newUser, goToDashboard }) => {
   const { showAlert } = useAlert();
   const { setUser } = useUserStore();
 
+  // If newUser is set by google Auth then this code runs
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (newUser) {
+          // Gets the user info from the google oAuth api
           const userInfo = await fetchGoogleUserInfo(newUser.access_token);
+
+          // After data is received from the access key we save it in the mongoDB
           const response = await googleLoginBackend({
             googleId: userInfo.id,
-            email: userInfo.email,
+            email: userInfo.email, //googleEmail
             username: userInfo.name, //googleName
             googlePicture: userInfo.picture,
           });
+
           if (response.error) {
             showAlert(response.data, 'tomato');
           } else {
+            // If everything works successfully log user in
             showAlert(`Welcome ${userInfo.name}`, 'green');
-            console.log(response.data, 'HULAHULA');
+
+            // set user to the zustand as well
             setUser({ user: response.data });
+
+            // Finally take then to the dashboard
             goToDashboard();
           }
           console.log('Google User Info:', userInfo);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
         showAlert('Error fetching user data', 'error');
       }
     };
 
-    console.log(newUser, 'NEWUSER RIGHT NOW');
+    // Only runs the fetch request when user (access key) is set by google auth for efficiency
     if (newUser && newUser.length !== 0) {
       fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newUser]);
+
+  // function to get the access token for the google user
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setNewUser(codeResponse),
     onError: (error) => console.log('Login Failed:', error),

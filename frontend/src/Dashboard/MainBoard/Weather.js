@@ -47,12 +47,14 @@ const Error = styled('div')(({ theme }) => ({
   margin: theme.spacing(2, 0),
 }));
 
+// To display the latest weather data on users location on the dashboard
 const Weather = () => {
   const { user, setUser } = useUserStore();
   const [weather, setWeather] = useState(user.weather || null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(!weather);
 
+  // Api to get the latest weather data
   useEffect(() => {
     const getWeather = async (lat, lon) => {
       try {

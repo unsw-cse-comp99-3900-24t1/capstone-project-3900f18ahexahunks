@@ -66,18 +66,22 @@ const FileInput = styled('input')({
   },
 });
 
+// To upload a ubl xml file to the app for validation purposes
 const UblUploadBox = ({ handleUpload }) => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
 
+  // Handles modal for uploading files
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Sets the file when it is uploaded by the user
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
+  // Finally if user clicks submit the file is sent to the backend for processing
   const handleSubmit = () => {
     if (file) {
       handleUpload(file, name);
