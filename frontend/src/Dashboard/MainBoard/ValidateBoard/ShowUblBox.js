@@ -59,11 +59,6 @@ const ShareButton = styled(IconButton)({
   },
 });
 
-// Dummy function for sharing PDF
-const sharePDFFunc = (pdf) => {
-  alert(`Sharing PDF: ${pdf.name}`);
-};
-
 const ShowUblBox = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
