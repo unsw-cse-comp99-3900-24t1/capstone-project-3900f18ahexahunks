@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShareIcon from '@mui/icons-material/Share';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -47,7 +48,22 @@ const DeleteButton = styled(IconButton)({
   },
 });
 
-// To show all the ubl's and handle deleting the reports/report
+const ShareButton = styled(IconButton)({
+  position: 'absolute',
+  top: '8px',
+  left: '8px',
+  color: 'rgba(0, 0, 255, 0.3)',
+  '&:hover': {
+    color: '#0000ff',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+});
+
+// Dummy function for sharing PDF
+const sharePDFFunc = (pdf) => {
+  alert(`Sharing PDF: ${pdf.name}`);
+};
+
 const ShowUblBox = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
@@ -62,36 +78,28 @@ const ShowUblBox = ({ isLoading }) => {
   const getUser = useUserStore((state) => state.getUser);
   const xmlFiles = getValidatorData();
 
-  // when user opens a particular record they are taken to the xml file first and that dashboard
   const handleOpenValidationReport = (xml) => {
     nav(`/handle-files/validation-reports/ubl/${xml._id}`);
   };
 
-  // to open modal to confirm delete a particular record
   const handleDeleteClick = (xml) => {
     setSelectedXml(xml);
     setOpenDialog(true);
   };
 
-  // to finally delete the record when user has confirmed deletion
   const handleConfirmDelete = async () => {
-    // getting the current user to get the userId
     const user = getUser();
     try {
-      // Finally calling the delete record api
       await deleteOneValidationUblInfo({
         userId: user._id,
         dataId: selectedXml._id,
       });
 
-      // Deleting the record from zustand as well
       deleteValidatorDataById(selectedXml._id);
 
-      // Confirmation notice to user (feedback)
       showAlert('Deleted record successfully', 'green');
       setOpenDialog(false);
     } catch (error) {
-      // Error handling
       showAlert(
         'Failed to delete the validation data. Please try again.',
         'tomato'
@@ -99,9 +107,12 @@ const ShowUblBox = ({ isLoading }) => {
     }
   };
 
-  // To close the modal
   const handleClose = () => {
     setOpenDialog(false);
+  };
+
+  const handleShareClick = (xml) => {
+    nav(`/handle-files/validation-reports/share/${xml._id}`);
   };
 
   return (
@@ -116,6 +127,14 @@ const ShowUblBox = ({ isLoading }) => {
           >
             <DeleteIcon />
           </DeleteButton>
+          <ShareButton
+            onClick={(e) => {
+              e.stopPropagation();
+              handleShareClick(xml);
+            }}
+          >
+            <ShareIcon />
+          </ShareButton>
           <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>
             {xml.name}
           </h2>

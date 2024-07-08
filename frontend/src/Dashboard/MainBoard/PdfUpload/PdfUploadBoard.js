@@ -41,6 +41,7 @@ const PdfUploadBoard = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('userId', userId);
+      formData.append('name', 'name');
 
       const result = await pdfToUblConvert(formData);
       if (result.error) {
