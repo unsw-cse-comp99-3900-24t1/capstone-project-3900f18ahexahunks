@@ -86,6 +86,33 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+// API to get pdf info from userSchema
+export const getAllPdfInfo = async (data) => {
+  try {
+    return [];
+    const response = await apiClient.get('/validate/get-all-validation-data', {
+      params: { userId: data.userId },
+    });
+    console.log(response.data);
+    return response.data.ublValidation;
+  } catch (error) {}
+};
+
+// API to delete one record for validation data from backend and also the corresponding files
+export const deleteOnePdfInfo = async (data) => {
+  try {
+    return {};
+    const response = await apiClient.delete(
+      '/validate/delete-one-validation-data',
+      {
+        params: { userId: data.userId, dataId: data.dataId },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
 // API to delete one record for validation data from backend and also the corresponding files
 export const deleteOneValidationUblInfo = async (data) => {
   try {
