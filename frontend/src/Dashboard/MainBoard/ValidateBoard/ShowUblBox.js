@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShareIcon from '@mui/icons-material/Share';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -47,6 +48,17 @@ const DeleteButton = styled(IconButton)({
   },
 });
 
+const ShareButton = styled(IconButton)({
+  position: 'absolute',
+  top: '8px',
+  left: '8px',
+  color: 'rgba(0, 0, 255, 0.3)',
+  '&:hover': {
+    color: '#0000ff',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+});
+
 const ShowUblBox = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
@@ -71,21 +83,18 @@ const ShowUblBox = ({ isLoading }) => {
   };
 
   const handleConfirmDelete = async () => {
-    console.log('DELETE', selectedXml);
     const user = getUser();
-    console.log('USERUSER', user);
     try {
       await deleteOneValidationUblInfo({
         userId: user._id,
         dataId: selectedXml._id,
       });
-      deleteValidatorDataById(selectedXml._id);
-      showAlert('Deleted record successfully', 'green');
 
+      deleteValidatorDataById(selectedXml._id);
+
+      showAlert('Deleted record successfully', 'green');
       setOpenDialog(false);
     } catch (error) {
-      console.error('Error while deleting UBL validation data:', error);
-
       showAlert(
         'Failed to delete the validation data. Please try again.',
         'tomato'
@@ -95,6 +104,10 @@ const ShowUblBox = ({ isLoading }) => {
 
   const handleClose = () => {
     setOpenDialog(false);
+  };
+
+  const handleShareClick = (xml) => {
+    nav(`/handle-files/validation-reports/share/${xml._id}`);
   };
 
   return (
@@ -109,6 +122,14 @@ const ShowUblBox = ({ isLoading }) => {
           >
             <DeleteIcon />
           </DeleteButton>
+          <ShareButton
+            onClick={(e) => {
+              e.stopPropagation();
+              handleShareClick(xml);
+            }}
+          >
+            <ShareIcon />
+          </ShareButton>
           <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>
             {xml.name}
           </h2>

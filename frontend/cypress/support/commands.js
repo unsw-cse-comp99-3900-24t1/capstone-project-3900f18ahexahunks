@@ -23,3 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import 'cypress-file-upload';
+
+// Custom command to attach a file and verify its extension
+Cypress.Commands.add('attachFileAndCheckExtension', (fileName, mimeType) => {
+  cy.fixture(fileName).then((fileContent) => {
+    const file = new File([fileContent], fileName, { type: mimeType });
+    const event = { dataTransfer: { files: [file] } };
+
+    // Check the file extension
+    const extension = fileName.split('.').pop().toLowerCase();
+    expect(extension).to.equal('xml', 'File extension should be xml');
+
+    // Attach the file
+    cy.get('input[type="file"]').trigger('drop', event);
+  });
+});

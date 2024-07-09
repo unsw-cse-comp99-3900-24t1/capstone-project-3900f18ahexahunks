@@ -31,19 +31,23 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+// Component that handles user setting new password from the email
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
   const { token } = useParams();
   const navigate = useNavigate();
   const { showAlert } = useAlert();
 
+  // Checks if the token is there in the params for security
   useEffect(() => {
     if (!token) {
       navigate('*');
     }
   }, [token, navigate]);
 
+  // On submit resets the password if token is valid
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,6 +57,7 @@ const ResetPassword = () => {
     }
 
     try {
+      // sends the request to reset password
       const response = await resetPassword({ newPassword: password, token });
       if (response.error) {
         showAlert(
@@ -60,6 +65,7 @@ const ResetPassword = () => {
           'tomato'
         );
       } else {
+        // On success user is sent to login page to login with new password
         showAlert('Password reset successfully', 'green');
         navigate('/login');
       }

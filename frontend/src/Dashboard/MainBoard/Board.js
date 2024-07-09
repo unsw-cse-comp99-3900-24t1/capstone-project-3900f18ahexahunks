@@ -30,6 +30,7 @@ const SubHeading = styled('h1')(({ theme }) => ({
   margin: theme.spacing(1, 0),
 }));
 
+// The main dashboard that is displayed on user login
 const Board = () => {
   const { getUser } = useUserStore();
 

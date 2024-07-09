@@ -1,6 +1,7 @@
 import axios from 'axios';
 import apiClient from './client';
 
+// API to send the login request
 export const login = async (data) => {
   try {
     return await apiClient.post('/auth/login', data);
@@ -9,6 +10,7 @@ export const login = async (data) => {
   }
 };
 
+// API to send the register request
 export const register = async (data) => {
   try {
     return await apiClient.post('/auth/register', data);
@@ -17,6 +19,7 @@ export const register = async (data) => {
   }
 };
 
+// API to send the login/register request for google auth users
 export const googleLoginBackend = async (data) => {
   try {
     return await apiClient.post('/auth/google-login', data);
@@ -25,6 +28,7 @@ export const googleLoginBackend = async (data) => {
   }
 };
 
+// API to send request to send email for reset password
 export const forgotPassword = async (data) => {
   try {
     return await apiClient.post('/auth/forgot-password', data);
@@ -33,6 +37,7 @@ export const forgotPassword = async (data) => {
   }
 };
 
+// API to finally reset the user password on success
 export const resetPassword = async (data) => {
   try {
     return await apiClient.post('/auth/reset-password', data);
@@ -41,6 +46,7 @@ export const resetPassword = async (data) => {
   }
 };
 
+// API to convert pdf to ubl xml (CURRENTLY NOT WORKING)
 export const pdfToUblConvert = async (formData) => {
   try {
     const response = await apiClient.post('/convert/upload-pdf', formData, {
@@ -54,6 +60,7 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
+// API to send UBl to backend for validation
 export const validateUBL = async (formData) => {
   try {
     const response = await apiClient.post('/validate/validate-ubl', formData, {
@@ -68,6 +75,7 @@ export const validateUBL = async (formData) => {
   }
 };
 
+// API to get validation info from userSchema
 export const getAllValidationUblInfo = async (data) => {
   try {
     const response = await apiClient.get('/validate/get-all-validation-data', {
@@ -78,6 +86,34 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+// API to get pdf info from userSchema
+export const getAllPdfInfo = async (data) => {
+  try {
+    return [];
+    const response = await apiClient.get('/validate/get-all-validation-data', {
+      params: { userId: data.userId },
+    });
+    console.log(response.data);
+    return response.data.ublValidation;
+  } catch (error) {}
+};
+
+// API to delete one record for validation data from backend and also the corresponding files
+export const deleteOnePdfInfo = async (data) => {
+  try {
+    return {};
+    const response = await apiClient.delete(
+      '/validate/delete-one-validation-data',
+      {
+        params: { userId: data.userId, dataId: data.dataId },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {}
+};
+
+// API to delete one record for validation data from backend and also the corresponding files
 export const deleteOneValidationUblInfo = async (data) => {
   try {
     const response = await apiClient.delete(
@@ -91,6 +127,7 @@ export const deleteOneValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+// API to get any particular file from the backend
 export const getAnyFile = async (data) => {
   try {
     const response = await apiClient.get('/getFile', {
@@ -102,6 +139,7 @@ export const getAnyFile = async (data) => {
   } catch (error) {}
 };
 
+// API to send particular file/files to a users email
 export const sendFileToEmail = async (data) => {
   try {
     return await apiClient.post('/sendFile', data);
@@ -110,6 +148,7 @@ export const sendFileToEmail = async (data) => {
   }
 };
 
+// API to get the weather data from the weatherAPI
 const API_KEY = 'ac9b9c9cdde741b99b310610242006';
 export const fetchWeather = async (lat, lon) => {
   try {
@@ -129,6 +168,7 @@ export const fetchWeather = async (lat, lon) => {
   }
 };
 
+// API to get the thought of the day form the rapidAPI
 const STORAGE_KEY = 'thoughtOfTheDay';
 export async function getThoughtOfTheDay() {
   try {
@@ -176,7 +216,7 @@ function isSameDay(date1, date2) {
   );
 }
 
-// Google API function
+// Google API to get user info from the generated access token
 export const fetchGoogleUserInfo = async (accessToken) => {
   try {
     const response = await axios.get(

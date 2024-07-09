@@ -34,14 +34,17 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const { showAlert } = useAlert();
 
+  // open the modal
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  // to close the modal
   const handleClose = () => {
     setOpen(false);
   };
 
+  // To send the email to user to reset password
   const handleSubmit = async () => {
     handleClose();
     console.log('Email:', email);

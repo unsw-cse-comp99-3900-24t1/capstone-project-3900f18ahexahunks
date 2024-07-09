@@ -31,29 +31,36 @@ const BoardWrapper = styled('div')({
   width: '100%',
 });
 
+// Main component for keeping the record of validations of xmls (ubl)
 const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
-  const [isLoading, setIsLoading] = useState(false);
+
   const addValidatorData = useValidatorStore((state) => state.addValidatorData);
   const setLatestData = useValidatorStore((state) => state.setLatestData);
 
+  // Gets the latest file storage from the db for all the ids and stuff
   useEffect(() => {
     const fetchInitialXmlFiles = async () => {
       try {
+        // gets user data
         const user = getUser();
         const userId = user._id;
+
+        // sends request to get the latest validation data
         const result = await getAllValidationUblInfo({ userId });
         if (result.error) {
-          console.error('Error fetching initial XML files:', result);
           showAlert('Error fetching initial XML files', 'tomato');
         } else {
+          // sets the latest data to zustand and state
           setXmlFiles(result);
           setLatestData(result);
         }
       } catch (error) {
-        console.error('An unexpected error occurred:', error);
+        // Error handling
         showAlert(
           'An unexpected error occurred while fetching initial XML files. Please try again later.',
           'tomato'
@@ -62,27 +69,34 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  },[]);
+  }, []);
 
+  // To handle upload of the latest xml and send for processing in backend
   const handleUpload = async (file, name) => {
+    // Start loading so that user knows something is working in the backend
     setIsLoading(true);
     try {
+      // get user data
       const user = getUser();
       const userId = user._id;
 
+      // Confirm file is of type xml
       if (file && file.type === 'text/xml') {
+        // Create file data to send to backend
         const formData = new FormData();
         formData.append('file', file);
         formData.append('userId', userId);
         formData.append('name', name);
 
+        // Finally send the data to backend for processing
         const result = await validateUBL(formData);
+
         if (result.error) {
-          console.error('Error converting PDF to UBL:', result);
           showAlert('Error converting/uploading PDF', 'tomato');
         } else {
           showAlert('UBL successfully validated', 'green');
-          console.log('Conversion successful:', result);
+
+          // On success save the new ubl data to zustand and the state
           const data = {
             _id: result.newObjectId,
             ublId: result.ublId,
@@ -97,12 +111,14 @@ const ValidateBoard = () => {
         showAlert('Invalid file type. Please upload an XML file.', 'tomato');
       }
     } catch (error) {
+      // Error handling
       console.error('An unexpected error occurred:', error);
       showAlert(
         'An unexpected error occurred. Please try again later.',
         'tomato'
       );
     } finally {
+      // Close loading
       setIsLoading(false);
     }
   };
