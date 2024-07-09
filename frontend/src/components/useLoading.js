@@ -1,7 +1,6 @@
 import React, { useState, useContext, createContext } from 'react';
 import LoadingIndicator from './LoadingIndicator';
 
-// Context to pass the loading functions and state across the app
 const LoadingContext = createContext();
 
 export const LoadingProvider = ({ children }) => {
@@ -18,7 +17,6 @@ export const LoadingProvider = ({ children }) => {
   );
 };
 
-// Hook to use the loading context
 export const useLoading = () => {
   const context = useContext(LoadingContext);
   if (context === undefined) {

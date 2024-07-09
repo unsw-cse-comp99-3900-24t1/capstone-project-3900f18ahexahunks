@@ -1,3 +1,4 @@
+import React from 'react';
 import RegisterSlider from './RegisterSlider';
 
 const RegisterBody = () => {

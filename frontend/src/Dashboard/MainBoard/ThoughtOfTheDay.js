@@ -33,9 +33,11 @@ const ThoughtText = styled('div')(({ theme }) => ({
   },
 }));
 
+// To display the thought of the day on the dashboard main page
 const ThoughtOfTheDay = () => {
   const [thought, setThought] = useState('');
 
+  // API to get the latest thought of the day
   useEffect(() => {
     const fetchThoughtOfTheDay = async () => {
       const thoughtData = await getThoughtOfTheDay();

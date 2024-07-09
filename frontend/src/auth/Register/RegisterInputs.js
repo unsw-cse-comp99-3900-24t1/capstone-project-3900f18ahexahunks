@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import RedirectToLogin from './RedirectToLogin';
 import { useAlert } from '../../components/AlertError';
-import { validateEmail } from '../../shared/validators';
+import { validateEmail, validatePassword } from '../../shared/validators';
 import { register } from '../../services/api';
 import useUserStore from '../../zustand/useUserStore';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import GoogleAuth from '../GoogleAuth';
 
 /** hiiiii  testing the master*/
 const RegisterInputs = ({ goToDashboard }) => {
@@ -14,6 +17,8 @@ const RegisterInputs = ({ goToDashboard }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
+
+  const [newUser, setNewUser] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
@@ -34,6 +39,11 @@ const RegisterInputs = ({ goToDashboard }) => {
       return;
     }
 
+    if (!validatePassword(password)) {
+      showAlert('Password does not match criteria', 'tomato');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await register({ username: name, email, password });
@@ -41,6 +51,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         showAlert(response.data, 'tomato');
       } else {
         showAlert(`Welcome ${name}`, 'green');
+        console.log(response.data);
         setUser({ user: response.data });
         goToDashboard();
       }
@@ -80,6 +91,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setName}
         value={name}
         onKeyDown={handleKeyDown}
+        data-testid={'register-name'}
       />
       <CustomInputBox
         placeholder="johnsondoe@nomail.com"
@@ -88,16 +100,30 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setEmail}
         value={email}
         onKeyDown={handleKeyDown}
+        data-testid={'register-email'}
       />
-      <CustomInputBox
-        style={{ marginTop: '30px' }}
-        placeholder="########"
-        label="Password"
-        type="password"
-        setValue={setPassword}
-        value={password}
-        onKeyDown={handleKeyDown}
-      />
+      <div style={{ position: 'relative', marginTop: '30px' }}>
+        <CustomInputBox
+          placeholder="########"
+          label="Password"
+          type="password"
+          setValue={setPassword}
+          value={password}
+          onKeyDown={handleKeyDown}
+          data-testid={'register-password'}
+        />
+        <Tooltip title="Password must be at least 8 characters long and include at least one number, one special character, and one uppercase letter">
+          <InfoIcon
+            style={{
+              position: 'absolute',
+              right: '40px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              cursor: 'pointer',
+            }}
+          />
+        </Tooltip>
+      </div>
       <CustomInputBox
         style={{ marginTop: '30px' }}
         placeholder="########"
@@ -106,6 +132,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         setValue={setCheckPassword}
         value={checkPassword}
         onKeyDown={handleKeyDown}
+        data-testid={'register-check-password'}
       />
       <CustomPrimaryButton
         label="CONTINUE"
@@ -121,9 +148,15 @@ const RegisterInputs = ({ goToDashboard }) => {
             submitRegister(e);
           }
         }}
+        dataTestid={'register-submit'}
       />
 
       <RedirectToLogin />
+      <GoogleAuth
+        setNewUser={setNewUser}
+        newUser={newUser}
+        goToDashboard={goToDashboard}
+      />
 
       {loading && <LoadingIndicator />}
     </div>

@@ -1,3 +1,4 @@
+import React from 'react';
 const Card = ({ bgColour, file, text, para }) => {
   return (
     <div

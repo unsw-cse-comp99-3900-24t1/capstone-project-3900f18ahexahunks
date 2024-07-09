@@ -1,3 +1,6 @@
+import React from 'react';
+
+// The hexahunks login logo
 const LoginHeader = () => {
   return (
     <div
@@ -11,7 +14,7 @@ const LoginHeader = () => {
     >
       <img
         style={{ width: '64px', height: '64px' }}
-        src={`${process.env.PUBLIC_URL}/logo.png`}
+        src={process.env.PUBLIC_URL + '/logo.png'}
         alt="logo"
       />
       <h2
