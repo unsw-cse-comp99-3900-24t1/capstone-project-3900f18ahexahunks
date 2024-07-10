@@ -6,13 +6,13 @@ const path = require('path');
 // Function to test PDF file upload
 const testUploadPdf = async () => {
   const form = new FormData();
-  const userId = '667d275ae8f2a3c4ad112f76'; // Example userId
+  const userId = '668c7ffc63a00dcb00adf486'; // Example userId
 
   // Append userId to form data
   form.append('userId', userId);
 
   // Append PDF file to form data
-  form.append('file', fs.createReadStream(path.join(__dirname, 'test13.pdf')), 'test13.pdf');
+  form.append('file', fs.createReadStream(path.join(__dirname, 'test16.pdf')), 'test16.pdf');
 
   try {
     const response = await axios.post('http://localhost:5003/upload/pdf', form, {

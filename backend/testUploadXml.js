@@ -6,13 +6,13 @@ const path = require('path');
 // Function to test XML file upload
 const testUploadXml = async () => {
   const form = new FormData();
-  const userId = '667d275ae8f2a3c4ad112f76'; // Example userId
+  const userId = '668c7ffc63a00dcb00adf486'; // Example userId
 
   // Append userId to form data
   form.append('userId', userId);
 
   // Append XML file to form data
-  form.append('file', fs.createReadStream(path.join(__dirname, 'test13.xml')), 'test13.xml');
+  form.append('file', fs.createReadStream(path.join(__dirname, 'test16.xml')), 'test16.xml');
 
   try {
     const response = await axios.post('http://localhost:5003/upload/xml', form, {

@@ -181,7 +181,7 @@ app.post('/upload/xml', validateUserId, (req, res, next) => {
 });
 
 // Route to convert a local PDF file to UBL XML and save to MongoDB
-app.post('/convert', async (req, res) => {
+app.post('/convert-pdf-to-ubl', async (req, res) => {
   const { pdfFilePath } = req.body;
 
   if (!pdfFilePath) {
