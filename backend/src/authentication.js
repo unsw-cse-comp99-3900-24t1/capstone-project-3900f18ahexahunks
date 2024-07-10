@@ -164,10 +164,40 @@ const resetEmail = async (oldEmail, newEmail) => {
     }
 };
 
+const forgotPassword = async (email) => {
+    let client;
+    try {
+        client = await connectDB();
+        console.log('Connected to database');
+        const db = client.db();
+        const user = await db.collection('users').findOne({ email });
+
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const resetTokenExpiry = Date.now() + 3600000;
+
+        await db.collection('users').updateOne(
+            { email },
+            { $set: { resetToken, resetTokenExpiry } }
+        );
+
+        console.log('Reset token generated:', resetToken);
+
+        return { success: "Password reset token generated", token: resetToken };
+    } catch (error) {
+        console.error('Error during password reset request:', error);
+        return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
+};
+
 module.exports = {
     adminAuthLogin,
     adminAuthRegister,
     resetUsername,
     deleteAccount,
-    resetEmail
+    resetEmail,
+    forgotPassword
 };

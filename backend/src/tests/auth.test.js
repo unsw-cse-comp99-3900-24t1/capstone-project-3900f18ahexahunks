@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const request = require('supertest');
 const { app, server } = require('../server');
 const User = require('../models/User');
-const { adminAuthLogin, adminAuthRegister, resetUsername, deleteAccount, resetEmail } = require('../authentication');
+const { adminAuthLogin, adminAuthRegister, resetUsername, deleteAccount, resetEmail, forgotPassword } = require('../authentication');
 
 describe('Authentication Tests', () => {
   beforeAll(async () => {
