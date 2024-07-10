@@ -2,9 +2,9 @@ const connectDB = require('./db'); // import the database connection
 const { ObjectId } = require('mongodb');
 
 // Fetch PDFs and UBLs for a user
-async function getPdfUbl(userId) {
-  // Validate user Id
-  if (!userId) {
+async function getPdfUbl(userEmail) {
+  // Validate user email
+  if (!userEmail) {
     return {
       status: 400,
       json: {
@@ -19,10 +19,25 @@ async function getPdfUbl(userId) {
 
   try {
     // Get userId from user email
-    const userId = db.collection('users').find({ "email": userEmailString }).toString();
+    const user = await db.collection('users').findOne({ "email": userEmail });
+
+    if (!user) {
+      return {
+        status: 404,
+        json: { error: 'user email not found' }
+      };
+    }
+
+    // Validate token to ensure user has logged in
+    if (!user.token) {
+      return {
+        status: 401,
+        json: { error: 'user not logged in' }
+      };
+    }
 
     // Convert userId to ObjectId
-    const userObjectId = new ObjectId(userId);
+    const userObjectId = new ObjectId(user._id);
 
     // Find PDFs and UBLs with the userId
     const files = await db.collection('uploads.files').find({ "metadata.userId": userObjectId }).toArray();
@@ -88,6 +103,39 @@ async function deletePdfUbl(pdfId, ublId) {
     // Convert IDs to ObjectId
     const pdfObjectId = new ObjectId(pdfId);
     const ublObjectId = new ObjectId(ublId);
+
+    // Find the files
+    const pdfFile = await db.collection('uploads.files').findOne({ _id: pdfObjectId });
+    const ublFile = await db.collection('uploads.files').findOne({ _id: ublObjectId });
+
+    if (!pdfFile || !ublFile) {
+      return {
+        status: 404,
+        json: { error: 'PDF or UBL not found' }
+      };
+    }
+
+    // Get the userId from the files
+    const userIdFromPdf = pdfFile.metadata.userId;
+    const userIdFromUbl = ublFile.metadata.userId;
+
+    // Ensure the files belong to the same user
+    if (!userIdFromPdf.equals(userIdFromUbl)) {
+      return {
+        status: 403,
+        json: { error: 'Files do not belong to the same user' }
+      };
+    }
+
+    // Validate user login status
+    const user = await db.collection('users').findOne({ _id: userIdFromPdf });
+
+    if (!user || !user.token) {
+      return {
+        status: 401,
+        json: { error: 'User not logged in or invalid user' }
+      };
+    }
 
     // Perform the delete operation
     const pdfResult = await db.collection('uploads.files').deleteOne({ _id: pdfObjectId });

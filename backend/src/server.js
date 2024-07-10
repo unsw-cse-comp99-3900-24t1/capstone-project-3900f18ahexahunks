@@ -6,42 +6,34 @@ const { getPdfUbl, deletePdfUbl } = require('./ubl');
 const PORT = 5003;
 const app = express();
 
-let isServerBusy = false;
-connectDB();
-
+// Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
 
+connectDB();
+
 app.get('/test', (req, res) => {
-    res.json({ message: 'Hello World!' });
+  res.json({ message: 'Hello World!' });
 });
 
 // Route for fetching PDFs and UBLs
 app.get('/get-pdf-ubl/:userId', async (req, res) => {
-  if (isServerBusy) {
-    return res.status(500).json({ error: "Please try again later" });
-  }
-
   const { userId } = req.params;
   const response = await getPdfUbl(userId);
 
-  return res.status(response.status).json(response.json);
+  res.status(response.status).json(response.json);
 });
 
 // Route for deleting PDFs and UBLs
 app.delete('/delete-pdf-ubl', async (req, res) => {
-  if (isServerBusy) {
-    return res.status(500).json({ error: "Please try again later" });
-  }
-
   const { "PDF-id": pdfId, "UBL-id": ublId } = req.body;
   const response = await deletePdfUbl(pdfId, ublId);
 
-  return res.status(response.status).json(response.json);
+  res.status(response.status).json(response.json);
 });
 
-const server = app.listen(PORT, () => {
-  console.log('Server running on port:', PORT);
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
 
-module.exports = { app, server };
+module.exports = { app };
