@@ -243,6 +243,58 @@ app.get('/file/:filename', async (req, res) => {
   }
 });
 
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: '',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Route to send UBL via email
+app.post('/send-ubl', async (req, res) => {
+  const { UBL, emailAddress, emailBody } = req.body;
+
+  // Validate input
+  if (!UBL || !emailAddress || !emailBody) {
+    return res.status(400).json({
+      error: 'Failed to send the email',
+      details: ['UBL, emailAddress, and emailBody are required fields']
+    });
+  }
+
+  // Create email options
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: emailAddress,
+    subject: 'UBL File',
+    text: emailBody,
+    attachments: [
+      {
+        filename: 'invoice.ubl',
+        content: UBL,
+        contentType: 'application/xml'
+      }
+    ]
+  };
+
+  // Send email
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: `XML successfully sent to ${emailAddress}` });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    if (error.message.includes('No email exists')) {
+      return res.status(404).json({ error: `No email exists: ${emailAddress}` });
+    }
+    if (error.message.includes('File size too big')) {
+      return res.status(413).json({ error: 'File size too big should be less than 5MB' });
+    }
+    res.status(500).json({ error: 'Server error, please try again later' });
+  }
+});
+
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
