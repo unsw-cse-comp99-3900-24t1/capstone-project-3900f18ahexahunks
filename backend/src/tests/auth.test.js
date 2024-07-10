@@ -5,14 +5,27 @@ const User = require('../models/User');
 const { adminAuthLogin, adminAuthRegister, resetUsername, deleteAccount, resetEmail } = require('../authentication');
 
 describe('Authentication Tests', () => {
+  beforeAll(async () => {
+    const client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const db = client.db();
+    await db.collection('users').deleteMany({});
+    await client.close();
+  });
+
   test('Check successful registration', async () => {
-    const user = await adminAuthRegister('zhecheng@unsw.edu.au', 'Yzc132', 'Yzc132');
+    const response = await adminAuthRegister('zhecheng@unsw.edu.au', 'Yzc132', 'Yzc132');
     
-    expect(user).toEqual({ 
-      email: 'zhecheng@unsw.edu.au',
-      password: 'Yzc132',
-      "password-check": 'Yzc132'
+    expect(response).toHaveProperty('token');
+    expect(response.user).toEqual({
+        email: 'zhecheng@unsw.edu.au',
+        password: expect.any(String)
     });
+
+    const client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const db = client.db();
+    const user = await db.collection('users').findOne({ email: 'zhecheng@unsw.edu.au' });
+    expect(user).toHaveProperty('token', response.token);
+    await client.close();
   }, 3000);
 
   test('Wrong password registration', async () => {
@@ -22,11 +35,21 @@ describe('Authentication Tests', () => {
   }, 3000);
 
   test('Successful login with correct credentials', async () => {
-    const response = await adminAuthLogin('zhecheng@unsw.edu.au', 'Yzc132');
-    expect(response).toEqual({ 
-      email: 'zhecheng@unsw.edu.au',
-      password: 'Yzc132'
-     });
+    await adminAuthRegister('loginuser@unsw.edu.au', 'password123', 'password123');
+
+    const response = await adminAuthLogin('loginuser@unsw.edu.au', 'password123');
+
+    expect(response).toHaveProperty('token');
+    expect(response.user).toEqual({
+        email: 'loginuser@unsw.edu.au',
+        password: expect.any(String)
+    });
+
+    const client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const db = client.db();
+    const user = await db.collection('users').findOne({ email: 'loginuser@unsw.edu.au' });
+    expect(user).toHaveProperty('token', response.token);
+    await client.close();
   }, 30000);
 
   test('Login attempt with incorrect email', async () => {
@@ -69,15 +92,15 @@ describe('Authentication Tests', () => {
   }, 30000);
 
   test('Email reset for non-existing email', async () => {
-      const response = await resetEmail('nonexisting@unsw.edu.au', 'newemail@unsw.edu.au');
-      expect(response).toEqual({ error: "Email not found" });
+    const response = await resetEmail('nonexisting@unsw.edu.au', 'newemail@unsw.edu.au');
+    expect(response).toEqual({ error: "Email not found" });
   }, 30000);
 
   test('Email reset with new email already in use', async () => {
-      await adminAuthRegister('user1@unsw.edu.au', 'password123', 'password123');
-      await adminAuthRegister('user2@unsw.edu.au', 'password123', 'password123');
+    await adminAuthRegister('user1@unsw.edu.au', 'password123', 'password123');
+    await adminAuthRegister('user2@unsw.edu.au', 'password123', 'password123');
 
-      const response = await resetEmail('user1@unsw.edu.au', 'user2@unsw.edu.au');
-      expect(response).toEqual({ error: "New email already in use" });
+    const response = await resetEmail('user1@unsw.edu.au', 'user2@unsw.edu.au');
+    expect(response).toEqual({ error: "New email already in use" });
   }, 30000);
 });

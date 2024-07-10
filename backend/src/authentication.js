@@ -1,7 +1,10 @@
-const User = require('./models/User');
 const bcrypt = require('bcrypt');
-const sendInfoToDB = require('./sendInfoToDB');
 const connectDB = require('../db');
+const jwt = require('jsonwebtoken');
+const path = require('path');
+
+require('dotenv').config();
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const adminAuthLogin = async (email, password) => {
     let client;
@@ -14,13 +17,24 @@ const adminAuthLogin = async (email, password) => {
             return { error: "Invalid Email or password" };
         }
 
-        if (password !== user.password) {
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
             return { error: "Invalid Email or password" };
         }
 
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        await db.collection('users').updateOne(
+            { email: user.email },
+            { $set: { token: token } }
+        );
+
         return {
-            email: user.email,
-            password: user.password
+            token: token,
+            user: {
+                email: user.email,
+                password: user.password
+            }
         };
     } catch (error) {
         console.error('Error during login:', error);
@@ -46,12 +60,17 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
             return { error: "Email already exists" };
         }
 
-        const result = await db.collection('users').insertOne({ email, password: password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        await db.collection('users').insertOne({ email, password: hashedPassword, token: token });
 
         return {
-            email: email,
-            password: password,
-            "password-check": passwordCheck
+            token: token,
+            user: {
+                email: email,
+                password: hashedPassword
+            }
         };
     } catch (error) {
         console.error('Error during registration:', error);
@@ -62,6 +81,7 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
         }
     }
 };
+
 
 const resetUsername = async (email, newUsername) => {
     let client;
