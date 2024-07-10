@@ -18,6 +18,9 @@ async function getPdfUbl(userId) {
   const db = client.db();
 
   try {
+    // Get userId from user email
+    const userId = db.collection('users').find({ "email": userEmailString }).toString();
+
     // Convert userId to ObjectId
     const userObjectId = new ObjectId(userId);
 
