@@ -18,7 +18,7 @@ import { useAlert } from '../../../components/AlertError';
 const PdfBox = styled('div')(({ theme }) => ({
   position: 'relative',
   width: '200px',
-  height: '200px',
+  height: '240px',
   margin: '10px',
   border: '2px solid #ccc',
   display: 'flex',
@@ -57,6 +57,12 @@ const ShareButton = styled(IconButton)({
     color: '#0000ff',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
+});
+
+const DateTimeLabel = styled('p')({
+  margin: '8px 0 0 0',
+  fontSize: '12px',
+  color: '#666',
 });
 
 const ShowUblBox = ({ isLoading }) => {
@@ -133,6 +139,10 @@ const ShowUblBox = ({ isLoading }) => {
           <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>
             {xml.name}
           </h2>
+          <DateTimeLabel>
+            {new Date(xml.date).toLocaleTimeString()}{' '}
+            {new Date(xml.date).toLocaleDateString()}
+          </DateTimeLabel>
         </PdfBox>
       ))}
       {isLoading && (

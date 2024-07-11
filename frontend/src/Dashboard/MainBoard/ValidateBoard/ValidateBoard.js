@@ -103,6 +103,7 @@ const ValidateBoard = () => {
             validationId: result.validatorId,
             validationReport: result.validationReport,
             name,
+            date: result.date,
           };
           setXmlFiles((prevXmlFiles) => [...prevXmlFiles, data]);
           addValidatorData(data);
