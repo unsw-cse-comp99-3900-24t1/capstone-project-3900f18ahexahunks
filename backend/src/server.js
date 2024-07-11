@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
-const connectDB = require('../db'); // Correct path to db
-const { adminAuthLogin, adminAuthRegister } = require('./authentication'); // Correct path to authentication
-const userRoutes = require('./routes/userRoutes'); // Correct path to userRoutes
+const connectDB = require('../db');
+const { adminAuthLogin, adminAuthRegister } = require('./authentication');
+const userRoutes = require('./routes/userRoutes');
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
 

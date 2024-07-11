@@ -82,7 +82,6 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     }
 };
 
-
 const resetUsername = async (email, newUsername) => {
     let client;
     try {
