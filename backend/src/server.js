@@ -13,7 +13,7 @@ app.use(cors());
 connectDB();
 
 app.get('/test', (req, res) => {
-  res.json({ message: 'Hello World!' });
+  return res.json({ message: 'Hello World!' });
 });
 
 // Route for fetching PDFs and UBLs
@@ -21,7 +21,7 @@ app.get('/get-pdf-ubl/:userId', async (req, res) => {
   const { userId } = req.params;
   const response = await getPdfUbl(userId);
 
-  res.status(response.status).json(response.json);
+  return res.status(response.status).json(response.json);
 });
 
 // Route for deleting PDFs and UBLs
@@ -29,7 +29,7 @@ app.delete('/delete-pdf-ubl', async (req, res) => {
   const { "PDF-id": pdfId, "UBL-id": ublId } = req.body;
   const response = await deletePdfUbl(pdfId, ublId);
 
-  res.status(response.status).json(response.json);
+  return res.status(response.status).json(response.json);
 });
 
 app.listen(PORT, () => {
