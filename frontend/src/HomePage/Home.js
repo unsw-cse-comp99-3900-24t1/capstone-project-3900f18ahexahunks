@@ -2,9 +2,10 @@ import React from 'react';
 import { styled } from '@mui/system';
 import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
-import FeatureInfo from './FeatureInfo/FeatureInfo';
-import InfoCards from './Info/InfoCards';
-import Process from './Process/Process';
+// import FeatureInfo from './FeatureInfo/FeatureInfo';
+// import InfoCards from './Info/InfoCards';
+// import Process from './Process/Process';
+// import Footer from './Footer/Footer';
 
 const Container = styled('div')({
   color: '#ffffff',
@@ -19,17 +20,16 @@ const Container = styled('div')({
 
 const Home = () => {
   return (
-    <div
-      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/login.jpg)` }}
-    >
+    <div style={{ backgroundColor: '#000000' }}>
       <Container>
         <Navbar />
         <Hero />
-        <FeatureInfo />
-        <InfoCards />
-        <Process />
-        <div>Home</div>
+        {/* <FeatureInfo /> */}
+        {/* <InfoCards /> */}
+        {/* <Process /> */}
+        {/* <div>Home</div> */}
       </Container>
+      {/* <Footer /> */}
     </div>
   );
 };
