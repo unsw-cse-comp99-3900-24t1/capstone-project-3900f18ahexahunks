@@ -82,7 +82,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
   alignItems: 'normal',
   height: '80vh',
   overflow: 'auto',
-  width: '90%',
+  width: '80%',
 }));
 
 const BoardWrapper = styled('div')({
