@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Grid,
@@ -10,39 +10,31 @@ import {
   Paper,
 } from '@mui/material';
 import EmailHistoryItem from './EmailHistoryItem';
-
-const sampleHistory = [
-  {
-    fileName: 'Report1.pdf',
-    email: 'user1@example.com',
-    subject: 'Annual Report',
-    type: ['PDF', 'UBL'],
-    date: '2024-01-01T10:00:00',
-  },
-  {
-    fileName: 'Invoice.xml',
-    email: 'user2@example.com',
-    subject: 'Invoice',
-    type: ['XML', 'UBL'],
-    date: '2024-02-15T15:30:00',
-  },
-  {
-    fileName: 'Notes.docx',
-    email: 'user3@example.com',
-    subject: 'Meeting Notes',
-    type: ['DOCX', 'UBL'],
-    date: '2024-03-10T09:15:00',
-  },
-];
+import { getHistoryEmail } from '../../services/api';
+import { useAlert } from '../../components/AlertError';
 
 const ProfileBoard = () => {
   const [username, setUsername] = useState('John Doe');
   const [profilePic, setProfilePic] = useState(null);
-  const [history, setHistory] = useState(sampleHistory);
+  const [history, setHistory] = useState([]);
+  const { showAlert } = useAlert();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getHistoryEmail();
+      console.log(res);
+      if (!res.error) {
+        setHistory(res); // Assuming res is the array of history email items
+      } else {
+        showAlert('Failed to fetch history email:', 'tomato');
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];

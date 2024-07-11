@@ -146,10 +146,10 @@ const ShareFilesBoard = () => {
 
       const fileTypes = [];
       if (selectedFiles.xml) {
-        fileTypes.push('XML');
+        fileTypes.push('ubl');
       }
       if (selectedFiles.validatorPdf) {
-        fileTypes.push('validatorPdf');
+        fileTypes.push('validate');
       }
 
       const result = await sendFileToEmail({

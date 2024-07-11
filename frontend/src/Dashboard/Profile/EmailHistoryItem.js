@@ -9,6 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const EmailHistoryItem = ({
   handleOpenReport,
@@ -16,12 +17,13 @@ const EmailHistoryItem = ({
   handleDeleteHistory,
   index,
 }) => {
+  console.log(item, 'ITEMS');
   return (
     <div>
       <ListItem
         alignItems="flex-start"
         style={{ cursor: 'pointer' }}
-        onClick={(e) => handleOpenReport(e, item)}
+        // onClick={(e) => handleOpenReport(e, item)}
       >
         <ListItemAvatar>
           <Avatar>
@@ -29,21 +31,32 @@ const EmailHistoryItem = ({
           </Avatar>
         </ListItemAvatar>
         <ListItemText
-          primary={item.subject}
+          primary={`Send to: ${item.email}`}
           secondary={
             <Box component="span" display="flex" flexDirection="column">
               <Typography component="span" variant="body2" color="textPrimary">
-                {item.email}
+                Subject: {item.subject}
               </Typography>
-              <div style={{ display: 'flex' }}>
-                {item.type.map((tp, index) => (
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    {`${tp}`}
-                  </Typography>
+              <div style={{ marginTop: '8px', marginBottom: '8px' }}>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  color="textSecondary"
+                >
+                  Files Sent:
+                </Typography>
+                {item.fileTypes.map((tp, index) => (
+                  <div key={index} style={{}}>
+                    <Link
+                      to={`http://localhost:3000/handle-files/${item.process}/${tp}/${item.sharedObjId}`}
+                      // target="_blank"
+                      rel="noopener noreferrer"
+                      variant="body2"
+                      color="primary"
+                    >
+                      {tp.toUpperCase()}
+                    </Link>
+                  </div>
                 ))}
               </div>
               <Typography
@@ -51,7 +64,7 @@ const EmailHistoryItem = ({
                 variant="body2"
                 color="textSecondary"
               >
-                {new Date(item.date).toLocaleString()}
+                Sent On: {new Date(item.date).toLocaleString()}
               </Typography>
             </Box>
           }
