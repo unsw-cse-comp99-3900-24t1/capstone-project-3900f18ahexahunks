@@ -1,3 +1,4 @@
+import React from 'react';
 import Home from './HomePage/Home.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoadingProvider } from './components/useLoading.js';
@@ -7,6 +8,9 @@ import Register from './auth/Register/Register.js';
 import Dashboard from './Dashboard/Dashboard.js';
 import ProtectedRoute from './ProtectedRoute.js';
 import PageNotFound from './PageNotFound/PageNotFound.js';
+import FileManagerDashboard from './FileManagerDashboard/FileManagerDashboard.js';
+import ResetPassword from './auth/Login/ResetPassword.js';
+import ProfileBoard from './Dashboard/Profile/ProfileBoard.js';
 
 const App = () => {
   return (
@@ -24,6 +28,26 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/handle-files/:process/:file/:id"
+                element={
+                  <ProtectedRoute>
+                    <FileManagerDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPassword />}
+              />
+              <Route
+                path="/profile/:userId"
+                element={
+                  <ProtectedRoute>
+                    <ProfileBoard />
                   </ProtectedRoute>
                 }
               />

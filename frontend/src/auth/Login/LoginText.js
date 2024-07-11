@@ -1,6 +1,8 @@
+import React from 'react';
 import LoginBody from './LoginBody';
 import LoginHeader from './LoginHeader';
 
+// A component to handle the left component on the login page
 const LoginText = () => {
   return (
     <div

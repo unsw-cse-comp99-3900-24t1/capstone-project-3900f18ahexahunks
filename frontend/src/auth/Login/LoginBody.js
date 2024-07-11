@@ -1,5 +1,7 @@
+import React from 'react';
 import LoginSlider from './LoginSlider';
 
+// The component to handle the login page sliders
 const LoginBody = () => {
   return (
     <div
