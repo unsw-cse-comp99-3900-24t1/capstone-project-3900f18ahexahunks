@@ -42,7 +42,7 @@ function validateUBL(xml, fileName) {
         expected: 'An invoice number and issue date should be present.',
         found: invoiceIdNode.length ? invoiceIdNode[0].nodeValue : 'Missing'
       },
-      // Add more checks as needed
+      // add more checks as needed in future
     ];
 
     checks.forEach((check, index) => {

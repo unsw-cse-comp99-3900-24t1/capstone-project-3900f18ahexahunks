@@ -57,35 +57,50 @@ app.post('/validate-ubl', upload.single('file'), async (req, res) => {
 
 app.put('/rerun-validation', async (req, res) => {
   const { UBLid } = req.body;
-  const client = await connectDB();
-  const bucket = getBucket(client);
+  let client;
+  try {
+    client = await connectDB();
+    const bucket = getBucket(client);
 
-  const downloadStream = bucket.openDownloadStream(new ObjectId(UBLid));
-  let fileData = '';
+    const downloadStream = bucket.openDownloadStream(new ObjectId(UBLid));
+    let fileData = '';
 
-  downloadStream.on('data', (chunk) => {
-    fileData += chunk;
-  });
-
-  downloadStream.on('error', (err) => {
-    res.status(404).send('File not found.');
-  });
-
-  downloadStream.on('end', () => {
-    xml2js.parseString(fileData, { explicitArray: false }, (err, result) => {
-      if (err) {
-        return res.status(400).json({ error: 'Invalid XML format' });
-      }
-      try {
-        console.log('Parsed XML:', result);
-        const validationResults = validateUBL(fileData);
-        res.status(200).json({ validationResults });
-      } catch (error) {
-        console.error('Error during UBL validation:', error);
-        res.status(500).json({ error: 'Validation failed due to internal error' });
-      }
+    downloadStream.on('data', (chunk) => {
+      fileData += chunk;
     });
-  });
+
+    downloadStream.on('error', (err) => {
+      res.status(404).send('File not found.');
+    });
+
+    downloadStream.on('end', () => {
+      xml2js.parseString(fileData, { explicitArray: false }, (err, result) => {
+        if (err) {
+          return res.status(400).json({ error: 'Invalid XML format' });
+        }
+        try {
+          console.log('Parsed XML:', result);
+          const validationResults = validateUBL(fileData);
+          validationResults.fileDetails.fileName = result.Invoice ? result.Invoice.ID : 'Unknown';
+          validationResults.fileDetails.submissionDate = result.Invoice ? result.Invoice.IssueDate : 'Unknown';
+          validationResults.fileDetails.checkedBy = 'DB_CEO_TC';
+          validationResults.reportGeneratedBy = 'DB_CEO_TC';
+          validationResults.reportDate = new Date().toISOString().split('T')[0];
+          res.status(200).json({ validationResults });
+        } catch (error) {
+          console.error('Error during UBL validation:', error);
+          res.status(500).json({ error: 'Validation failed due to internal error' });
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Error in rerun-validation:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    if (client) {
+      client.close();
+    }
+  }
 });
 
 app.get('/validation-report/:type/:id', async (req, res) => {
@@ -170,6 +185,10 @@ app.get('/validation-report/:type/:id', async (req, res) => {
   } catch (error) {
     console.error('Error in processing request:', error);
     res.status(500).send('Internal Server Error');
+  } finally {
+    if (client) {
+      client.close();
+    }
   }
 });
 
