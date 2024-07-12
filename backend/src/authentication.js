@@ -32,7 +32,6 @@ const adminAuthLogin = async (email, password) => {
     }
 };
 
-
 const adminAuthRegister = async (email, password, passwordCheck) => {
     if (password !== passwordCheck) {
         return { error: "Passwords do not match" };
@@ -47,12 +46,11 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
             return { error: "Email already exists" };
         }
 
-        const result = await db.collection('users').insertOne({ email, password: password });
+        const result = await db.collection('users').insertOne({ email, email, password });
 
         return {
             email: email,
             password: password,
-            "password-check": passwordCheck
         };
     } catch (error) {
         console.error('Error during registration:', error);

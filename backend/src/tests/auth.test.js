@@ -11,7 +11,6 @@ describe('Authentication Tests', () => {
     expect(user).toEqual({ 
       email: 'zhecheng@unsw.edu.au',
       password: 'Yzc132',
-      "password-check": 'Yzc132'
     });
   }, 3000);
 
