@@ -1,6 +1,6 @@
 const multer = require('multer');
 const xml2js = require('xml2js');
-const pdfParser = require('pdf-parse');
+const pdf = require('html-pdf');
 const fs = require('fs');
 const path = require('path');
 const { ObjectId } = require('mongodb');
@@ -10,7 +10,9 @@ const { connectDB, getBucket } = require('./utils');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const handleFileUpload = async (req, res) => {
+const handleFileUpload = upload.fields([{ name: 'xml' }, { name: 'pdf' }]);
+
+const handleFileUploadHandler = async (req, res) => {
     const files = req.files;
     if (!files || !files.xml || !files.pdf) {
         return res.status(400).send('Both XML and PDF files are required.');
@@ -29,16 +31,36 @@ const handleFileUpload = async (req, res) => {
     res.status(200).send('Files uploaded successfully.');
 };
 
-const validateUBLFile = async (req, res) => {
+const validateUBLFile = upload.single('file');
+
+const validateUBLFileHandler = async (req, res) => {
     const fileData = req.file.buffer.toString();
     const fileName = req.file.originalname;
-    xml2js.parseString(fileData, { explicitArray: false }, (err, result) => {
+    xml2js.parseString(fileData, { explicitArray: false }, async (err, result) => {
         if (err) {
             return res.status(400).json({ error: 'Invalid XML format' });
         }
         try {
             const validationResults = validateUBL(fileData, fileName);
-            res.status(200).json({ validationResults });
+            // Generate PDF report
+            const pdfContent = JSON.stringify(validationResults, null, 2);
+            pdf.create(pdfContent).toBuffer(async (err, buffer) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Failed to create PDF' });
+                }
+
+                // Save PDF to MongoDB
+                await connectDB();
+                const bucket = getBucket();
+                const uploadStream = bucket.openUploadStream(`${fileName}_Validation_Report.pdf`);
+                uploadStream.end(buffer);
+
+                // Save PDF to file system
+                const pdfFilePath = path.join(__dirname, `${fileName}_Validation_Report.pdf`);
+                fs.writeFileSync(pdfFilePath, buffer);
+
+                res.status(200).json({ validationResults, pdfBuffer: buffer.toString('base64') });
+            });
         } catch (error) {
             console.error('Error during UBL validation:', error);
             res.status(500).json({ error: 'Validation failed due to internal error' });
@@ -62,8 +84,8 @@ const rerunValidation = async (req, res) => {
         res.status(404).send('File not found.');
     });
 
-    downloadStream.on('end', () => {
-        xml2js.parseString(fileData, { explicitArray: false }, (err, result) => {
+    downloadStream.on('end', async () => {
+        xml2js.parseString(fileData, { explicitArray: false }, async (err, result) => {
             if (err) {
                 return res.status(400).json({ error: 'Invalid XML format' });
             }
@@ -74,7 +96,24 @@ const rerunValidation = async (req, res) => {
                 validationResults.fileDetails.checkedBy = 'DB_CEO_TC';
                 validationResults.reportGeneratedBy = 'DB_CEO_TC';
                 validationResults.reportDate = new Date().toISOString().split('T')[0];
-                res.status(200).json({ validationResults });
+
+                // Generate PDF report
+                const pdfContent = JSON.stringify(validationResults, null, 2);
+                pdf.create(pdfContent).toBuffer(async (err, buffer) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to create PDF' });
+                    }
+
+                    // Save PDF to MongoDB
+                    const uploadStream = bucket.openUploadStream(`${UBLid}_Validation_Report.pdf`);
+                    uploadStream.end(buffer);
+
+                    // Save PDF to file system
+                    const pdfFilePath = path.join(__dirname, `${UBLid}_Validation_Report.pdf`);
+                    fs.writeFileSync(pdfFilePath, buffer);
+
+                    res.status(200).json({ validationResults, pdfBuffer: buffer.toString('base64') });
+                });
             } catch (error) {
                 console.error('Error during UBL validation:', error);
                 res.status(500).json({ error: 'Validation failed due to internal error' });
@@ -111,13 +150,10 @@ const getValidationReport = async (req, res) => {
             res.status(404).send('File not found.');
         });
 
-        downloadStream.on('end', async () => {
+        downloadStream.on('end', () => {
             console.log('Download stream ended');
             const buffer = Buffer.concat(fileData);
             console.log('Total buffer length:', buffer.length);
-
-            const savedFilePath = path.join(__dirname, 'downloaded_file.pdf');
-            fs.writeFileSync(savedFilePath, buffer);
 
             if (type === 'ubl') {
                 xml2js.parseString(buffer.toString(), { explicitArray: false }, (err, result) => {
@@ -137,28 +173,9 @@ const getValidationReport = async (req, res) => {
                     }
                 });
             } else if (type === 'pdf') {
-                try {
-                    const data = await pdfParser(buffer);
-                    const validationResults = {
-                        validationStatus: data.numpages > 0 ? 'Passed' : 'Failed',
-                        detailedFindings: {
-                            pages: data.numpages,
-                            text: data.text.slice(0, 100)
-                        }
-                    };
-                    validationResults.fileDetails = {
-                        fileName: filename,
-                        fileType: 'PDF Document',
-                        submissionDate: uploadDate.toISOString(),
-                        checkedBy: 'DB_CEO_TC'
-                    };
-                    validationResults.reportGeneratedBy = 'DB_CEO_TC';
-                    validationResults.reportDate = new Date().toISOString().split('T')[0];
-                    res.status(200).json({ validationResults });
-                } catch (err) {
-                    console.error('PDF parse error:', err);
-                    res.status(400).json({ error: 'Invalid PDF format' });
-                }
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+                res.status(200).send(buffer);
             } else {
                 res.status(400).json({ error: 'Unsupported file type' });
             }
@@ -169,4 +186,4 @@ const getValidationReport = async (req, res) => {
     }
 };
 
-module.exports = { handleFileUpload, validateUBLFile, rerunValidation, getValidationReport };
+module.exports = { handleFileUpload, handleFileUploadHandler, validateUBLFile, validateUBLFileHandler, rerunValidation, getValidationReport };

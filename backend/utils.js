@@ -1,15 +1,12 @@
 const { MongoClient, GridFSBucket } = require('mongodb');
 require('dotenv').config();
 
-let db, bucket, client;
+let db, bucket;
 
 const connectDB = async () => {
-    if (client && client.topology && client.topology.isConnected()) {
-        return client;
-    }
-
-    client = new MongoClient(process.env.MONGO_URI, {
-        // Remove the deprecated options
+    const client = new MongoClient(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     });
 
     await client.connect();
@@ -19,7 +16,6 @@ const connectDB = async () => {
     });
 
     console.log('MongoDB connected');
-    return client;
 };
 
 const getDb = () => db;
