@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const request = require('supertest');
 const { app, server } = require('../server');
 const User = require('../models/User');
-const { adminAuthLogin, adminAuthRegister, deleteAccount } = require('../authentication');
+const { adminAuthLogin, adminAuthRegister, deleteAccount, resetUsername } = require('../authentication');
 
 describe('Authentication Tests', () => {
   test('Check successful registration', async () => {
@@ -44,6 +44,21 @@ describe('Authentication Tests', () => {
 
   test('Attempt to delete a non-existent account', async () => {
     const response = await deleteAccount('nonexistent@user.com');
+    expect(response).toEqual({ error: "User not found" });
+  }, 30000);
+
+  test('Successful username reset', async () => {
+    // First, register a user
+    await adminAuthRegister('user@unsw.edu.au', 'password123', 'password123');
+
+    // Then, reset the username
+    const response = await resetUsername('user@unsw.edu.au', 'newusername');
+    expect(response).toEqual({ message: "Username updated successfully" });
+
+  }, 30000);
+
+  test('Attempt to reset username for non-existent user', async () => {
+    const response = await resetUsername('nonexistent@user.com', 'newusername');
     expect(response).toEqual({ error: "User not found" });
   }, 30000);
 });

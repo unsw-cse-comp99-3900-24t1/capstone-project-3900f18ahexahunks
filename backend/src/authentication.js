@@ -84,8 +84,36 @@ const deleteAccount = async (email) => {
     }
 };
 
+const resetUsername = async (email, newUsername) => {
+    let client;
+    try {
+        client = await connectDB();
+        const db = client.db();
+        const existingUser = await db.collection('users').findOne({ email });
+
+        if (!existingUser) {
+            return { error: "User not found" };
+        }
+
+        await db.collection('users').updateOne(
+            { email },
+            { $set: { username: newUsername } }
+        );
+
+        return { message: "Username updated successfully" };
+    } catch (error) {
+        console.error('Error during username reset:', error);
+        return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
+};
+
 module.exports = {
     adminAuthLogin,
     adminAuthRegister,
-    deleteAccount
+    deleteAccount,
+    resetUsername
 };
