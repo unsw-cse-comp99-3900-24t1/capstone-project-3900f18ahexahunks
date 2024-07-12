@@ -1,9 +1,8 @@
+// This code generates a new JWT (JSON Web Token) key and adds it to the .env file.
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-
 const secret = crypto.randomBytes(64).toString('hex');
-
 const envPath = path.resolve(__dirname, '../.env');
 
 let envContent = '';

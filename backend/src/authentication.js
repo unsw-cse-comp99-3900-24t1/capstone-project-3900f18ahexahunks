@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const connectDB = require('../db');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const sendInfoToDB = require('./sendInfoToDB');
 
 require('dotenv').config();
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -24,10 +25,12 @@ const adminAuthLogin = async (email, password) => {
 
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        await db.collection('users').updateOne(
-            { email: user.email },
-            { $set: { token: token } }
-        );
+        // update the user's token
+        user.token = token;
+        await user.save();
+
+        // send the info to mongoDB
+        sendInfoToDB(email, password);
 
         return {
             token: token,
@@ -53,23 +56,38 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
 
     let client;
     try {
+        // Database Connection     
         client = await connectDB();
         const db = client.db();
+
         const existingUser = await db.collection('users').findOne({ email });
         if (existingUser) {
             return { error: "Email already exists" };
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
         const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        await db.collection('users').insertOne({ email, password: hashedPassword, token: token });
+        // create a new user
+        const user = new User({
+            email: email,
+            password: password,
+            token: token
+        });
+
+        // save the user to the database
+        user.save();
+
+        user.password = password;
+        user.token = token;
+
+        // send the info to mongoDB
+        sendInfoToDB(email, password);
 
         return {
-            token: token,
+            token: user.token,
             user: {
-                email: email,
-                password: hashedPassword
+                email: user.email,
+                password: user.password
             }
         };
     } catch (error) {

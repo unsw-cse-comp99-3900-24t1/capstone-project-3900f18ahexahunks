@@ -27,7 +27,7 @@ app.post('/login', async (req, res) => {
     }
   
     return res.status(200).json(response);
-  });
+});
   
 app.post('/register', async (req, res) => {
     const { userName, email, password, passwordCheck } = req.body;
@@ -54,7 +54,7 @@ app.post('/register', async (req, res) => {
 app.use('/users', userRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
 
 module.exports = app;

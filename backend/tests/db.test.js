@@ -1,6 +1,8 @@
 const connectDB = require('../db');
 const { MongoClient } = require('mongodb');
 
+// This code is a test script to verify that MongoDB connection is working properly.
+
 describe('MongoDB Connection', () => {
   let client;
 
@@ -9,14 +11,11 @@ describe('MongoDB Connection', () => {
   });
 
   afterAll(async () => {
-    if (client) {
-      await client.close();
-    }
+    await client.close();
   });
 
   it('should connect to the database', async () => {
-    const adminDb = client.db().admin();
-    const result = await adminDb.ping();
-    expect(result).toEqual({ ok: 1 });
+    expect(client.topology.isConnected()).toBe(true);
   });
 });
+

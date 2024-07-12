@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
         await client.close();
       }
     }
-  });
+});
   
-  module.exports = router;
+module.exports = router;
+  
