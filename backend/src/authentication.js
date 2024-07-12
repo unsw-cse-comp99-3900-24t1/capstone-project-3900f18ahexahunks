@@ -127,9 +127,7 @@ const resetUsername = async (email, newUsername) => {
     }
 };
 
-const resetPassword = async (emailOrUsername, newPassword) => {
-    // add account verification
-    
+const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {    
     let client;
     try {
         client = await connectDB();
@@ -143,6 +141,11 @@ const resetPassword = async (emailOrUsername, newPassword) => {
         
         if (!existingUser) {
             return { error: "User not found" };
+        }
+
+        // Verify the current password
+        if (existingUser.password !== currentPassword) {
+            return { error: "Incorrect current password" };
         }
 
         await db.collection('users').updateOne(

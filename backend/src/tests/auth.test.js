@@ -69,9 +69,16 @@ describe('Authentication Tests', () => {
       await adminAuthRegister('zhecheng666666666@unsw.edu.au', 'password123', 'password123');
       await adminAuthLogin('zhecheng666666666@unsw.edu.au', 'password123');
 
-      const response = await resetPassword('zhecheng666666666@unsw.edu.au', 'Yzc66666666');
+      const response = await resetPassword('zhecheng666666666@unsw.edu.au', 'password123', 'Yzc66666666');
       expect(response).toEqual({ message: "Password updated successfully" });
+  }, 30000);
 
+  test('Successful in reset password', async () => {
+    await adminAuthRegister('zhecheng666666666@unsw.edu.au', 'password123', 'password123');
+    await adminAuthLogin('zhecheng666666666@unsw.edu.au', 'password123');
+
+    const response = await resetPassword('zhecheng666666666@unsw.edu.au', 'wrongpassword', 'Yzc66666666');
+    expect(response).toEqual({ error: "Incorrect current password" });
   }, 30000);
 
   test('Successful in reset email', async () => {
