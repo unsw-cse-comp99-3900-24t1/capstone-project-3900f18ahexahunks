@@ -5,7 +5,7 @@ import Hero from './Hero/Hero';
 // import FeatureInfo from './FeatureInfo/FeatureInfo';
 // import InfoCards from './Info/InfoCards';
 // import Process from './Process/Process';
-// import Footer from './Footer/Footer';
+import Footer from './Footer/Footer';
 
 const Container = styled('div')({
   color: '#ffffff',
@@ -28,8 +28,8 @@ const Home = () => {
         {/* <InfoCards /> */}
         {/* <Process /> */}
         {/* <div>Home</div> */}
+        <Footer />
       </Container>
-      {/* <Footer /> */}
     </div>
   );
 };
