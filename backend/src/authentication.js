@@ -3,13 +3,18 @@ const bcrypt = require('bcrypt');
 const sendInfoToDB = require('./sendInfoToDB');
 const connectDB = require('../db');
 
-const adminAuthLogin = async (email, password) => {
+const adminAuthLogin = async (emailOrUsername, password) => {
     let client;
     try {
         client = await connectDB();
         const db = client.db();
-        const user = await db.collection('users').findOne({ email });
-
+        const user = await db.collection('users').findOne({
+            $or: [
+                { email: emailOrUsername },
+                { username: emailOrUsername }
+            ]
+        });
+        
         if (!user) {
             return { error: "Invalid Email or password" };
         }
@@ -46,11 +51,13 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
             return { error: "Email already exists" };
         }
 
-        const result = await db.collection('users').insertOne({ email, email, password });
+       const username = email;
+       await db.collection('users').insertOne({ email, password, username });
 
         return {
             email: email,
             password: password,
+            username: email
         };
     } catch (error) {
         console.error('Error during registration:', error);
@@ -63,6 +70,8 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
 };
 
 const deleteAccount = async (email) => {
+    // add account verification
+
     let client;
     try {
         client = await connectDB();
@@ -85,14 +94,21 @@ const deleteAccount = async (email) => {
 };
 
 const resetUsername = async (email, newUsername) => {
+    // add account verification
+    
     let client;
     try {
         client = await connectDB();
         const db = client.db();
-        const existingUser = await db.collection('users').findOne({ email });
+        const existingUserFromEmail = await db.collection('users').findOne({ email });
+        const existingUserFromUsername = await db.collection('users').findOne({ newUsername });
 
-        if (!existingUser) {
+        if (!existingUserFromEmail) {
             return { error: "User not found" };
+        }
+
+        if (existingUserFromUsername) {
+            return { error: "Username has existed"}
         }
 
         await db.collection('users').updateOne(
@@ -111,9 +127,79 @@ const resetUsername = async (email, newUsername) => {
     }
 };
 
+const resetPassword = async (emailOrUsername, newPassword) => {
+    // add account verification
+    
+    let client;
+    try {
+        client = await connectDB();
+        const db = client.db();
+        const existingUser = await db.collection('users').findOne({
+            $or: [
+                { email: emailOrUsername },
+                { username: emailOrUsername }
+            ]
+        });
+        
+        if (!existingUser) {
+            return { error: "User not found" };
+        }
+
+        await db.collection('users').updateOne(
+            { emailOrUsername },
+            { $set: { password: newPassword } }
+        );
+
+        return { message: "Password updated successfully" };
+    } catch (error) {
+        console.error('Error during username reset:', error);
+        return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
+};
+
+const resetEmail = async (username, newEmail) => {
+    // add account verification
+    
+    let client;
+    try {
+        client = await connectDB();
+        const db = client.db();
+        const existingUserFromEmail = await db.collection('users').findOne({ newEmail });
+        const existingUserFromUsername = await db.collection('users').findOne({ username });
+
+        if (!existingUserFromUsername) {
+            return { error: "User not found" };
+        }
+
+        if (existingUserFromEmail) {
+            return { error: "Email has existed"}
+        }
+
+        await db.collection('users').updateOne(
+            { username },
+            { $set: { email: newEmail } }
+        );
+
+        return { message: "Email updated successfully" };
+    } catch (error) {
+        console.error('Error during username reset:', error);
+        return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
+};
+
 module.exports = {
     adminAuthLogin,
     adminAuthRegister,
     deleteAccount,
-    resetUsername
+    resetUsername,
+    resetPassword,
+    resetEmail
 };

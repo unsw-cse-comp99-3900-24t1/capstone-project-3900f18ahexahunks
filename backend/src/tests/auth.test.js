@@ -2,15 +2,16 @@ const { MongoClient } = require('mongodb');
 const request = require('supertest');
 const { app, server } = require('../server');
 const User = require('../models/User');
-const { adminAuthLogin, adminAuthRegister, deleteAccount, resetUsername } = require('../authentication');
+const { adminAuthLogin, adminAuthRegister, deleteAccount, resetUsername, resetPassword, resetEmail } = require('../authentication');
 
 describe('Authentication Tests', () => {
   test('Check successful registration', async () => {
-    const user = await adminAuthRegister('zhecheng@unsw.edu.au', 'Yzc132', 'Yzc132');
+    const user = await adminAuthRegister('zhecheng456@unsw.edu.au', 'Yzc132', 'Yzc132');
     
     expect(user).toEqual({ 
-      email: 'zhecheng@unsw.edu.au',
+      email: 'zhecheng456@unsw.edu.au',
       password: 'Yzc132',
+      username: 'zhecheng456@unsw.edu.au'
     });
   }, 3000);
 
@@ -21,9 +22,11 @@ describe('Authentication Tests', () => {
   }, 3000);
 
   test('Successful login with correct credentials', async () => {
-    const response = await adminAuthLogin('zhecheng@unsw.edu.au', 'Yzc132');
+    await adminAuthRegister('zhecheng456@unsw.edu.au', 'Yzc132', 'Yzc132');
+  
+    const response = await adminAuthLogin('zhecheng456@unsw.edu.au', 'Yzc132');
     expect(response).toEqual({ 
-      email: 'zhecheng@unsw.edu.au',
+      email: 'zhecheng456@unsw.edu.au',
       password: 'Yzc132'
      });
   }, 30000);
@@ -60,5 +63,21 @@ describe('Authentication Tests', () => {
   test('Attempt to reset username for non-existent user', async () => {
     const response = await resetUsername('nonexistent@user.com', 'newusername');
     expect(response).toEqual({ error: "User not found" });
+  }, 30000);
+
+  test('Successful in reset password', async () => {
+      await adminAuthRegister('zhecheng666666666@unsw.edu.au', 'password123', 'password123');
+      await adminAuthLogin('zhecheng666666666@unsw.edu.au', 'password123');
+
+      const response = await resetPassword('zhecheng666666666@unsw.edu.au', 'Yzc66666666');
+      expect(response).toEqual({ message: "Password updated successfully" });
+
+  }, 30000);
+
+  test('Successful in reset email', async () => {
+    await adminAuthRegister('zhecheng@unsw.edu.au', 'password123', 'password123');
+
+    const response = await resetEmail('zhecheng@unsw.edu.au', 'newemail666@gmail.com');
+    expect(response).toEqual({ message: "Email updated successfully" });
   }, 30000);
 });
