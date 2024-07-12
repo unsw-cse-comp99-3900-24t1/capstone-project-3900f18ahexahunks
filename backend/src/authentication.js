@@ -32,6 +32,7 @@ const adminAuthLogin = async (email, password) => {
     }
 };
 
+
 const adminAuthRegister = async (email, password, passwordCheck) => {
     if (password !== passwordCheck) {
         return { error: "Passwords do not match" };
@@ -48,9 +49,6 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
 
         const result = await db.collection('users').insertOne({ email, password: password });
 
-        // send the info to mongoDB
-        sendInfoToDB(email, password);
-
         return {
             email: email,
             password: password,
@@ -66,72 +64,16 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     }
 };
 
-const resetEmail = async (currentEmail, newEmail) => {
-    let client;
-    try {
-        client = await connectDB();
-        const db = client.db();
-        const existingUser = await db.collection('users').findOne({ email: currentEmail });
-
-        if (!existingUser) {
-            return { error: "User not found" };
-        }
-
-        await db.collection('users').updateOne(
-            { email: currentEmail },
-            { $set: { email: newEmail } }
-        );
-
-        return { message: "Email updated successfully" };
-    } catch (error) {
-        console.error('Error during email reset:', error);
-        return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
-    }
-};
-
-const resetUsername = async (email, newUsername) => {
-    let client;
-    try {
-        client = await connectDB();
-        const db = client.db();
-        const existingUser = await db.collection('users').findOne({ email });
-
-        if (!existingUser) {
-            return { error: "User not found" };
-        }
-
-        await db.collection('users').updateOne(
-            { email },
-            { $set: { username: newUsername } }
-        );
-
-        return { message: "Username updated successfully" };
-    } catch (error) {
-        console.error('Error during username reset:', error);
-        return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
-    }
-};
-
 const deleteAccount = async (email) => {
     let client;
     try {
         client = await connectDB();
         const db = client.db();
-        const existingUser = await db.collection('users').findOne({ email });
+        const result = await db.collection('users').deleteOne({ email });
 
-        if (!existingUser) {
+        if (result.deletedCount === 0) {
             return { error: "User not found" };
         }
-
-        await db.collection('users').deleteOne({ email });
 
         return { message: "Account deleted successfully" };
     } catch (error) {
@@ -147,7 +89,5 @@ const deleteAccount = async (email) => {
 module.exports = {
     adminAuthLogin,
     adminAuthRegister,
-    resetEmail,
-    resetUsername,
     deleteAccount
 };
