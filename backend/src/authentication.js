@@ -69,13 +69,17 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     }
 };
 
-const deleteAccount = async (email) => {
-    // add account verification
-
+const deleteAccount = async (email, password) => {
     let client;
     try {
         client = await connectDB();
         const db = client.db();
+        const existingUser = await db.collection('users').findOne({ email });
+
+        if (!existingUser) {
+            return { error: "User not found" };
+        }
+
         const result = await db.collection('users').deleteOne({ email });
 
         if (result.deletedCount === 0) {
@@ -164,9 +168,7 @@ const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
     }
 };
 
-const resetEmail = async (username, newEmail) => {
-    // add account verification
-    
+const resetEmail = async (username, currentEmail, newEmail) => {    
     let client;
     try {
         client = await connectDB();

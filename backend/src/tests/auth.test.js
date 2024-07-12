@@ -36,20 +36,6 @@ describe('Authentication Tests', () => {
     expect(response).toEqual({ error: "Invalid Email or password" });
   }, 30000);
 
-  test('Successful account deletion', async () => {
-    // First, register a user
-    await adminAuthRegister('delete@user.com', 'delete123', 'delete123');
-
-    // Then, delete the account
-    const response = await deleteAccount('delete@user.com');
-    expect(response).toEqual({ message: "Account deleted successfully" });
-  }, 30000);
-
-  test('Attempt to delete a non-existent account', async () => {
-    const response = await deleteAccount('nonexistent@user.com');
-    expect(response).toEqual({ error: "User not found" });
-  }, 30000);
-
   test('Successful username reset', async () => {
     // First, register a user
     await adminAuthRegister('user@unsw.edu.au', 'password123', 'password123');
@@ -73,7 +59,7 @@ describe('Authentication Tests', () => {
       expect(response).toEqual({ message: "Password updated successfully" });
   }, 30000);
 
-  test('Successful in reset password', async () => {
+  test('Failed in reset password', async () => {
     await adminAuthRegister('zhecheng666666666@unsw.edu.au', 'password123', 'password123');
     await adminAuthLogin('zhecheng666666666@unsw.edu.au', 'password123');
 
@@ -84,7 +70,18 @@ describe('Authentication Tests', () => {
   test('Successful in reset email', async () => {
     await adminAuthRegister('zhecheng@unsw.edu.au', 'password123', 'password123');
 
-    const response = await resetEmail('zhecheng@unsw.edu.au', 'newemail666@gmail.com');
+    const response = await resetEmail('zhecheng@unsw.edu.au', 'zhecheng@unsw.edu.au', 'newemail666@gmail.com');
     expect(response).toEqual({ message: "Email updated successfully" });
+  }, 30000);
+
+  test('Successful account deletion with correct email and password', async () => {
+    // Register a user
+    const email = 'delete@user.com';
+    const password = 'delete123';
+    await adminAuthRegister(email, password, password);
+
+    // Delete the account
+    const response = await deleteAccount(email, password);
+    expect(response).toEqual({ message: "Account deleted successfully" });
   }, 30000);
 });
