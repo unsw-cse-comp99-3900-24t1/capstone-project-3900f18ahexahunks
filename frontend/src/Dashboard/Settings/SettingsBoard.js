@@ -209,7 +209,7 @@ const SettingsBoard = () => {
   const [snake, setSnake] = useState(initialSnake);
   const [apple, setApple] = useState(initialApple);
   const [path, setPath] = useState([]);
-  const [delay, setDelay] = useState(100);
+  const [delay, setDelay] = useState(200);
 
   useInterval(() => gameLoop(), delay);
 
