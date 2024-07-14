@@ -189,7 +189,7 @@ const ProfileBoard = () => {
         <Grid item xs={12} md={8}>
           <HistoryCard elevation={4}>
             <Typography variant="h6" gutterBottom>
-              User History
+              Email History
             </Typography>
             <StyledList>
               {history.map((item, index) => (
