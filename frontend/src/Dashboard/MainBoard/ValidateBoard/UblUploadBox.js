@@ -7,7 +7,8 @@ import CustomPrimaryButton from '../../../components/CustomPrimaryButton';
 
 const UploadBox = styled('div')({
   width: '200px',
-  height: '200px',
+  height: '240px',
+  margin: '10px',
   border: '2px dashed #007BFF',
   borderRadius: '10px',
   display: 'flex',

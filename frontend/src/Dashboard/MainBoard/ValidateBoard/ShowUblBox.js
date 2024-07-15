@@ -18,7 +18,7 @@ import { useAlert } from '../../../components/AlertError';
 const PdfBox = styled('div')(({ theme }) => ({
   position: 'relative',
   width: '200px',
-  height: '200px',
+  height: '240px',
   margin: '10px',
   border: '2px solid #ccc',
   display: 'flex',
@@ -59,7 +59,13 @@ const ShareButton = styled(IconButton)({
   },
 });
 
-const ShowUblBox = ({ isLoading }) => {
+const DateTimeLabel = styled('p')({
+  margin: '8px 0 0 0',
+  fontSize: '12px',
+  color: '#666',
+});
+
+const ShowUblBox = ({ isLoading, xmlFiles }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedXml, setSelectedXml] = useState(null);
@@ -69,9 +75,7 @@ const ShowUblBox = ({ isLoading }) => {
   const deleteValidatorDataById = useValidatorStore(
     (state) => state.deleteValidatorDataById
   );
-  const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const getUser = useUserStore((state) => state.getUser);
-  const xmlFiles = getValidatorData();
 
   const handleOpenValidationReport = (xml) => {
     nav(`/handle-files/validation-reports/ubl/${xml._id}`);
@@ -133,6 +137,10 @@ const ShowUblBox = ({ isLoading }) => {
           <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>
             {xml.name}
           </h2>
+          <DateTimeLabel>
+            {new Date(xml.date).toLocaleTimeString()}{' '}
+            {new Date(xml.date).toLocaleDateString()}
+          </DateTimeLabel>
         </PdfBox>
       ))}
       {isLoading && (
