@@ -21,7 +21,6 @@ const VideoWrapper = styled(Box)(({ theme }) => ({
   margin: theme.spacing(4, 0),
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
-  // boxShadow: theme.shadows[3],
   '& iframe': {
     width: '100%',
     height: '465px',
@@ -34,7 +33,7 @@ const StepsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   boxShadow: theme.shadows[3],
 }));
-//
+
 const ValidateUblHelp = () => {
   return (
     <ContentWrapper>
@@ -45,7 +44,6 @@ const ValidateUblHelp = () => {
         <iframe
           src="https://www.youtube.com/embed/kiddMKPiQUw?mute=1"
           title="Help Video"
-          // allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>
       </VideoWrapper>

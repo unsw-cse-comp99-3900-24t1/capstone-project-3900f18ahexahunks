@@ -116,9 +116,6 @@ const Dashboard = () => {
     case 'help':
       content = <HelpBoard />;
       break;
-    // case 'profile':
-    //   content = <ProfileBoard />;
-    //   break;
     case 'main':
       content = <Board />;
       break;
