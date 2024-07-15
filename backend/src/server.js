@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
 const connectDB = require('../db'); // Correct path to db
-const { adminAuthLogin, adminAuthRegister } = require('./authentication'); // Correct path to authentication
+const { adminAuthLogin, adminAuthRegister, resetPassword } = require('./authentication'); // Correct path to authentication
 const userRoutes = require('./routes/userRoutes'); // Correct path to userRoutes
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
@@ -49,6 +49,28 @@ app.post('/register', async (req, res) => {
     }
   
     return res.status(200).json(response);
+});
+
+app.post('/user/update-password', async (req, res) => {
+  const { emailOrUsername, currentPassword, newPassword } = req.body;
+  const response = await resetPassword(emailOrUsername, currentPassword, newPassword);
+
+  if (response.error) {
+    let status;
+    switch (response.error) {
+      case "User not found":
+        status = 401;
+        break;
+      case "Incorrect current password":
+        status = 401;
+        break;
+      default:
+        status = 500;
+    }
+    return res.status(status).json(response);
+  }
+
+  return res.status(200).json(response);
 });
 
 app.use('/users', userRoutes);
