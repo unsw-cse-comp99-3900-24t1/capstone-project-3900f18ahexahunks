@@ -75,6 +75,25 @@ export const validateUBL = async (formData) => {
   }
 };
 
+// API to send UBl to backend for validation
+export const changeProfilePhoto = async (formData) => {
+  try {
+    const response = await apiClient.post(
+      '/edit/change-profile-photo',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
+
 // API to get validation info from userSchema
 export const getAllValidationUblInfo = async (data) => {
   try {
@@ -83,7 +102,9 @@ export const getAllValidationUblInfo = async (data) => {
     });
     console.log(response.data);
     return response.data.ublValidation;
-  } catch (error) {}
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to give another user access to the same validation-ubl files

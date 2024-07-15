@@ -13,12 +13,13 @@ import {
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import EmailHistoryItem from './EmailHistoryItem';
-import { getHistoryEmail } from '../../services/api';
+import { changeProfilePhoto, getHistoryEmail } from '../../services/api';
 import { useAlert } from '../../components/AlertError';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import CloseIcon from '@mui/icons-material/Close';
+import useUserStore from '../../zustand/useUserStore';
 
 const StyledContainer = styled(Container)({
   marginTop: '32px',
@@ -57,12 +58,20 @@ const LargeIconButton = styled(IconButton)({
 });
 
 const ProfileBoard = () => {
-  const [username, setUsername] = useState('John Doe');
-  const [profilePic, setProfilePic] = useState(null);
+  const { getUser, updateGoogleImage } = useUserStore();
+  const user = getUser();
+
+  const [username, setUsername] = useState(user.username);
   const [history, setHistory] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
+  console.log(user, 'USIDAHUDUIASDUOHASODIUHOAS');
+
+  useEffect(() => {
+    setProfileImage(user.googlePicture);
+  }, []);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -80,15 +89,32 @@ const ProfileBoard = () => {
     fetchData();
   }, []);
 
-  const handleProfilePicChange = (event) => {
+  const handleProfilePicChange = async (event) => {
+    const userId = user._id;
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProfilePic(reader.result);
-      };
-      reader.readAsDataURL(file);
+
+    // Confirm file is of type image
+    if (file && file.type.startsWith('image/')) {
+      // Create file data to send to backend
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', userId);
+      console.log(file, userId);
+      const result = await changeProfilePhoto(formData);
+
+      if (result.error) {
+        if (result.data.error) {
+          return showAlert(`${result.data.error}`, 'tomato');
+        } else {
+          return showAlert('Unable to change profile photo', 'tomato');
+        }
+      }
+      console.log(result);
+      setProfileImage(result.googlePicture);
+      updateGoogleImage(result.googlePicture);
+      return showAlert('Profile photo changed successfully', 'green');
     }
+    return showAlert('Invalid file type given', 'tomato');
   };
 
   const handleDeleteHistory = (index) => {
@@ -137,7 +163,7 @@ const ProfileBoard = () => {
             <Typography variant="h6" gutterBottom>
               Profile
             </Typography>
-            <ProfileAvatar src={profilePic} alt="Profile Picture" />
+            <ProfileAvatar src={profileImage} alt="Profile Picture" />
             <input
               accept="image/*"
               style={{ display: 'none' }}
@@ -159,7 +185,11 @@ const ProfileBoard = () => {
                 margin="normal"
               />
             ) : (
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                style={{ marginTop: '20px' }}
+                variant="body1"
+                gutterBottom
+              >
                 {username}
               </Typography>
             )}

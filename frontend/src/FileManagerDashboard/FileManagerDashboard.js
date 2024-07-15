@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useValidatorStore from '../zustand/useValidatorStore';
 import useUserStore from '../zustand/useUserStore';
 import { styled, useTheme } from '@mui/system';
-import { useMediaQuery, Drawer, IconButton } from '@mui/material';
+import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
 import UblBoard from './UblValidation/MainBoard/UblBoard';
 import ValidBoard from './UblValidation/MainBoard/ValidBoard';
@@ -18,6 +18,14 @@ const Container = styled('div')({
   width: '100vw',
   height: '100vh',
   display: 'flex',
+});
+
+const ProfileAvatar = styled(Avatar)({
+  width: '26px',
+  height: '26px',
+  borderRadius: '50%',
+  margin: 'auto',
+  marginRight: '10px',
 });
 
 const Username = styled('div')(({ theme }) => ({
@@ -94,10 +102,10 @@ const FileManagerDashboard = () => {
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const getUser = useUserStore((state) => state.getUser);
   const setLatestData = useValidatorStore((state) => state.setLatestData);
+  const getUserData = getUser();
 
   useEffect(() => {
     const ans = getValidatorData();
-    const getUserData = getUser();
     setUser(getUserData);
     console.log(ans, 'THIS IS ANSwer', getUserData);
 
@@ -188,7 +196,6 @@ const FileManagerDashboard = () => {
       <div
         style={{ width: isMobile ? '100%' : '80%', backgroundColor: '#F9F9F9' }}
       >
-        {/* <Container2> */}
         <HeaderContainer>
           {isMobile && (
             <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
@@ -197,13 +204,12 @@ const FileManagerDashboard = () => {
           )}
 
           <Username onClick={handleOpenProfile}>
-            <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
+            <ProfileAvatar src={user.googlePicture} alt="Profile Picture" />
             {user.username}
           </Username>
         </HeaderContainer>
         <div>{content}</div>
       </div>
-      {/* </Container2> */}
     </Container>
   );
 };

@@ -11,7 +11,7 @@ import { useAlert } from '../../../components/AlertError';
 import { sendFileToEmail } from '../../../services/api';
 import { validateEmail } from '../../../shared/validators';
 import useUserStore from '../../../zustand/useUserStore';
-//
+
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,

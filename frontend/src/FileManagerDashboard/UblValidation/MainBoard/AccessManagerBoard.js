@@ -53,7 +53,7 @@ const AccessManagerBoard = () => {
   const handleClickOpen = () => {
     if (!validateEmail(email)) return showAlert('Invalid email', 'tomato');
     const data = getValidatorDataById(id);
-    setName(data.name); // Set the name when opening the dialog
+    setName(data.name);
     setOpen(true);
   };
 
