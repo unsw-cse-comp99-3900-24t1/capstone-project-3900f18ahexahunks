@@ -65,7 +65,7 @@ const DateTimeLabel = styled('p')({
   color: '#666',
 });
 
-const ShowUblBox = ({ isLoading }) => {
+const ShowUblBox = ({ isLoading, xmlFiles }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedXml, setSelectedXml] = useState(null);
@@ -75,9 +75,7 @@ const ShowUblBox = ({ isLoading }) => {
   const deleteValidatorDataById = useValidatorStore(
     (state) => state.deleteValidatorDataById
   );
-  const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const getUser = useUserStore((state) => state.getUser);
-  const xmlFiles = getValidatorData();
 
   const handleOpenValidationReport = (xml) => {
     nav(`/handle-files/validation-reports/ubl/${xml._id}`);
