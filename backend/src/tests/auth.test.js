@@ -6,12 +6,21 @@ const { adminAuthLogin, adminAuthRegister, deleteAccount, resetUsername, resetPa
 
 describe('Authentication Tests', () => {
   test('Check successful registration', async () => {
-    const user = await adminAuthRegister('zhecheng456@unsw.edu.au', 'Yzc132', 'Yzc132');
-    
-    expect(user).toEqual({ 
-      email: 'zhecheng456@unsw.edu.au',
-      password: 'Yzc132',
-      username: 'zhecheng456@unsw.edu.au'
+    const response = await adminAuthRegister('zhecheng456@unsw.edu.au', 'Yzc132', 'Yzc132');
+
+    console.log('Test user registration response:', response);
+
+    // Check if token is present and is a string
+    expect(response).toHaveProperty('token');
+    expect(typeof response.token).toBe('string');
+
+    // Check if user object is correct
+    expect(response).toMatchObject({
+        user: {
+            email: 'zhecheng456@unsw.edu.au',
+            password: 'Yzc132',
+            username: 'zhecheng456@unsw.edu.au'
+        }
     });
   }, 3000);
 

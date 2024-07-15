@@ -1,7 +1,17 @@
-const User = require('./models/User');
-const bcrypt = require('bcrypt');
-const sendInfoToDB = require('./sendInfoToDB');
+//const User = require('./models/User');
+//const bcrypt = require('bcrypt');
+//const sendInfoToDB = require('./sendInfoToDB');
 const connectDB = require('../db');
+
+const jwt = require('jsonwebtoken');
+const generateJWTSecret = require('./generateSecret');
+require('dotenv').config();
+
+// Ensure the JWT_SECRET exists in the environment variables
+if (!process.env.JWT_SECRET) {
+    generateJWTSecret();
+    require('dotenv').config(); // Reload .env variables
+}
 
 const adminAuthLogin = async (emailOrUsername, password) => {
     let client;
@@ -46,18 +56,36 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     try {
         client = await connectDB();
         const db = client.db();
+        console.log('Connected to database');
+
         const existingUser = await db.collection('users').findOne({ email });
+        console.log('Checked for existing user');
+
         if (existingUser) {
+            console.log('Email already exists');
             return { error: "Email already exists" };
         }
 
-       const username = email;
-       await db.collection('users').insertOne({ email, password, username });
+        const username = email;
+
+        // Generate JWT
+        const token = jwt.sign(
+            { email, username },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // Token expiration time
+        );
+        console.log('Generated JWT token');
+
+        await db.collection('users').insertOne({ email, password, username, token });
+        console.log('Inserted new user with token');
 
         return {
-            email: email,
-            password: password,
-            username: email
+            token: token,
+            user: {
+                email: email,
+                password: password,
+                username: username
+            }
         };
     } catch (error) {
         console.error('Error during registration:', error);
@@ -65,6 +93,7 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     } finally {
         if (client) {
             await client.close();
+            console.log('Closed database connection');
         }
     }
 };
