@@ -24,7 +24,7 @@ const adminAuthLogin = async (emailOrUsername, password) => {
                 { username: emailOrUsername }
             ]
         });
-        
+
         if (!user) {
             return { error: "Invalid Email or password" };
         }
@@ -33,9 +33,27 @@ const adminAuthLogin = async (emailOrUsername, password) => {
             return { error: "Invalid Email or password" };
         }
 
+        // Generate JWT
+        const token = jwt.sign(
+            { email: user.email, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // Token expiration time
+        );
+        console.log('Generated JWT token for login');
+
+        // Store the token in the database
+        await db.collection('users').updateOne(
+            { _id: user._id },
+            { $set: { token: token } }
+        );
+        console.log('Stored JWT token in the database');
+
         return {
-            email: user.email,
-            password: user.password
+            token: token,
+            user: {
+                email: user.email,
+                password: user.password
+            }
         };
     } catch (error) {
         console.error('Error during login:', error);

@@ -34,10 +34,20 @@ describe('Authentication Tests', () => {
     await adminAuthRegister('zhecheng456@unsw.edu.au', 'Yzc132', 'Yzc132');
   
     const response = await adminAuthLogin('zhecheng456@unsw.edu.au', 'Yzc132');
-    expect(response).toEqual({ 
-      email: 'zhecheng456@unsw.edu.au',
-      password: 'Yzc132'
-     });
+    
+    console.log('Login response:', response);
+
+    // Check if token is present and is a string
+    expect(response).toHaveProperty('token');
+    expect(typeof response.token).toBe('string');
+
+    // Check if user object is correct
+    expect(response).toMatchObject({
+        user: {
+            email: 'zhecheng456@unsw.edu.au',
+            password: 'Yzc132'
+        }
+    });
   }, 30000);
 
   test('Login attempt with incorrect email', async () => {
