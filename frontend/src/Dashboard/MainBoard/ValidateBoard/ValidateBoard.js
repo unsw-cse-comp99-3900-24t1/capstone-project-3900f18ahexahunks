@@ -94,7 +94,12 @@ const ValidateBoard = () => {
         const result = await validateUBL(formData);
 
         if (result.error) {
-          showAlert('Error converting/uploading PDF', 'tomato');
+          showAlert(
+            result.data?.error
+              ? result.data.error
+              : 'Error converting/uploading PDF',
+            'tomato'
+          );
         } else {
           showAlert('UBL successfully validated', 'green');
 
