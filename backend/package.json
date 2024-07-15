@@ -23,6 +23,7 @@
     "http": "^0.0.1-security",
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.4",
+    "nodemailer": "^6.9.14",
     "supertest": "^7.0.0"
   },
   "devDependencies": {

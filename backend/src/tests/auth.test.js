@@ -67,13 +67,6 @@ describe('Authentication Tests', () => {
     expect(response).toEqual({ error: "Incorrect current password" });
   }, 30000);
 
-  test('Successful in reset email', async () => {
-    await adminAuthRegister('zhecheng@unsw.edu.au', 'password123', 'password123');
-
-    const response = await resetEmail('zhecheng@unsw.edu.au', 'zhecheng@unsw.edu.au', 'newemail666@gmail.com');
-    expect(response).toEqual({ message: "Email updated successfully" });
-  }, 30000);
-
   test('Successful account deletion with correct email and password', async () => {
     // Register a user
     const email = 'delete@user.com';
@@ -84,4 +77,16 @@ describe('Authentication Tests', () => {
     const response = await deleteAccount(email, password);
     expect(response).toEqual({ message: "Account deleted successfully" });
   }, 30000);
+
+  test('Reset email', async () => {
+    // Register a user
+    const email = 'olduser@user.com';
+    const password = 'olduser123';
+    await adminAuthRegister(email, password, password);
+
+    // Reset the email
+    const response = await resetEmail(email, password, 'newemail@olduser.com');
+    expect(response).toEqual({ message: "Email update successful" });
+  }, 30000);
+
 });

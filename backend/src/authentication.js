@@ -80,6 +80,11 @@ const deleteAccount = async (email, password) => {
             return { error: "User not found" };
         }
 
+        // Verify the password (assuming plain text comparison for simplicity)
+        if (existingUser.password !== password) {
+            return { error: "Incorrect password! You have no permission to delete!" };
+        }
+
         const result = await db.collection('users').deleteOne({ email });
 
         if (result.deletedCount === 0) {
@@ -168,30 +173,48 @@ const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
     }
 };
 
-const resetEmail = async (username, currentEmail, newEmail) => {    
+const resetEmail = async (username, password, newEmail) => {
     let client;
     try {
         client = await connectDB();
         const db = client.db();
-        const existingUserFromEmail = await db.collection('users').findOne({ newEmail });
-        const existingUserFromUsername = await db.collection('users').findOne({ username });
+        console.log('Connected to database');
+
+        // Find if the new email already exists
+        const existingUserFromEmail = await db.collection('users').findOne({ email: newEmail });
+        console.log('Existing user from email:', existingUserFromEmail);
+
+        if (existingUserFromEmail) {
+            console.log('Email already exists');
+            return { error: "Email already exists" };
+        }
+
+        // Find the user by username
+        const existingUserFromUsername = await db.collection('users').findOne({ username: username });
+        console.log('Existing user from username:', existingUserFromUsername);
 
         if (!existingUserFromUsername) {
+            console.log('User not found');
             return { error: "User not found" };
         }
 
-        if (existingUserFromEmail) {
-            return { error: "Email has existed"}
+        // Verify the password
+        if (existingUserFromUsername.password !== password) {
+            console.log('Incorrect password');
+            return { error: "Incorrect password" };
         }
 
-        await db.collection('users').updateOne(
+        // Update the user's email
+        const updateResult = await db.collection('users').updateOne(
             { username },
             { $set: { email: newEmail } }
         );
+        console.log('Update result:', updateResult);
 
-        return { message: "Email updated successfully" };
+        console.log('Email update successful');
+        return { message: "Email update successful" };
     } catch (error) {
-        console.error('Error during username reset:', error);
+        console.error('Error during email reset:', error);
         return { error: "Please try again later" };
     } finally {
         if (client) {
