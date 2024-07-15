@@ -2,9 +2,9 @@ import React from 'react';
 import { styled } from '@mui/system';
 import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
-// import FeatureInfo from './FeatureInfo/FeatureInfo';
+import FeatureInfo from './FeatureInfo/FeatureInfo';
 // import InfoCards from './Info/InfoCards';
-// import Process from './Process/Process';
+import Process from './Process/Process';
 import Footer from './Footer/Footer';
 
 const Container = styled('div')({
@@ -24,7 +24,7 @@ const Home = () => {
       <Container>
         <Navbar />
         <Hero />
-        {/* <FeatureInfo /> */}
+        <FeatureInfo />
         {/* <InfoCards /> */}
         {/* <Process /> */}
         {/* <div>Home</div> */}
