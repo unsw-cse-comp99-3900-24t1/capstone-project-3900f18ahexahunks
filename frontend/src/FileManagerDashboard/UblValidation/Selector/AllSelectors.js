@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import HelpIcon from '@mui/icons-material/Help';
 import ShareIcon from '@mui/icons-material/Share';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 const SelectorContainer = styled('div')(() => ({
   display: 'flex',
@@ -63,6 +64,8 @@ const AllSelectors = () => {
       setSelectedRoute(`/handle-files/validation-reports/help/${id}`);
     } else if (file === 'share') {
       setSelectedRoute(`/handle-files/validation-reports/share/${id}`);
+    } else if (file === 'access') {
+      setSelectedRoute(`/handle-files/validation-reports/access/${id}`);
     } else {
       setSelectedRoute(null);
     }
@@ -103,6 +106,17 @@ const AllSelectors = () => {
             setSelectedRoute(`/handle-files/validation-reports/share/${id}`)
           }
           icon={<ShareIcon />}
+        />
+        <SelectorLinks
+          routeTo={`/handle-files/validation-reports/access/${id}`}
+          text="Access"
+          isSelected={
+            selectedRoute === `/handle-files/validation-reports/access/${id}`
+          }
+          onClick={() =>
+            setSelectedRoute(`/handle-files/validation-reports/access/${id}`)
+          }
+          icon={<LockOpenIcon />}
         />
       </SelectorContainer1>
       <SelectorContainer2>
