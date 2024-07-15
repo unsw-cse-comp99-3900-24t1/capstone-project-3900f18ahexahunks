@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import UblUploadBox from './UblUploadBox';
 import ShowUblBox from './ShowUblBox';
@@ -7,6 +6,7 @@ import useUserStore from '../../../zustand/useUserStore';
 import { getAllValidationUblInfo, validateUBL } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import useValidatorStore from '../../../zustand/useValidatorStore';
+import CustomInputBox from '../../../components/CustomInputBox';
 
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -35,6 +35,8 @@ const BoardWrapper = styled('div')({
 const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterDate, setFilterDate] = useState('');
 
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
@@ -69,7 +71,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  }, []);
+  }, [getUser, showAlert, setLatestData]);
 
   // To handle upload of the latest xml and send for processing in backend
   const handleUpload = async (file, name) => {
@@ -92,7 +94,12 @@ const ValidateBoard = () => {
         const result = await validateUBL(formData);
 
         if (result.error) {
-          showAlert('Error converting/uploading PDF', 'tomato');
+          showAlert(
+            result.data?.error
+              ? result.data.error
+              : 'Error converting/uploading PDF',
+            'tomato'
+          );
         } else {
           showAlert('UBL successfully validated', 'green');
 
@@ -123,10 +130,58 @@ const ValidateBoard = () => {
     }
   };
 
+  // Filter xmlFiles based on search term and filter date
+  const filteredXmlFiles = xmlFiles.filter((file) => {
+    const matchesSearchTerm = file.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesFilterDate = filterDate
+      ? new Date(file.date).toDateString() ===
+        new Date(filterDate).toDateString()
+      : true;
+    return matchesSearchTerm && matchesFilterDate;
+  });
+
+  console.log(xmlFiles);
+
   return (
     <BoardContainer>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <CustomInputBox
+          value={searchTerm}
+          setValue={setSearchTerm}
+          label="Search Files"
+          placeholder="Search for files by name"
+        />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          style={{
+            marginRight: '10px',
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+          }}
+        />
+      </div>
       <BoardWrapper>
-        <ShowUblBox xmlFiles={xmlFiles} isLoading={isLoading} />
+        <ShowUblBox xmlFiles={filteredXmlFiles} isLoading={isLoading} />
         <UblUploadBox handleUpload={handleUpload} />
       </BoardWrapper>
     </BoardContainer>

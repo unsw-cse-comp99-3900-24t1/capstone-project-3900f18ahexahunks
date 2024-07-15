@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useAlert } from '../../../components/AlertError';
 import { sendFileToEmail } from '../../../services/api';
 import { validateEmail } from '../../../shared/validators';
+import useUserStore from '../../../zustand/useUserStore';
 //
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -83,8 +84,10 @@ const LoadingAnimation = styled('div')({
 });
 
 const ShareFilesBoard = () => {
-  const { id } = useParams();
+  const { id, process, file } = useParams();
   const { showAlert } = useAlert();
+  const { getUser } = useUserStore();
+  const user = getUser();
 
   const [data, setData] = useState({});
   const [email, setEmail] = useState('');
@@ -112,6 +115,7 @@ const ShareFilesBoard = () => {
     setFileIds({
       xml: data.ublId,
       validatorPdf: data.validatorId,
+      _id: data._id,
     });
   }, [getValidatorDataById, id]);
 
@@ -140,6 +144,14 @@ const ShareFilesBoard = () => {
 
       setIsLoading(true);
 
+      const fileTypes = [];
+      if (selectedFiles.xml) {
+        fileTypes.push('ubl');
+      }
+      if (selectedFiles.validatorPdf) {
+        fileTypes.push('validate');
+      }
+
       const result = await sendFileToEmail({
         email,
         xmlId: selectedFiles.xml ? fileIds.xml : null,
@@ -149,6 +161,10 @@ const ShareFilesBoard = () => {
           : null,
         message: body,
         emailSubject: subject,
+        sharedObjId: id,
+        process: process,
+        fileTypes,
+        userId: user._id,
       });
 
       console.log(result, 'RESDSDSDSDSDD');

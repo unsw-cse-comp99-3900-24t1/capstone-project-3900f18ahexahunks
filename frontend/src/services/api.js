@@ -86,6 +86,25 @@ export const getAllValidationUblInfo = async (data) => {
   } catch (error) {}
 };
 
+// API to give another user access to the same validation-ubl files
+export const giveAccessValidationUbl = async (data) => {
+  try {
+    return await apiClient.post('/give-access-validation-ubl', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
+// API to get the historyEmail array for the user
+export const getHistoryEmail = async () => {
+  try {
+    const response = await apiClient.get('/history-email');
+    return response.data;
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 // API to get pdf info from userSchema
 export const getAllPdfInfo = async (data) => {
   try {

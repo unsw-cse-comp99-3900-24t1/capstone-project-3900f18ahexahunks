@@ -12,6 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
 
 const Container = styled('div')({
   width: '100vw',
@@ -146,6 +147,9 @@ const FileManagerDashboard = () => {
             break;
           case 'share':
             content = <ShareFilesBoard />;
+            break;
+          case 'access':
+            content = <AccessManagerBoard />;
             break;
           case 'help':
             content = <HelpBoard />;
