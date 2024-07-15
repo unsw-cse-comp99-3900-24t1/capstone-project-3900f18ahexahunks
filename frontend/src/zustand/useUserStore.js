@@ -22,6 +22,13 @@ const useUserStore = create((set, get) => ({
     const state = get();
     return state.user.user;
   },
+  updateGoogleImage: (googlePicture) => {
+    const currentState = get().user;
+    const updatedUser = { ...currentState.user, googlePicture };
+    const updatedState = { ...currentState, user: updatedUser };
+    localStorage.setItem('user', JSON.stringify(updatedState));
+    set({ user: updatedState });
+  },
 }));
 
 export default useUserStore;

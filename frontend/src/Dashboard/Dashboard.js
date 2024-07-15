@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/system';
-import { useMediaQuery, Drawer, IconButton, Typography } from '@mui/material';
+import {
+  useMediaQuery,
+  Drawer,
+  IconButton,
+  Typography,
+  Avatar,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
@@ -18,6 +24,14 @@ const Container = styled('div')(({ theme }) => ({
   height: '100vh',
   display: 'flex',
 }));
+
+const ProfileAvatar = styled(Avatar)({
+  width: '26px',
+  height: '26px',
+  borderRadius: '50%',
+  margin: 'auto',
+  marginRight: '10px',
+});
 
 const Username = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -139,7 +153,7 @@ const Dashboard = () => {
             </IconButton>
           )}
           <Username onClick={handleOpenProfile}>
-            <AccountCircleIcon style={{ height: '26px', width: '26px' }} />
+            <ProfileAvatar src={user.googlePicture} alt="Profile Picture" />
             {username}
           </Username>
         </HeaderContainer>
