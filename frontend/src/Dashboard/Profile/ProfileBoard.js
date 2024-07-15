@@ -58,12 +58,20 @@ const LargeIconButton = styled(IconButton)({
 });
 
 const ProfileBoard = () => {
-  const [username, setUsername] = useState('John Doe');
+  const { getUser, updateGoogleImage } = useUserStore();
+  const user = getUser();
+
+  const [username, setUsername] = useState(user.username);
   const [history, setHistory] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const { showAlert } = useAlert();
   const navigate = useNavigate();
+  console.log(user, 'USIDAHUDUIASDUOHASODIUHOAS');
+
+  useEffect(() => {
+    setProfileImage(user.googlePicture);
+  }, []);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -81,12 +89,6 @@ const ProfileBoard = () => {
     fetchData();
   }, []);
 
-  const { getUser, updateGoogleImage } = useUserStore();
-  const user = getUser();
-  console.log(user, 'USIDAHUDUIASDUOHASODIUHOAS');
-  useEffect(() => {
-    setProfileImage(user.googlePicture);
-  }, []);
   const handleProfilePicChange = async (event) => {
     const userId = user._id;
     const file = event.target.files[0];
@@ -183,7 +185,11 @@ const ProfileBoard = () => {
                 margin="normal"
               />
             ) : (
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                style={{ marginTop: '20px' }}
+                variant="body1"
+                gutterBottom
+              >
                 {username}
               </Typography>
             )}
