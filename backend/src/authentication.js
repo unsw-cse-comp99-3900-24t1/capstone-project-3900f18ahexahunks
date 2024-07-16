@@ -1,6 +1,5 @@
 const User = require('./models/User');
 //const bcrypt = require('bcrypt');
-//const sendInfoToDB = require('./sendInfoToDB');
 const connectDB = require('../db');
 
 const jwt = require('jsonwebtoken');
@@ -39,14 +38,12 @@ const adminAuthLogin = async (emailOrUsername, password) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' } // Token expiration time
         );
-        console.log('Generated JWT token for login');
 
         // Store the token in the database
         await db.collection('users').updateOne(
             { _id: user._id },
             { $set: { token: token } }
         );
-        console.log('Stored JWT token in the database');
 
         return {
             token: token,
@@ -56,7 +53,6 @@ const adminAuthLogin = async (emailOrUsername, password) => {
             }
         };
     } catch (error) {
-        console.error('Error during login:', error);
         return { error: "Please try again later" };
     }
 };
@@ -70,14 +66,11 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     try {
         client = await connectDB();
         const db = client.db();
-        console.log('Connected to database');
 
         const existingUser = await db.collection('users').findOne({ email });
-        console.log('Checked for existing user');
 
         if (existingUser) {
-            console.log('Email already exists');
-            return { error: "Email already exists" };
+            return { error: "Invalid Email or password" };
         }
 
         const username = email;
@@ -88,10 +81,8 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' } // Token expiration time
         );
-        console.log('Generated JWT token');
 
         await db.collection('users').insertOne({ email, password, username, token });
-        console.log('Inserted new user with token');
 
         return {
             token: token,
@@ -102,7 +93,6 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
             }
         };
     } catch (error) {
-        console.error('Error during registration:', error);
         return { error: "Please try again later" };
     }
 };
@@ -132,13 +122,11 @@ const deleteAccount = async (email, password) => {
 
         return { message: "Account deleted successfully" };
     } catch (error) {
-        console.error('Error during account deletion:', error);
         return { error: "Please try again later" };
     } 
 };
 
 const resetUsername = async (email, newUsername) => {
-    // add account verification
     
     let client;
     try {
@@ -162,7 +150,6 @@ const resetUsername = async (email, newUsername) => {
 
         return { message: "Username updated successfully" };
     } catch (error) {
-        console.error('Error during username reset:', error);
         return { error: "Please try again later" };
     }
 };
@@ -195,7 +182,6 @@ const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
 
         return { message: "Password updated successfully" };
     } catch (error) {
-        console.error('Error during username reset:', error);
         return { error: "Please try again later" };
     }
 };
@@ -205,29 +191,23 @@ const resetEmail = async (username, password, newEmail) => {
     try {
         client = await connectDB();
         const db = client.db();
-        console.log('Connected to database');
 
         // Find if the new email already exists
         const existingUserFromEmail = await db.collection('users').findOne({ email: newEmail });
-        console.log('Existing user from email:', existingUserFromEmail);
 
         if (existingUserFromEmail) {
-            console.log('Email already exists');
             return { error: "Email already exists" };
         }
 
         // Find the user by username
         const existingUserFromUsername = await db.collection('users').findOne({ username: username });
-        console.log('Existing user from username:', existingUserFromUsername);
 
         if (!existingUserFromUsername) {
-            console.log('User not found');
             return { error: "User not found" };
         }
 
         // Verify the password
         if (existingUserFromUsername.password !== password) {
-            console.log('Incorrect password');
             return { error: "Incorrect password" };
         }
 
@@ -236,12 +216,8 @@ const resetEmail = async (username, password, newEmail) => {
             { username },
             { $set: { email: newEmail } }
         );
-        console.log('Update result:', updateResult);
-
-        console.log('Email update successful');
         return { message: "Email update successful" };
     } catch (error) {
-        console.error('Error during email reset:', error);
         return { error: "Please try again later" };
     }
 };

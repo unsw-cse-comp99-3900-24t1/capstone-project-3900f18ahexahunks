@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 const request = require('supertest');
-const { app, server } = require('../server');
+//const { app, server } = require('../server');
 const User = require('../models/User');
 const { adminAuthLogin, adminAuthRegister, deleteAccount, resetUsername, resetPassword, resetEmail } = require('../authentication');
 

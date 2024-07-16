@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
-const connectDB = require('../db'); // Correct path to db
-const { adminAuthLogin, adminAuthRegister, resetPassword } = require('./authentication'); // Correct path to authentication
+const connectDB = require('../db');
+const { adminAuthLogin, adminAuthRegister, resetPassword } = require('./authentication');
 
-const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const PORT = process.env.BACKEND_SERVER_PORT;
 
 const app = express();
 
@@ -17,16 +17,21 @@ app.get('/test', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const response = await adminAuthLogin(email, password);
-  
-    if (response.error) {
-      const status = response.error === "Invalid Email or password" ? 400 : 500;
+  const { email, password } = req.body;
+  const response = await adminAuthLogin(email, password);
+
+  if (response.error) {
+      let status;
+      if (response.error === "Invalid Email or password") {
+          status = 400;
+      } else {
+          status = 500;
+      }
       return res.status(status).json(response);
-    }
-  
-    return res.status(200).json(response);
-  });
+  }
+
+  return res.status(200).json(response);
+});
   
 app.post('/register', async (req, res) => {
   const { email, password, passwordCheck } = req.body;
@@ -38,7 +43,7 @@ app.post('/register', async (req, res) => {
       case "Passwords do not match":
         status = 402;
         break;
-      case "Email already exists":
+      case "Invalid Email or password":
         status = 400;
         break;
       default:
@@ -47,7 +52,7 @@ app.post('/register', async (req, res) => {
     return res.status(status).json(response);
   }
 
-  return res.status(201).json(response);
+  return res.status(200).json(response);
 });
 
 app.post('/user/update-password', async (req, res) => {
