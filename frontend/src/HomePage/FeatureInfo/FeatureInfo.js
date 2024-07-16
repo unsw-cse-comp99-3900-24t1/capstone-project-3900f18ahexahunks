@@ -1,5 +1,16 @@
 import React from 'react';
-import { styled } from '@mui/system';
+import { styled, keyframes } from '@mui/system';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const pulse = keyframes`
+  0% { background-color: rgba(255, 255, 255, 0.1); }
+  50% { background-color: rgba(255, 255, 255, 0.3); }
+  100% { background-color: rgba(255, 255, 255, 0.1); }
+`;
 
 const ProductShowcaseSection = styled('div')({
   display: 'flex',
@@ -17,9 +28,15 @@ const ProductHeadingContainer = styled('div')({
   textAlign: 'center',
 });
 
+const glow = keyframes`
+  from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #E60073, 0 0 40px #E60073, 0 0 50px #E60073, 0 0 60px #E60073, 0 0 70px #E60073; }
+  to { text-shadow: 0 0 20px #fff, 0 0 30px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177, 0 0 60px #FF1177, 0 0 70px #FF1177, 0 0 80px #FF1177; }
+`;
+
 const ProductHeading = styled('h1')({
   fontSize: '2.5rem',
   color: '#fff',
+  animation: `${glow} 2.5s ease-in-out infinite alternate`,
 });
 
 const ProductCardsContainer = styled('div')({
@@ -34,26 +51,30 @@ const ProductCardsContainer = styled('div')({
   },
 });
 
-const ProductCard = styled('div')({
+const ProductCard = styled('div')(({ theme, hoverColor }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
   margin: '20px',
-  border: '2px solid #fff',
+  border: '2px solid black',
   padding: '20px',
   borderRadius: '10px',
   width: '400px',
   boxSizing: 'border-box',
-  transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Add transition for smooth effect
+  backgroundColor: 'transparent',
+  transition: 'all 0.5s ease', // Slowed down from 0.3s to 0.5s
+  animation: `${fadeIn} 1.5s ease-out`, // Slowed down from 1s to 1.5s
   '&:hover': {
-    transform: 'scale(1.05)', // Scale up on hover
-    boxShadow: '0 4px 8px rgba(255, 255, 255, 0.2)', // Add subtle shadow on hover
+    transform: 'scale(1.08)',
+    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+    borderColor: hoverColor,
+    animation: `${pulse} 3s infinite ease-in-out`, // Slowed down from 2s to 3s
   },
   '@media (max-width: 750px)': {
-    width: '80%', // Adjust width for small screens
+    width: '80%',
   },
-});
+}));
 
 const ProductImage = styled('div')({
   width: '150px',
@@ -61,9 +82,6 @@ const ProductImage = styled('div')({
   borderRadius: '50%',
   backgroundColor: '#ddd',
   marginBottom: '20px',
-  //   backgroundImage: `url(${imageURl}})`,
-  //   backgroundSize: 'cover',
-  //   backgroundPosition: 'center',
 });
 
 const ProductInfo = styled('div')({
@@ -78,18 +96,18 @@ const FeatureInfo = () => {
         <ProductHeading>Our Product Features...</ProductHeading>
       </ProductHeadingContainer>
       <ProductCardsContainer>
-        <ProductCard>
+        <ProductCard hoverColor="#ff6f61">
           <ProductImage />
           <ProductInfo>
             <h3>Convert</h3>
             <p>
               Create electronic invoices by converting data from various sources
               (CSV, SQL, PDF, or manual input) into UBL 2.1 XML format using our
-              API.{' '}
+              API.
             </p>
           </ProductInfo>
         </ProductCard>
-        <ProductCard>
+        <ProductCard hoverColor="#4caf50">
           <ProductImage />
           <ProductInfo>
             <h3>Validate</h3>
@@ -100,7 +118,7 @@ const FeatureInfo = () => {
             </p>
           </ProductInfo>
         </ProductCard>
-        <ProductCard>
+        <ProductCard hoverColor="#2196f3">
           <ProductImage />
           <ProductInfo>
             <h3>Share</h3>

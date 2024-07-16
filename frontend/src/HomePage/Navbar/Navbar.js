@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <AppBar
-      position="fixed"
+      position="static"
       sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', boxShadow: 'none' }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <LogoContainer>
