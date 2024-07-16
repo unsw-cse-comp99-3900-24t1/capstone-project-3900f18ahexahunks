@@ -30,7 +30,7 @@ const BoardWrapper = styled('div')({
   padding: '10px',
   width: '100%',
 });
-
+//
 // Main component for keeping the record of validations of xmls (ubl)
 const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
