@@ -30,7 +30,7 @@ const BoardWrapper = styled('div')({
   padding: '10px',
   width: '100%',
 });
-
+//
 // Main component for keeping the record of validations of xmls (ubl)
 const ValidateBoard = () => {
   const [xmlFiles, setXmlFiles] = useState([]);
@@ -71,7 +71,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  }, [getUser, showAlert, setLatestData]);
+  }, [getUser, setLatestData]);
 
   // To handle upload of the latest xml and send for processing in backend
   const handleUpload = async (file, name) => {
