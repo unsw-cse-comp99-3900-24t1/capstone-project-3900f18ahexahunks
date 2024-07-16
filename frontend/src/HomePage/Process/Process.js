@@ -1,359 +1,272 @@
-// // // // import React from 'react';
-// // // // const Process = () => {
-// // // //   return (
-// // // //     <div style={{ marginTop: '106px' }}>
-// // // //       <div>process</div>
-// // // //       <div></div>
-// // // //     </div>
-// // // //   );
-// // // // };
-// // // // export default Process;
+// import React, { useState, useEffect } from 'react';
+// import { Container, Typography, Grid, Paper, Box } from '@mui/material';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+// import EmailIcon from '@mui/icons-material/Email';
+// import { styled, keyframes } from '@mui/system';
 
-// // // import React from 'react';
+// // Custom styles
+// const iconStyle = {
+//   fontSize: 60,
+//   color: 'purple',
+// };
 
-// // // // Individual Process Step Component
-// // // const ProcessStep = ({ icon, title, description }) => {
-// // //   return (
-// // //     <div
-// // //       style={{
-// // //         display: 'flex',
-// // //         flexDirection: 'column',
-// // //         alignItems: 'center',
-// // //         padding: '20px',
-// // //       }}>
-// // //       <div style={{ marginBottom: '10px' }}>
-// // //         {icon} {/* Icon placeholder */}
-// // //       </div>
-// // //       <h2 style={{ marginBottom: '5px' }}>{title}</h2>
-// // //       <p>{description}</p>
-// // //     </div>
-// // //   );
-// // // };
+// const paperStyle = {
+//   p: 2,
+//   textAlign: 'center',
+//   bgcolor: 'rgba(255, 255, 255, 0.1)',
+//   color: 'white',
+//   border: '2px solid transparent',
+//   transition:
+//     'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out',
+//   ':hover': {
+//     transform: 'scale(1.05)',
+//     boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+//     borderColor: 'purple',
+//   },
+// };
 
-// // // // Main Process Layout Component
-// // // const ProcessLayout = () => {
-// // //   return (
-// // //     <div
-// // //       style={{
-// // //         display: 'flex',
-// // //         justifyContent: 'space-around',
-// // //         backgroundColor: '#f4f4f4',
-// // //         padding: '40px 0',
-// // //       }}>
-// // //       <ProcessStep
-// // //         icon={
-// // //           <div
-// // //             style={{
-// // //               width: '50px',
-// // //               height: '50px',
-// // //               borderRadius: '50%',
-// // //               backgroundColor: '#6200EE',
-// // //               display: 'flex',
-// // //               alignItems: 'center',
-// // //               justifyContent: 'center',
-// // //               color: 'white',
-// // //               fontSize: '24px',
-// // //             }}>
-// // //             👤
-// // //           </div>
-// // //         }
-// // //         title="Create an account"
-// // //         description="Create an Hex account and start uploading your files."
-// // //       />
-// // //       <ProcessStep
-// // //         icon={
-// // //           <div
-// // //             style={{
-// // //               width: '50px',
-// // //               height: '50px',
-// // //               borderRadius: '50%',
-// // //               backgroundColor: '#6200EE',
-// // //               display: 'flex',
-// // //               alignItems: 'center',
-// // //               justifyContent: 'center',
-// // //               color: 'white',
-// // //               fontSize: '24px',
-// // //             }}>
-// // //             ⬆️
-// // //           </div>
-// // //         }
-// // //         title="Upload your files"
-// // //         description="Your file and encrypted and converted to UBL 2.0"
-// // //       />
-// // //       <ProcessStep
-// // //         icon={
-// // //           <div
-// // //             style={{
-// // //               width: '50px',
-// // //               height: '50px',
-// // //               borderRadius: '50%',
-// // //               backgroundColor: '#6200EE',
-// // //               display: 'flex',
-// // //               alignItems: 'center',
-// // //               justifyContent: 'center',
-// // //               color: 'white',
-// // //               fontSize: '24px',
-// // //             }}>
-// // //             ✉️
-// // //           </div>
-// // //         }
-// // //         title="Share file instantly"
-// // //         description="Send your file via email or shareable link with password protect and expiration time."
-// // //       />
-// // //     </div>
-// // //   );
-// // // };
+// const typing = keyframes`
+//   from { width: 0; }
+//   50% { width: 100%; }
+//   to { width: 100%; }
+// `;
 
-// // // export default ProcessLayout;
+// const blinkingCursor = keyframes`
+//   from, to { border-color: transparent; }
+//   50% { border-color: purple; }
+// `;
 
-// // import React from 'react';
+// const AnimatedTypography = styled(Typography)(({ theme }) => ({
+//   overflow: 'hidden',
+//   whiteSpace: 'nowrap',
+//   width: '0',
+//   textAlign: 'center',
+//   margin: 'auto',
+//   borderRight: '3px solid purple',
+//   animation: `${typing} 8s steps(40, end) 1, ${blinkingCursor} 0.75s step-end infinite`,
+//   '@media (min-width:600px)': {
+//     // Ensures that text is centered for larger screens
+//     width: '100%',
+//   },
+// }));
 
-// // // Individual Process Step Component
-// // const ProcessStep = ({ icon, title, description }) => {
-// //   return (
-// //     <div
-// //       style={{
-// //         display: 'flex',
-// //         flexDirection: 'column',
-// //         alignItems: 'center',
-// //         padding: '20px',
-// //         color: 'white',
-// //       }}>
-// //       <div style={{ marginBottom: '10px' }}>
-// //         {icon} {/* Icon placeholder */}
-// //       </div>
-// //       <h2 style={{ marginBottom: '5px' }}>{title}</h2>
-// //       <p>{description}</p>
-// //     </div>
-// //   );
-// // };
+// const DescriptionText = styled(Typography)(({ theme }) => ({
+//   marginTop: theme.spacing(2),
+//   color: 'white',
+//   textAlign: 'center',
+// }));
 
-// // // Main Process Layout Component
-// // const ProcessLayout = () => {
-// //   return (
-// //     <div
-// //       style={{
-// //         display: 'flex',
-// //         justifyContent: 'space-around',
-// //         backgroundColor: 'black',
-// //         padding: '40px 0',
-// //       }}>
-// //       <ProcessStep
-// //         icon={
-// //           <div
-// //             style={{
-// //               width: '50px',
-// //               height: '50px',
-// //               borderRadius: '50%',
-// //               backgroundColor: '#6200EE',
-// //               display: 'flex',
-// //               alignItems: 'center',
-// //               justifyContent: 'center',
-// //               color: 'white',
-// //               fontSize: '24px',
-// //             }}>
-// //             👤
-// //           </div>
-// //         }
-// //         title="Create an account"
-// //         description="Create an Hex account and start uploading your files."
-// //       />
-// //       <ProcessStep
-// //         icon={
-// //           <div
-// //             style={{
-// //               width: '50px',
-// //               height: '50px',
-// //               borderRadius: '50%',
-// //               backgroundColor: '#6200EE',
-// //               display: 'flex',
-// //               alignItems: 'center',
-// //               justifyContent: 'center',
-// //               color: 'white',
-// //               fontSize: '24px',
-// //             }}>
-// //             ⬆️
-// //           </div>
-// //         }
-// //         title="Upload your files"
-// //         description="Your file and encrypted and converted to UBL 2.0"
-// //       />
-// //       <ProcessStep
-// //         icon={
-// //           <div
-// //             style={{
-// //               width: '50px',
-// //               height: '50px',
-// //               borderRadius: '50%',
-// //               backgroundColor: '#6200EE',
-// //               display: 'flex',
-// //               alignItems: 'center',
-// //               justifyContent: 'center',
-// //               color: 'white',
-// //               fontSize: '24px',
-// //             }}>
-// //             ✉️
-// //           </div>
-// //         }
-// //         title="Share file instantly"
-// //         description="Send your file via email or shareable link with password protect and expiration time."
-// //       />
-// //     </div>
-// //   );
-// // };
+// const Process = () => {
+//   const [resetAnimation, setResetAnimation] = useState(false);
 
-// // export default ProcessLayout;
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setResetAnimation((prev) => !prev); // Toggle to reset animation
+//     }, 2000); // Adjust the interval to be longer than the animation duration
 
-// import React from 'react';
+//     return () => clearInterval(interval);
+//   }, []);
 
-// // Individual Process Step Component
-// const ProcessStep = ({ icon, title, description }) => {
 //   return (
-//     <div
-//       style={{
-//         width: '200px',
-//         height: '200px',
-//         border: '2px solid white',
-//         perspective: '1000px',
-//       }}>
-//       <div
-//         style={{
-//           width: '100%',
-//           height: '100%',
-//           position: 'relative',
-//           transformStyle: 'preserve-3d',
-//           transition: 'transform 0.6s',
-//         }}>
-//         <div
-//           style={{
-//             position: 'absolute',
-//             width: '100%',
-//             height: '100%',
-//             textAlign: 'center',
-//             transition: 'transform 0.6s',
-//             transformStyle: 'preserve-3d',
-//           }}>
-//           <div
-//             style={{
-//               position: 'absolute',
-//               width: '100%',
-//               height: '100%',
-//               backfaceVisibility: 'hidden',
-//               display: 'flex',
-//               flexDirection: 'column',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               color: 'white',
-//               backgroundColor: '#6200EE',
-//             }}>
-//             {icon}
-//             <h2>{title}</h2>
-//           </div>
-//           <div
-//             style={{
-//               position: 'absolute',
-//               width: '100%',
-//               height: '100%',
-//               backfaceVisibility: 'hidden',
-//               display: 'flex',
-//               flexDirection: 'column',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               color: 'white',
-//               backgroundColor: '#333',
-//               transform: 'rotateY(180deg)',
-//               padding: '20px',
-//             }}>
-//             <p>{description}</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
+//     <Container
+//       maxWidth="lg"
+//       sx={{ mt: 4, bgcolor: 'black', color: 'white', pb: 4 }}>
+//       <AnimatedTypography
+//         variant="h4"
+//         component="h1"
+//         gutterBottom
+//         key={resetAnimation}>
+//         How it works...?
+//       </AnimatedTypography>
+//       <DescriptionText variant="subtitle1">
+//         <b>
+//           Deupload removes complexity and offers a simple interface that allows
+//           users to take advantage of the vast array of decentralized storage
+//           with better security, performance, and pricing.
+//         </b>
+//       </DescriptionText>
+//       <Grid container spacing={4} justifyContent="center">
+//         <Grid item xs={12} sm={6} md={4}>
+//           <Paper elevation={3} sx={paperStyle}>
+//             <Box sx={{ color: 'purple' }}>
+//               <AccountCircleIcon style={iconStyle} />
+//             </Box>
+//             <Typography variant="h6" component="h3">
+//               Create an account
+//             </Typography>
+//             <Typography variant="body1">
+//               Create an Hex account and start uploading your files.
+//             </Typography>
+//           </Paper>
+//         </Grid>
+//         <Grid item xs={12} sm={6} md={4}>
+//           <Paper elevation={3} sx={paperStyle}>
+//             <Box sx={{ color: 'purple' }}>
+//               <CloudUploadIcon style={iconStyle} />
+//             </Box>
+//             <Typography variant="h6" component="h3">
+//               Upload your files
+//             </Typography>
+//             <Typography variant="body1">
+//               Your file and encrypted and converted to UBL 2.0
+//             </Typography>
+//           </Paper>
+//         </Grid>
+//         <Grid item xs={12} sm={6} md={4}>
+//           <Paper elevation={3} sx={paperStyle}>
+//             <Box sx={{ color: 'purple' }}>
+//               <EmailIcon style={iconStyle} />
+//             </Box>
+//             <Typography variant="h6" component="h3">
+//               Share file instantly
+//             </Typography>
+//             <Typography variant="body1">
+//               Send your file via email or shareable link with password protect
+//               and expiration time.
+//             </Typography>
+//           </Paper>
+//         </Grid>
+//       </Grid>
+//     </Container>
 //   );
 // };
 
-// // Hover effect functionality
-// const addHoverEffect = (element) => {
-//   element.addEventListener('mouseenter', () => {
-//     element.style.transform = 'rotateY(180deg)';
-//   });
-//   element.addEventListener('mouseleave', () => {
-//     element.style.transform = 'rotateY(0deg)';
-//   });
-// };
+// export default Process;
 
-// // Main Process Layout Component
-// const ProcessLayout = () => {
-//   return (
-//     <div
-//       style={{
-//         display: 'flex',
-//         justifyContent: 'space-around',
-//         backgroundColor: 'black',
-//         padding: '40px 0',
-//       }}>
-//       <ProcessStep
-//         icon={
-//           <div
-//             style={{
-//               width: '50px',
-//               height: '50px',
-//               borderRadius: '50%',
-//               backgroundColor: '#6200EE',
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               color: 'white',
-//               fontSize: '24px',
-//             }}>
-//             👤
-//           </div>
-//         }
-//         title="Create an account"
-//         description="Create an Hex account and start uploading your files."
-//       />
-//       <ProcessStep
-//         icon={
-//           <div
-//             style={{
-//               width: '50px',
-//               height: '50px',
-//               borderRadius: '50%',
-//               backgroundColor: '#6200EE',
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               color: 'white',
-//               fontSize: '24px',
-//             }}>
-//             ⬆️
-//           </div>
-//         }
-//         title="Upload your files"
-//         description="Your file and encrypted and converted to UBL 2.0"
-//       />
-//       <ProcessStep
-//         icon={
-//           <div
-//             style={{
-//               width: '50px',
-//               height: '50px',
-//               borderRadius: '50%',
-//               backgroundColor: '#6200EE',
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               color: 'white',
-//               fontSize: '24px',
-//             }}>
-//             ✉️
-//           </div>
-//         }
-//         title="Share file instantly"
-//         description="Send your file via email or shareable link with password protect and expiration time."
-//       />
-//     </div>
-//   );
-// };
+import React, { useState, useEffect } from 'react';
+import { Container, Typography, Grid, Paper, Box } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import EmailIcon from '@mui/icons-material/Email';
+import { styled, keyframes } from '@mui/system';
 
-// export default ProcessLayout;
+// Custom styles
+const iconStyle = {
+  fontSize: 60,
+  color: 'purple',
+};
+
+const paperStyle = {
+  p: 2,
+  textAlign: 'center',
+  bgcolor: 'rgba(255, 255, 255, 0.1)',
+  color: 'white',
+  border: '2px solid transparent',
+  transition:
+    'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out',
+  ':hover': {
+    transform: 'scale(1.05)',
+    boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+    borderColor: 'purple',
+  },
+};
+
+const typing = keyframes`
+  from { width: 0; }
+  50% { width: 100%; }
+  to { width: 100%; }
+`;
+
+const blinkingCursor = keyframes`
+  from, to { border-color: transparent; }
+  50% { border-color: purple; }
+`;
+
+const AnimatedTypography = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  width: '0',
+  textAlign: 'center',
+  margin: 'auto',
+  borderRight: '3px solid purple',
+  animation: `${typing} 8s steps(40, end) 1, ${blinkingCursor} 0.75s step-end infinite`,
+  '@media (min-width:600px)': {
+    // Ensures that text is centered for larger screens
+    width: '100%',
+  },
+}));
+
+const DescriptionText = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  color: 'white',
+  textAlign: 'center',
+}));
+
+const Process = () => {
+  const [resetAnimation, setResetAnimation] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setResetAnimation((prev) => !prev); // Toggle to reset animation
+    }, 2000); // Adjust the interval to be longer than the animation duration
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Container
+      maxWidth="lg"
+      sx={{ mt: 4, bgcolor: 'black', color: 'white', pb: 4 }}>
+      <AnimatedTypography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        key={resetAnimation}>
+        How it works...?
+      </AnimatedTypography>
+      <DescriptionText variant="subtitle1">
+        <b>
+          Deupload removes complexity and offers a simple interface that allows
+          users to take advantage of the vast array of decentralized storage
+          with better security, performance, and pricing.
+        </b>
+      </DescriptionText>
+      <Grid container spacing={4} justifyContent="center" sx={{ mt: 6 }}>
+        {' '}
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper elevation={3} sx={paperStyle}>
+            <Box sx={{ color: 'purple' }}>
+              <AccountCircleIcon style={iconStyle} />
+            </Box>
+            <Typography variant="h6" component="h3">
+              Create an account
+            </Typography>
+            <Typography variant="body1">
+              Create an Hex account and start uploading your files.
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper elevation={3} sx={paperStyle}>
+            <Box sx={{ color: 'purple' }}>
+              <CloudUploadIcon style={iconStyle} />
+            </Box>
+            <Typography variant="h6" component="h3">
+              Upload your files
+            </Typography>
+            <Typography variant="body1">
+              Your file and encrypted and converted to UBL 2.0
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper elevation={3} sx={paperStyle}>
+            <Box sx={{ color: 'purple' }}>
+              <EmailIcon style={iconStyle} />
+            </Box>
+            <Typography variant="h6" component="h3">
+              Share file instantly
+            </Typography>
+            <Typography variant="body1">
+              Send your file via email or shareable link with password protect
+              and expiration time.
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
+
+export default Process;

@@ -26,7 +26,7 @@ const Home = () => {
         <Hero />
         <FeatureInfo />
         {/* <InfoCards /> */}
-        {/* <Process /> */}
+        <Process />
         {/* <div>Home</div> */}
         <Footer />
       </Container>
