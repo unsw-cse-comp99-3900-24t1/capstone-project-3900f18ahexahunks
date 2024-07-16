@@ -4,7 +4,6 @@ require('dotenv').config();
 const http = require('http');
 const connectDB = require('../db'); // Correct path to db
 const { adminAuthLogin, adminAuthRegister, resetPassword } = require('./authentication'); // Correct path to authentication
-const userRoutes = require('./routes/userRoutes'); // Correct path to userRoutes
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
 
@@ -30,25 +29,25 @@ app.post('/login', async (req, res) => {
   });
   
 app.post('/register', async (req, res) => {
-    const { userName, email, password, passwordCheck } = req.body;
-    const response = await adminAuthRegister(userName, email, password, passwordCheck);
-  
-    if (response.error) {
-      let status;
-      switch (response.error) {
-        case "Passwords do not match":
-          status = 402;
-          break;
-        case "Invalid Email or password":
-          status = 400;
-          break;
-        default:
-          status = 500;
-      }
-      return res.status(status).json(response);
+  const { email, password, passwordCheck } = req.body;
+  const response = await adminAuthRegister(email, password, passwordCheck);
+
+  if (response.error) {
+    let status;
+    switch (response.error) {
+      case "Passwords do not match":
+        status = 402;
+        break;
+      case "Email already exists":
+        status = 400;
+        break;
+      default:
+        status = 500;
     }
-  
-    return res.status(200).json(response);
+    return res.status(status).json(response);
+  }
+
+  return res.status(201).json(response);
 });
 
 app.post('/user/update-password', async (req, res) => {
@@ -72,8 +71,6 @@ app.post('/user/update-password', async (req, res) => {
 
   return res.status(200).json(response);
 });
-
-app.use('/users', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

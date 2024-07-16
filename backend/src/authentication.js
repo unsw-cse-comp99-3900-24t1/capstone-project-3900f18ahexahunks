@@ -1,4 +1,4 @@
-//const User = require('./models/User');
+const User = require('./models/User');
 //const bcrypt = require('bcrypt');
 //const sendInfoToDB = require('./sendInfoToDB');
 const connectDB = require('../db');
@@ -58,10 +58,6 @@ const adminAuthLogin = async (emailOrUsername, password) => {
     } catch (error) {
         console.error('Error during login:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
     }
 };
 
@@ -108,13 +104,9 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
     } catch (error) {
         console.error('Error during registration:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-            console.log('Closed database connection');
-        }
     }
 };
+
 
 const deleteAccount = async (email, password) => {
     let client;
@@ -142,11 +134,7 @@ const deleteAccount = async (email, password) => {
     } catch (error) {
         console.error('Error during account deletion:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
-    }
+    } 
 };
 
 const resetUsername = async (email, newUsername) => {
@@ -176,10 +164,6 @@ const resetUsername = async (email, newUsername) => {
     } catch (error) {
         console.error('Error during username reset:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
     }
 };
 
@@ -213,10 +197,6 @@ const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
     } catch (error) {
         console.error('Error during username reset:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
     }
 };
 
@@ -263,10 +243,6 @@ const resetEmail = async (username, password, newEmail) => {
     } catch (error) {
         console.error('Error during email reset:', error);
         return { error: "Please try again later" };
-    } finally {
-        if (client) {
-            await client.close();
-        }
     }
 };
 
