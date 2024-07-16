@@ -71,7 +71,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
-  }, [getUser, showAlert, setLatestData]);
+  }, [getUser, setLatestData]);
 
   // To handle upload of the latest xml and send for processing in backend
   const handleUpload = async (file, name) => {
