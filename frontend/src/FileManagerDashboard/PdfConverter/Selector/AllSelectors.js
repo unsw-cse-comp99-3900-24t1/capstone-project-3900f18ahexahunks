@@ -58,17 +58,17 @@ const AllSelectors = () => {
 
   useEffect(() => {
     if (file === 'pdf') {
-      setSelectedRoute(`/handle-files/validation-reports/pdf/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/pdf/${id}`);
     } else if (file === 'ubl') {
-      setSelectedRoute(`/handle-files/validation-reports/ubl/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/ubl/${id}`);
     } else if (file === 'validate') {
-      setSelectedRoute(`/handle-files/validation-reports/validate/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/validate/${id}`);
     } else if (file === 'help') {
-      setSelectedRoute(`/handle-files/validation-reports/help/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/help/${id}`);
     } else if (file === 'share') {
-      setSelectedRoute(`/handle-files/validation-reports/share/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/share/${id}`);
     } else if (file === 'access') {
-      setSelectedRoute(`/handle-files/validation-reports/access/${id}`);
+      setSelectedRoute(`/handle-files/convertion-reports/access/${id}`);
     } else {
       setSelectedRoute(null);
     }
@@ -78,70 +78,70 @@ const AllSelectors = () => {
     <SelectorContainer>
       <SelectorContainer1>
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/pdf/${id}`}
+          routeTo={`/handle-files/convertion-reports/pdf/${id}`}
           text="Invoice Pdf"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/pdf/${id}`
+            selectedRoute === `/handle-files/convertion-reports/pdf/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/pdf/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/pdf/${id}`)
           }
           icon={<ReceiptIcon />}
         />
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/ubl/${id}`}
+          routeTo={`/handle-files/convertion-reports/ubl/${id}`}
           text="UBL"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/ubl/${id}`
+            selectedRoute === `/handle-files/convertion-reports/ubl/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/ubl/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/ubl/${id}`)
           }
           icon={<DescriptionIcon />}
         />
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/validate/${id}`}
+          routeTo={`/handle-files/convertion-reports/validate/${id}`}
           text="Validation Report"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/validate/${id}`
+            selectedRoute === `/handle-files/convertion-reports/validate/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/validate/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/validate/${id}`)
           }
           icon={<CheckCircleIcon />}
         />
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/share/${id}`}
+          routeTo={`/handle-files/convertion-reports/share/${id}`}
           text="Share"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/share/${id}`
+            selectedRoute === `/handle-files/convertion-reports/share/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/share/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/share/${id}`)
           }
           icon={<ShareIcon />}
         />
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/access/${id}`}
+          routeTo={`/handle-files/convertion-reports/access/${id}`}
           text="Access"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/access/${id}`
+            selectedRoute === `/handle-files/convertion-reports/access/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/access/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/access/${id}`)
           }
           icon={<LockOpenIcon />}
         />
       </SelectorContainer1>
       <SelectorContainer2>
         <SelectorLinks
-          routeTo={`/handle-files/validation-reports/help/${id}`}
+          routeTo={`/handle-files/convertion-reports/help/${id}`}
           text="Help"
           isSelected={
-            selectedRoute === `/handle-files/validation-reports/help/${id}`
+            selectedRoute === `/handle-files/convertion-reports/help/${id}`
           }
           onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/help/${id}`)
+            setSelectedRoute(`/handle-files/convertion-reports/help/${id}`)
           }
           icon={<HelpIcon />}
         />

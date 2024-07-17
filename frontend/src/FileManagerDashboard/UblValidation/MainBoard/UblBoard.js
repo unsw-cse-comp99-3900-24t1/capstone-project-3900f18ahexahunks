@@ -51,13 +51,9 @@ const Title = styled(Typography)(({ theme }) => ({
   marginTop: 0,
 }));
 
-const UblBoard = () => {
+const UblBoard = ({ getValidatorDataById, setLatestData }) => {
   const { id } = useParams();
   const [xmlData, setXmlData] = useState(null);
-  const getValidatorDataById = useValidatorStore(
-    (state) => state.getValidatorDataById
-  );
-  const setLatestData = useValidatorStore((state) => state.setLatestData);
   const { getUser } = useUserStore();
 
   useEffect(() => {
