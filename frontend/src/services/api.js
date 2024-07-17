@@ -129,13 +129,14 @@ export const getHistoryEmail = async () => {
 // API to get pdf info from userSchema
 export const getAllPdfInfo = async (data) => {
   try {
-    return [];
-    const response = await apiClient.get('/validate/get-all-validation-data', {
+    const response = await apiClient.get('/convert/get-all-convertion-data', {
       params: { userId: data.userId },
     });
     console.log(response.data);
-    return response.data.ublValidation;
-  } catch (error) {}
+    return response.data.pdfUblValidation;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to delete one record for validation data from backend and also the corresponding files

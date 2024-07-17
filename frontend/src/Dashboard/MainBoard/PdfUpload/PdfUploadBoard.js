@@ -59,6 +59,7 @@ const PdfUploadBoard = () => {
           setLatestData(result);
         }
       } catch (error) {
+        console.log(error);
         // Error handling
         showAlert(
           'An unexpected error occurred while fetching initial PDFs. Please try again later.',
@@ -127,7 +128,7 @@ const PdfUploadBoard = () => {
   return (
     <BoardContainer>
       <BoardWrapper>
-        <ShowPdf pdfs={pdfs} isLoading={isLoading} />
+        <ShowPdf isLoading={isLoading} pdfs={pdfs} />
         <UploadBox handleUpload={handleUpload} />
       </BoardWrapper>
     </BoardContainer>
