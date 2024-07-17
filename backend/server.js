@@ -4,7 +4,7 @@ require('dotenv').config();
 const http = require('http');
 const connectDB = require('./db');
 
-const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const PORT = process.env.BACKEND_SERVER_PORT;
 
 const app = express();
 

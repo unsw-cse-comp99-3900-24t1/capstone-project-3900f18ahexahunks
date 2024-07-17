@@ -22,4 +22,4 @@ const generateJWTSecret = () => {
     console.log('JWT_SECRET has been generated and added to .env file.');
 };
 
-generateJWTSecret();
+module.exports = generateJWTSecret;

@@ -1,19 +1,18 @@
+const mongoose = require('mongoose');
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
 
 const connectDB = async () => {
-    try {
-        const client = new MongoClient(process.env.MONGO_URI, {
-            serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
-            socketTimeoutMS: 45000, // Increase socket timeout to 45 seconds
-        });
-        await client.connect();
-        console.log('MongoDB connected');
-        return client;
-    } catch (error) {
-        console.error('Database connection error:', error);
-        throw new Error('Database connection failed');
-    }
+  try {
+    console.log('MONGO_URI:', process.env.MONGO_URI); // Logging the MONGO_URI for debugging
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
+    process.exit(1);
+  }
 };
 
 module.exports = connectDB;
