@@ -109,6 +109,7 @@ const ValidateBoard = () => {
             ublId: result.ublId,
             validationId: result.validatorId,
             validationReport: result.validationReport,
+            date: result.date,
             name,
           };
           setXmlFiles((prevXmlFiles) => [...prevXmlFiles, data]);

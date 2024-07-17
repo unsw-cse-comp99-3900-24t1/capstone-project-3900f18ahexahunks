@@ -167,8 +167,14 @@ const FileManagerDashboard = () => {
         }
         break;
       case 'conversion-reports':
-        content = <></>;
-        selector = <></>;
+        selector = <UblValidSelector id={id} />;
+        switch (file) {
+          case 'pdf':
+            content = <></>;
+            break;
+          default:
+            content = <></>;
+        }
         break;
       default:
         content = <></>;
