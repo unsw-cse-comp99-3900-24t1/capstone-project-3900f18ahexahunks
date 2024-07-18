@@ -4,7 +4,7 @@ const path = require('path');
 
 const generateJWTSecret = () => {
     const secret = crypto.randomBytes(64).toString('hex');
-    const envPath = path.resolve(__dirname, '../.env');
+    const envPath = path.resolve(__dirname, '.env'); // Adjusted path
 
     let envContent = '';
     if (fs.existsSync(envPath)) {

@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config(); // Load .env file
 
-mongoose.connect("mongodb+srv://ChengTong:e4Uu1ExS9L58jDIu@comp3900-hexahunks.db0uu6n.mongodb.net/?retryWrites=true&w=majority&appName=comp3900-HEXAHUNKS", {
-        useNewUrlParser:true,
-        useUnifiedTopology: true
-      }).then(() => {
-        console.log("DB connected")
-      }).catch((error) => console.log(error))
+const mongoURI = process.env.MONGO_URI;
+console.log('Attempting to connect to MongoDB:', mongoURI);
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(mongoURI);
+    console.log("DB connected");
+  } catch (error) {
+    console.error('DB connection error:', error);
+    process.exit(1); // Exit process with failure
+  }
+};
+
+module.exports = connectDB;
