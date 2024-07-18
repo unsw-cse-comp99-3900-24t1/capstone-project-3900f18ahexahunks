@@ -1,3 +1,6 @@
+// !!! IF SOME PART IS MISSING IN THE PDF INVOICE THAT IS REQUIRED FOR UBL THEN TELL THE USER THAT THIS PART MUST BE INCLUDED IN THE INVOICE IMPORTANT
+// !!! INSTEAD OF SIMPLY FILLING IT WITH WRONG INFO
+
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,7 +15,10 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import useValidatorStore from '../../../zustand/useValidatorStore';
 import useUserStore from '../../../zustand/useUserStore';
-import { deleteOneValidationUblInfo } from '../../../services/api';
+import {
+  deleteOnePdfInfo,
+  deleteOneValidationUblInfo,
+} from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
 
@@ -67,7 +73,7 @@ const DateTimeLabel = styled('p')({
   color: '#666',
 });
 
-const ShowPdf = ({ isLoading, pdfs }) => {
+const ShowPdf = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
@@ -76,6 +82,8 @@ const ShowPdf = ({ isLoading, pdfs }) => {
 
   const deletePdfDataById = usePdfStore((state) => state.deletePdfDataById);
   const getUser = useUserStore((state) => state.getUser);
+  const getPdfData = usePdfStore((state) => state.getPdfData);
+  const pdfs = getPdfData();
 
   const handleOpenValidationReport = (pdf) => {
     nav(`/handle-files/convertion-reports/ubl/${pdf._id}`);
@@ -85,6 +93,8 @@ const ShowPdf = ({ isLoading, pdfs }) => {
     nav(`/handle-files/convertion-reports/share/${pdf._id}`);
   };
 
+  console.log(pdfs, 'EWR(ew9ryE98wryewyruewiruewuYRIG');
+
   const handleDeleteClick = (pdf) => {
     setSelectedPdf(pdf);
     setOpenDialog(true);
@@ -93,7 +103,7 @@ const ShowPdf = ({ isLoading, pdfs }) => {
   const handleConfirmDelete = async () => {
     const user = getUser();
     try {
-      await deleteOneValidationUblInfo({
+      await deleteOnePdfInfo({
         userId: user._id,
         dataId: selectedPdf._id,
       });

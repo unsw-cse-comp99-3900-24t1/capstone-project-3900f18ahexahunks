@@ -35,6 +35,7 @@ const CustomInputBox = ({
   style,
   placeholder,
   label,
+  additionalStyles,
   ...props
 }) => {
   const handleOnChange = (e) => {
@@ -42,7 +43,7 @@ const CustomInputBox = ({
   };
 
   return (
-    <InputContainer style={style}>
+    <InputContainer style={{ ...style, ...additionalStyles }}>
       <StyledInput
         value={value}
         onChange={handleOnChange}

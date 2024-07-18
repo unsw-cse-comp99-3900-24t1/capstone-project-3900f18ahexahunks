@@ -196,7 +196,7 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <ValidBoard />;
+            content = <></>;
             break;
           default:
             content = <></>;

@@ -52,7 +52,7 @@ const AllSelectors = () => {
   const nav = useNavigate();
 
   const handleGotoDashboard = () => {
-    nav('/dashboard/validate');
+    nav('/dashboard/convert');
     return;
   };
 

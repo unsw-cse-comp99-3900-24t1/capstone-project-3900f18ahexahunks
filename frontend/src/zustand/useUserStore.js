@@ -29,6 +29,13 @@ const useUserStore = create((set, get) => ({
     localStorage.setItem('user', JSON.stringify(updatedState));
     set({ user: updatedState });
   },
+  updateGLN: (gln) => {
+    const currentState = get().user;
+    const updatedUser = { ...currentState.user, gln };
+    const updatedState = { ...currentState, user: updatedUser };
+    localStorage.setItem('user', JSON.stringify(updatedState));
+    set({ user: updatedState });
+  },
 }));
 
 export default useUserStore;

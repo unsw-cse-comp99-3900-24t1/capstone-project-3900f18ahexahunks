@@ -142,16 +142,18 @@ export const getAllPdfInfo = async (data) => {
 // API to delete one record for validation data from backend and also the corresponding files
 export const deleteOnePdfInfo = async (data) => {
   try {
-    return {};
+    // return {};
     const response = await apiClient.delete(
-      '/validate/delete-one-validation-data',
+      '/convert/delete-one-convertion-data',
       {
         params: { userId: data.userId, dataId: data.dataId },
       }
     );
     console.log(response.data);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to delete one record for validation data from backend and also the corresponding files
