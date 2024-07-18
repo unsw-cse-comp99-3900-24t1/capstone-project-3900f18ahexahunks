@@ -1,18 +1,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const connectDB = async () => {
-  try {
-    console.log('MONGO_URI:', process.env.MONGO_URI); // Logging the MONGO_URI for debugging
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('Database connection failed:', err.message);
-    process.exit(1);
-  }
-};
-
-module.exports = connectDB;
+mongoose.connect("mongodb+srv://ChengTong:e4Uu1ExS9L58jDIu@comp3900-hexahunks.db0uu6n.mongodb.net/?retryWrites=true&w=majority&appName=comp3900-HEXAHUNKS", {
+        useNewUrlParser:true,
+        useUnifiedTopology: true
+      }).then(() => {
+        console.log("DB connected")
+      }).catch((error) => console.log(error))
