@@ -78,23 +78,23 @@ router.post('/login', async (req, res) => {
 
         const user = await User.findOne({ email });
         if (!user) {
-        return res.json({
-            status: 400,
-            message: "Invalid email or password"
-        });
+            return res.json({
+                status: 400,
+                message: "Invalid email or password"
+            });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-        return res.json({
-            status: 400,
-            message: "Invalid email or password"
-        });
+            return res.json({
+                status: 400,
+                message: "Invalid email or password"
+            });
         }
 
         return res.json({
-        status: 200,
-        message: "Login successfully",
+            status: 200,
+            message: "Login successfully",
         });
     } catch (error) {
         console.error(error);
@@ -138,6 +138,29 @@ router.delete('/delete', async (req, res) => {
         message: "Please try again later"
       });
     }
+});
+
+router.put('/user/update-password', async (req, res) => {
+    const { newPassword, 'user-id': userId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.json({
+        status: 401,
+        message: "user must be logged in"
+      });
+    }
+
+    const saltRounds = 10;
+    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    user.password = hashedNewPassword;
+    await user.save()
+
+    return res.json({
+        status: 200,
+        message: "Password updated successfully"
+    });
 });
 
 module.exports = router;
