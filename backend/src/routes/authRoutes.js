@@ -2,66 +2,69 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   let { email, username, password, passwordCheck } = req.body;
 
   if (password !== passwordCheck) {
-    res.json({
+    return res.json({
       status: 402,
       message: "Passwords do not match"
     });
   } else if (!/^[a-zA-Z ]*$/.test(username)) {
-    res.json({
+    return res.json({
       status: 400,
       message: "Invalid Username"
     });
   } else if (password.length < 8) {
-    res.json({
+    return res.json({
       status: 400,
       message: "Invalid password"
     });
-  } else {
-    User.find({ email }).then(result => {
-      if (result.length) {
-        res.json({
-          status: 400,
-          message: "The user with the provided email already exists"
-        });
-      } else {
-        const saltRounds = 10;
-        bcrypt.hash(password, saltRounds).then(hashedPassword => {
-          const newUser = new User({
-            username,
-            email,
-            password: hashedPassword
-          });
+  }
 
-          newUser.save().then(result => {
-            res.json({
-              status: 200,
-              message: "Register successfully"
-            });
-          }).catch(error => {
-            res.json({
-              status: 500,
-              message: "Please try again later"
-            });
-          });
-        }).catch(error => {
-          res.json({
-            status: 500,
-            message: "Please try again later"
-          });
-        });
-      }
-    }).catch(error => {
-      console.log(error);
-      res.json({
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({
         status: 400,
-        message: "The user already exists"
+        message: "The user with the provided email already exists"
       });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword
+    });
+
+    const savedUser = await newUser.save();
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: savedUser._id, email: savedUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    savedUser.token = token;
+    await savedUser.save();
+
+    return res.json({
+      status: 200,
+      message: "Register successfully",
+      token: token
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      status: 500,
+      message: "Please try again later"
     });
   }
 });
