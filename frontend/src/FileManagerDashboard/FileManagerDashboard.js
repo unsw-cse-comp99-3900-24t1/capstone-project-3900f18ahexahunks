@@ -196,7 +196,7 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <></>;
+            content = <ValidBoard fileId={PdfUblValidateData.validatorId} />;
             break;
           default:
             content = <></>;

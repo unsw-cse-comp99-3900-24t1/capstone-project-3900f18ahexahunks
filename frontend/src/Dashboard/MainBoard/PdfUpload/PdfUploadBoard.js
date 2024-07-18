@@ -96,6 +96,7 @@ const PdfUploadBoard = () => {
 
         if (result.error) {
           showAlert('Error converting/uploading PDF', 'tomato');
+          console.log(result.data);
         } else {
           showAlert('PDF successfully converted to UBL', 'green');
 
