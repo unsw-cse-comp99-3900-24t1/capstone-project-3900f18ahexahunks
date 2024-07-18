@@ -13,6 +13,10 @@ import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
+import usePdfStore from '../zustand/usePdfStore';
+import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
+import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
+import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 
 const Container = styled('div')({
   width: '100vw',
@@ -103,6 +107,14 @@ const FileManagerDashboard = () => {
   const getUser = useUserStore((state) => state.getUser);
   const setLatestData = useValidatorStore((state) => state.setLatestData);
   const getUserData = getUser();
+  const getValidatorDataById = useValidatorStore(
+    (state) => state.getValidatorDataById
+  );
+  const getPdfDataById = usePdfStore((state) => state.getPdfDataById);
+  const setLatestDataPdf = usePdfStore((state) => state.setLatestData);
+
+  const UblValidateData = getValidatorDataById(id);
+  const PdfUblValidateData = getPdfDataById(id);
 
   useEffect(() => {
     const ans = getValidatorData();
@@ -148,10 +160,15 @@ const FileManagerDashboard = () => {
         selector = <UblValidSelector id={id} />;
         switch (file) {
           case 'ubl':
-            content = <UblBoard />;
+            content = (
+              <UblBoard
+                getValidatorDataById={getValidatorDataById}
+                setLatestData={setLatestData}
+              />
+            );
             break;
           case 'validate':
-            content = <ValidBoard />;
+            content = <ValidBoard fileId={UblValidateData.validatorId} />;
             break;
           case 'share':
             content = <ShareFilesBoard />;
@@ -166,9 +183,32 @@ const FileManagerDashboard = () => {
             content = <></>;
         }
         break;
-      case 'conversion-reports':
-        content = <></>;
-        selector = <></>;
+      case 'convertion-reports':
+        selector = <PdfUblValidSelector id={id} />;
+        switch (file) {
+          case 'pdf':
+            content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
+            break;
+          case 'ubl':
+            content = (
+              <UblBoard
+                getValidatorDataById={getPdfDataById}
+                setLatestData={setLatestDataPdf}
+              />
+            );
+            break;
+          case 'validate':
+            content = <ValidBoard fileId={PdfUblValidateData.validatorId} />;
+            break;
+          case 'share':
+            content = <ShareFilesBoardPdfUbl />;
+            break;
+          case 'access':
+            content = <AccessManagerBoardPdfUbl />;
+            break;
+          default:
+            content = <></>;
+        }
         break;
       default:
         content = <></>;

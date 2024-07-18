@@ -4,6 +4,9 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import CustomInputBox from '../../../components/CustomInputBox';
 import CustomPrimaryButton from '../../../components/CustomPrimaryButton';
+import useUserStore from '../../../zustand/useUserStore';
+import { Tooltip, Checkbox, FormControlLabel } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 const UploadContainer = styled('div')({
   width: '200px',
@@ -71,6 +74,11 @@ const UploadBox = ({ handleUpload }) => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
+  const { getUser, updateGLN } = useUserStore();
+  const user = getUser();
+  const [vendorGln, setVendorGln] = useState(user.gln ? user.gln : '');
+  const [customerGln, setCustomerGln] = useState('');
+  const [saveGln, setSaveGln] = useState(false);
 
   // Handles modal for uploading files
   const handleOpen = () => setOpen(true);
@@ -84,8 +92,11 @@ const UploadBox = ({ handleUpload }) => {
   // Finally if user clicks submit the file is sent to the backend for processing
   const handleSubmit = () => {
     if (file) {
-      handleUpload(file, name);
+      handleUpload(file, vendorGln, customerGln, saveGln, name);
       handleClose();
+      if (saveGln) {
+        updateGLN(vendorGln);
+      }
     }
     setFile(null);
     setName('');
@@ -110,12 +121,66 @@ const UploadBox = ({ handleUpload }) => {
             type="text"
             label="File Name"
             placeholder="File A"
+            additionalStyles={{ width: '80%' }}
           />
+          <div style={{ position: 'relative', marginTop: '30px' }}>
+            <CustomInputBox
+              value={vendorGln}
+              setValue={setVendorGln}
+              type="text"
+              label="Your GLN"
+              placeholder="1234567898765"
+              additionalStyles={{ width: '80%' }}
+            />
+            <Tooltip title="(GLN) is a unique identifier used to identify physical locations, legal entities, or functions within a company (13-digit long number). GS1 Standards.">
+              <InfoIcon
+                style={{
+                  position: 'absolute',
+                  right: '15%',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                }}
+              />
+            </Tooltip>
+          </div>
+          <div style={{ position: 'relative', marginTop: '30px' }}>
+            <CustomInputBox
+              value={customerGln}
+              setValue={setCustomerGln}
+              type="text"
+              label="Customer GLN"
+              placeholder="9876543212345"
+              additionalStyles={{ width: '80%' }}
+            />
+            <Tooltip title="(GLN) is a unique identifier used to identify physical locations, legal entities, or functions within a company (13-digit long number). GS1 Standards.">
+              <InfoIcon
+                style={{
+                  position: 'absolute',
+                  right: '15%',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                }}
+              />
+            </Tooltip>
+          </div>
           <FileInput
             type="file"
             accept="application/pdf"
             onChange={handleFileChange}
             id="pdf-upload"
+          />
+          <FormControlLabel
+            style={{ marginLeft: '5px' }}
+            control={
+              <Checkbox
+                checked={saveGln}
+                onChange={(e) => setSaveGln(e.target.checked)}
+                name="saveGln"
+              />
+            }
+            label="Save your GLN for future uploads"
           />
           <CustomPrimaryButton
             label="Upload"
@@ -125,7 +190,12 @@ const UploadBox = ({ handleUpload }) => {
               height: '50px',
               fontSize: '13px',
             }}
-            disabled={name === '' || file === null}
+            disabled={
+              name === '' ||
+              file === null ||
+              vendorGln.length !== 13 ||
+              customerGln.length !== 13
+            }
             onClick={handleSubmit}
           />
         </Box>

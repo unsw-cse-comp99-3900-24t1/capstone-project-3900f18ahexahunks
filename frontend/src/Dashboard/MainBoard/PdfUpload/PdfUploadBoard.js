@@ -59,6 +59,7 @@ const PdfUploadBoard = () => {
           setLatestData(result);
         }
       } catch (error) {
+        console.log(error);
         // Error handling
         showAlert(
           'An unexpected error occurred while fetching initial PDFs. Please try again later.',
@@ -71,7 +72,7 @@ const PdfUploadBoard = () => {
   }, []);
 
   // To handle upload of the latest PDF and send for processing in backend
-  const handleUpload = async (file, name) => {
+  const handleUpload = async (file, vendorGln, customerGln, saveGln, name) => {
     // Start loading so that user knows something is working in the backend
     setIsLoading(true);
     try {
@@ -84,6 +85,9 @@ const PdfUploadBoard = () => {
         // Create file data to send to backend
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('vendorGln', vendorGln);
+        formData.append('customerGln', customerGln);
+        formData.append('saveGln', saveGln);
         formData.append('userId', userId);
         formData.append('name', name);
 
@@ -91,18 +95,24 @@ const PdfUploadBoard = () => {
         const result = await pdfToUblConvert(formData);
 
         if (result.error) {
-          showAlert('Error converting/uploading PDF', 'tomato');
+          showAlert(
+            result.data.message
+              ? result.data.message
+              : 'Error converting/uploading PDF',
+            'tomato'
+          );
+          console.log(result.data, 'THIS IS THERERRRRREREERRR');
         } else {
           showAlert('PDF successfully converted to UBL', 'green');
 
           // On success save the new PDF data to zustand and the state
           console.log(result, 'RESULT');
           const data = {
-            _id: result._id,
+            _id: result.newObjectId,
+            date: result.date,
             pdfId: result.pdfId,
             ublId: result.ublId,
             validatorId: result.validatorId,
-            conversionReport: result.conversionReport,
             name,
           };
           setPdfs((prevPdfs) => [...prevPdfs, data]);
@@ -127,7 +137,7 @@ const PdfUploadBoard = () => {
   return (
     <BoardContainer>
       <BoardWrapper>
-        <ShowPdf pdfs={pdfs} isLoading={isLoading} />
+        <ShowPdf isLoading={isLoading} pdfs={pdfs} />
         <UploadBox handleUpload={handleUpload} />
       </BoardWrapper>
     </BoardContainer>

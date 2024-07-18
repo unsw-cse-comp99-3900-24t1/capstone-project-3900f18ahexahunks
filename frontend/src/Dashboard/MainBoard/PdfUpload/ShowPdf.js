@@ -1,3 +1,6 @@
+// !!! IF SOME PART IS MISSING IN THE PDF INVOICE THAT IS REQUIRED FOR UBL THEN TELL THE USER THAT THIS PART MUST BE INCLUDED IN THE INVOICE IMPORTANT
+// !!! INSTEAD OF SIMPLY FILLING IT WITH WRONG INFO
+
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -10,10 +13,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import usePdfStore from '../../../zustand/usePdfStore';
+import useValidatorStore from '../../../zustand/useValidatorStore';
 import useUserStore from '../../../zustand/useUserStore';
-import { deleteOnePdfInfo } from '../../../services/api';
+import {
+  deleteOnePdfInfo,
+  deleteOneValidationUblInfo,
+} from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
+import usePdfStore from '../../../zustand/usePdfStore';
 
 const PdfBox = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -29,6 +36,7 @@ const PdfBox = styled('div')(({ theme }) => ({
   transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
   borderRadius: '12px',
   backgroundColor: '#f0f0f0',
+  overflow: 'hidden',
   '&:hover': {
     transform: 'scale(1.05)',
     boxShadow: '0px 4px 20px rgba(0,0,0,0.1)',
@@ -59,7 +67,13 @@ const ShareButton = styled(IconButton)({
   },
 });
 
-const ShowPdf = ({ pdfs, isLoading }) => {
+const DateTimeLabel = styled('p')({
+  margin: '8px 0 0 0',
+  fontSize: '12px',
+  color: '#666',
+});
+
+const ShowPdf = ({ isLoading }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
@@ -67,13 +81,19 @@ const ShowPdf = ({ pdfs, isLoading }) => {
   const { showAlert } = useAlert();
 
   const deletePdfDataById = usePdfStore((state) => state.deletePdfDataById);
-  const getPdfData = usePdfStore((state) => state.getPdfData);
   const getUser = useUserStore((state) => state.getUser);
-  const pdfFiles = getPdfData();
+  const getPdfData = usePdfStore((state) => state.getPdfData);
+  const pdfs = getPdfData();
 
-  const handleOpenPdf = (pdf) => {
-    nav(`/handle-files/pdf-reports/pdf/${pdf._id}`);
+  const handleOpenValidationReport = (pdf) => {
+    nav(`/handle-files/convertion-reports/ubl/${pdf._id}`);
   };
+
+  const handleShareClick = (pdf) => {
+    nav(`/handle-files/convertion-reports/share/${pdf._id}`);
+  };
+
+  console.log(pdfs, 'EWR(ew9ryE98wryewyruewiruewuYRIG');
 
   const handleDeleteClick = (pdf) => {
     setSelectedPdf(pdf);
@@ -90,10 +110,13 @@ const ShowPdf = ({ pdfs, isLoading }) => {
 
       deletePdfDataById(selectedPdf._id);
 
-      showAlert('Deleted PDF successfully', 'green');
+      showAlert('Deleted record successfully', 'green');
       setOpenDialog(false);
     } catch (error) {
-      showAlert('Failed to delete the PDF. Please try again.', 'tomato');
+      showAlert(
+        'Failed to delete the validation data. Please try again.',
+        'tomato'
+      );
     }
   };
 
@@ -101,14 +124,10 @@ const ShowPdf = ({ pdfs, isLoading }) => {
     setOpenDialog(false);
   };
 
-  const handleShareClick = (pdf) => {
-    nav(`/handle-files/pdf-reports/share/${pdf._id}`);
-  };
-
   return (
     <>
-      {pdfFiles.map((pdf) => (
-        <PdfBox key={pdf._id} onClick={() => handleOpenPdf(pdf)}>
+      {pdfs.map((pdf) => (
+        <PdfBox key={pdf._id} onClick={() => handleOpenValidationReport(pdf)}>
           <DeleteButton
             onClick={(e) => {
               e.stopPropagation();
@@ -125,12 +144,13 @@ const ShowPdf = ({ pdfs, isLoading }) => {
           >
             <ShareIcon />
           </ShareButton>
-          <embed
-            src={pdf.url}
-            type="application/pdf"
-            width="100%"
-            height="100%"
-          />
+          <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>
+            {pdf.name}
+          </h2>
+          <DateTimeLabel>
+            {new Date(pdf.date).toLocaleTimeString()}{' '}
+            {new Date(pdf.date).toLocaleDateString()}
+          </DateTimeLabel>
         </PdfBox>
       ))}
       {isLoading && (

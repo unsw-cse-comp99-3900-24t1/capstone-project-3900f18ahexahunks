@@ -15,20 +15,20 @@ const BoardContainer = styled('div')(({ theme }) => ({
   width: '90%',
   backgroundColor: '#fff',
 }));
-const ValidBoard = () => {
+const ValidBoard = ({ fileId }) => {
   const { id } = useParams();
   const [pdfUrl, setPdfUrl] = useState(null);
-  const getValidatorDataById = useValidatorStore(
-    (state) => state.getValidatorDataById
-  );
+  // const getValidatorDataById = useValidatorStore(
+  //   (state) => state.getValidatorDataById
+  // );
 
   useEffect(() => {
     const fetchPdf = async () => {
       try {
-        const data = await getValidatorDataById(id);
-        console.log('Validator Data:', data);
+        // const data = await getValidatorDataById(id);
+        // console.log('Validator Data:', data);
 
-        const arrayBuffer = await getAnyFile({ fileId: data.validatorId });
+        const arrayBuffer = await getAnyFile({ fileId });
         console.log('File Response as ArrayBuffer:', arrayBuffer);
 
         const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
@@ -41,7 +41,7 @@ const ValidBoard = () => {
     };
 
     fetchPdf();
-  }, [id, getValidatorDataById]);
+  }, [id]);
 
   return (
     <BoardContainer>

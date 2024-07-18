@@ -116,6 +116,15 @@ export const giveAccessValidationUbl = async (data) => {
   }
 };
 
+// API to give another user access to the same convertion pdf files
+export const giveAccessPdfUbl = async (data) => {
+  try {
+    return await apiClient.post('/give-access-convertion-ubl', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 // API to get the historyEmail array for the user
 export const getHistoryEmail = async () => {
   try {
@@ -129,28 +138,31 @@ export const getHistoryEmail = async () => {
 // API to get pdf info from userSchema
 export const getAllPdfInfo = async (data) => {
   try {
-    return [];
-    const response = await apiClient.get('/validate/get-all-validation-data', {
+    const response = await apiClient.get('/convert/get-all-convertion-data', {
       params: { userId: data.userId },
     });
     console.log(response.data);
-    return response.data.ublValidation;
-  } catch (error) {}
+    return response.data.pdfUblValidation;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to delete one record for validation data from backend and also the corresponding files
 export const deleteOnePdfInfo = async (data) => {
   try {
-    return {};
+    // return {};
     const response = await apiClient.delete(
-      '/validate/delete-one-validation-data',
+      '/convert/delete-one-convertion-data',
       {
         params: { userId: data.userId, dataId: data.dataId },
       }
     );
     console.log(response.data);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to delete one record for validation data from backend and also the corresponding files
