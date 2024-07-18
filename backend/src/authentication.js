@@ -1,5 +1,5 @@
 const User = require('./models/User');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const connectDB = require('../db');
 
 const jwt = require('jsonwebtoken');
@@ -12,52 +12,45 @@ if (!process.env.JWT_SECRET) {
     require('dotenv').config(); // Reload .env variables
 }
 
-const adminAuthLogin = async (emailOrUsername, password) => {
+const adminAuthLogin = async (email, password) => {
     let client;
     try {
         client = await connectDB();
         const db = client.db();
-        const user = await db.collection('users').findOne({
-            $or: [
-                { email: emailOrUsername },
-                { username: emailOrUsername }
-            ]
-        });
 
+        const user = await db.collection('users').findOne({ email });
         if (!user) {
             return { error: "Invalid Email or password" };
         }
 
-        if (password !== user.password) {
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             return { error: "Invalid Email or password" };
         }
 
-        // Generate JWT
         const token = jwt.sign(
             { email: user.email, username: user.username },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' } // Token expiration time
-        );
-
-        // Store the token in the database
-        await db.collection('users').updateOne(
-            { _id: user._id },
-            { $set: { token: token } }
+            { expiresIn: '1h' }
         );
 
         return {
             token: token,
             user: {
                 email: user.email,
-                password: user.password
+                username: user.username
             }
         };
     } catch (error) {
         return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
 };
 
-const adminAuthRegister = async (email, password, passwordCheck) => {
+const adminAuthRegister = async (email, username, password, passwordCheck) => {
     if (password !== passwordCheck) {
         return { error: "Passwords do not match" };
     }
@@ -67,36 +60,44 @@ const adminAuthRegister = async (email, password, passwordCheck) => {
         client = await connectDB();
         const db = client.db();
 
-        const existingUser = await db.collection('users').findOne({ email });
+        const existingUserByEmail = await db.collection('users').findOne({ email });
+        const existingUserByUsername = await db.collection('users').findOne({ username });
 
-        if (existingUser) {
-            return { error: "Invalid Email or password" };
+        if (existingUserByEmail) {
+            return { error: "Invalid Email" };
         }
 
-        const username = email;
+        if (existingUserByUsername) {
+            return { error: "Invalid Username" };
+        }
 
-        // Generate JWT
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const token = jwt.sign(
             { email, username },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' } // Token expiration time
+            { expiresIn: '1h' }
         );
 
-        await db.collection('users').insertOne({ email, password, username, token });
+        await db.collection('users').insertOne({ email, password: hashedPassword, username, token });
 
         return {
             token: token,
             user: {
                 email: email,
-                password: password,
-                username: username
+                username: username,
+                hashedPassword: hashedPassword
             }
         };
     } catch (error) {
         return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
 };
-
 
 const deleteAccount = async (email, password) => {
     let client;
@@ -154,7 +155,7 @@ const resetUsername = async (email, newUsername) => {
     }
 };
 
-const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {    
+const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
     let client;
     try {
         client = await connectDB();
@@ -165,24 +166,29 @@ const resetPassword = async (emailOrUsername, currentPassword, newPassword) => {
                 { username: emailOrUsername }
             ]
         });
-        
+
         if (!existingUser) {
             return { error: "User not found" };
         }
 
-        // Verify the current password
-        if (existingUser.password !== currentPassword) {
+        const isPasswordValid = await bcrypt.compare(currentPassword, existingUser.password);
+        if (!isPasswordValid) {
             return { error: "Incorrect current password" };
         }
 
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
         await db.collection('users').updateOne(
-            { emailOrUsername },
-            { $set: { password: newPassword } }
+            { _id: existingUser._id },
+            { $set: { password: hashedNewPassword } }
         );
 
         return { message: "Password updated successfully" };
     } catch (error) {
         return { error: "Please try again later" };
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
 };
 
