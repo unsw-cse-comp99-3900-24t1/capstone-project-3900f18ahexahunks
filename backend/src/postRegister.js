@@ -35,7 +35,6 @@ const postRegister = async (req, res) => {
         const token = jwt.sign({ email, username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.cookie('authToken', token, {
-            httpOnly: true,
             maxAge: 3600000
         });
 
