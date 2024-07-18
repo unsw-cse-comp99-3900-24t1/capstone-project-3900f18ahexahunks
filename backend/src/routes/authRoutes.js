@@ -105,4 +105,39 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.delete('/delete', async (req, res) => {
+    try {
+      const { username, password } = req.body;
+    
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res.json({
+          status: 400,
+          message: "User not found"
+        });
+      }
+  
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.json({
+          status: 400,
+          message: "Invalid username or password"
+        });
+      }
+  
+      await User.deleteOne({ username: username });
+  
+      return res.json({
+        status: 200,
+        message: "Account deleted successfully"
+      });
+    } catch (error) {
+      console.error(error);
+      return res.json({
+        status: 500,
+        message: "Please try again later"
+      });
+    }
+});
+
 module.exports = router;
