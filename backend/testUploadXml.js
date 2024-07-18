@@ -12,7 +12,7 @@ const testUploadXml = async () => {
   form.append('userId', userId);
 
   // Append XML file to form data
-  form.append('file', fs.createReadStream(path.join(__dirname, 'test16.xml')), 'test16.xml');
+  form.append('file', fs.createReadStream(path.join(__dirname, 'test20.xml')), 'test20.xml');
 
   try {
     const response = await axios.post('http://localhost:5003/upload/xml', form, {

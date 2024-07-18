@@ -9,11 +9,14 @@ const app = express();
 
 // Mongo URI and connection
 const mongoURI = process.env.MONGO_URI;
-const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(mongoURI);
 
 let db, gfs;
 client.connect((err) => {
-  if (err) throw err;
+  if (err) {
+    console.error('Failed to connect to MongoDB', err);
+    process.exit(1);
+  }
   db = client.db();
   gfs = new GridFSBucket(db, { bucketName: 'uploads' });
   console.log('Connected to MongoDB');
@@ -27,11 +30,11 @@ const generateFileUrl = (req, fileId) => {
 // Setup GridFsStorage for PDFs
 const storagePdf = new GridFsStorage({
   url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
+  file: async (req, file) => {
+    try {
       const userId = req.body.userId;
       if (!ObjectId.isValid(userId)) {
-        return reject(new Error('Invalid userId'));
+        throw new Error('Invalid userId');
       }
 
       const filename = `pdf-${Date.now()}-${file.originalname}`;
@@ -41,7 +44,7 @@ const storagePdf = new GridFsStorage({
       const fileInfo = {
         _id: fileId,
         filename: filename,
-        metadata: { 
+        metadata: {
           userId: new ObjectId(userId),
           url: fileUrl
         },
@@ -49,23 +52,27 @@ const storagePdf = new GridFsStorage({
         contentType: file.mimetype,
       };
 
-      // Log the fileId and fileUrl for verification
+      // Log the details for verification
+      console.log('PDF storage fileInfo:', fileInfo);
       console.log('Generated fileId:', fileId.toHexString());
       console.log('Generated fileUrl:', fileUrl);
 
-      resolve(fileInfo);
-    });
+      return fileInfo;
+    } catch (error) {
+      console.error('Error in storagePdf:', error);
+      throw error;
+    }
   },
 });
 
 // Setup GridFsStorage for XMLs
 const storageXml = new GridFsStorage({
   url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
+  file: async (req, file) => {
+    try {
       const userId = req.body.userId;
       if (!ObjectId.isValid(userId)) {
-        return reject(new Error('Invalid userId'));
+        throw new Error('Invalid userId');
       }
 
       const filename = `xml-${Date.now()}-${file.originalname}`;
@@ -75,7 +82,7 @@ const storageXml = new GridFsStorage({
       const fileInfo = {
         _id: fileId,
         filename: filename,
-        metadata: { 
+        metadata: {
           userId: new ObjectId(userId),
           url: fileUrl
         },
@@ -83,12 +90,16 @@ const storageXml = new GridFsStorage({
         contentType: file.mimetype,
       };
 
-      // Log the fileId and fileUrl for verification
+      // Log the details for verification
+      console.log('XML storage fileInfo:', fileInfo);
       console.log('Generated fileId:', fileId.toHexString());
       console.log('Generated fileUrl:', fileUrl);
 
-      resolve(fileInfo);
-    });
+      return fileInfo;
+    } catch (error) {
+      console.error('Error in storageXml:', error);
+      throw error;
+    }
   },
 });
 
@@ -150,7 +161,7 @@ app.post('/upload/xml', uploadXml.single('file'), (req, res) => {
 // API to serve files
 app.get('/files/:id', (req, res) => {
   const fileId = req.params.id;
-  
+
   try {
     const _id = new ObjectId(fileId);
     gfs.openDownloadStream(_id).pipe(res);
