@@ -72,8 +72,37 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
-  // Implement login logic here
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+        return res.json({
+            status: 400,
+            message: "Invalid email or password"
+        });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+        return res.json({
+            status: 400,
+            message: "Invalid email or password"
+        });
+        }
+
+        return res.json({
+        status: 200,
+        message: "Login successfully",
+        });
+    } catch (error) {
+        console.error(error);
+        return res.json({
+        status: 500,
+        message: "Please try again later"
+        });
+    }
 });
 
 module.exports = router;

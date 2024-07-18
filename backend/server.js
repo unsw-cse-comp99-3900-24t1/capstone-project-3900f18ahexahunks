@@ -1,12 +1,11 @@
-require('dotenv').config(); // Load .env file at the very top
+require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const connectDB = require('./db'); // Ensure this file is required to establish DB connection
+const connectDB = require('./db');
 const authRoutes = require('./src/routes/authRoutes');
 
 const app = express();
 
-// Initialize DB connection
 connectDB();
 
 app.use(express.json());
