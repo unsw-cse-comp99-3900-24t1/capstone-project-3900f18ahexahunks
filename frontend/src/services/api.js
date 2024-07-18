@@ -116,6 +116,15 @@ export const giveAccessValidationUbl = async (data) => {
   }
 };
 
+// API to give another user access to the same convertion pdf files
+export const giveAccessPdfUbl = async (data) => {
+  try {
+    return await apiClient.post('/give-access-convertion-ubl', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 // API to get the historyEmail array for the user
 export const getHistoryEmail = async () => {
   try {

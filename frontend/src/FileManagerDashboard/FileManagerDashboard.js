@@ -16,6 +16,7 @@ import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
 import usePdfStore from '../zustand/usePdfStore';
 import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
 import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
+import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 
 const Container = styled('div')({
   width: '100vw',
@@ -201,6 +202,9 @@ const FileManagerDashboard = () => {
             break;
           case 'share':
             content = <ShareFilesBoardPdfUbl />;
+            break;
+          case 'access':
+            content = <AccessManagerBoardPdfUbl />;
             break;
           default:
             content = <></>;

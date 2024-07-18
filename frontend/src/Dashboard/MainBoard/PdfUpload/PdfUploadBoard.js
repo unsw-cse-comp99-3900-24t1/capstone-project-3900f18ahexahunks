@@ -95,8 +95,13 @@ const PdfUploadBoard = () => {
         const result = await pdfToUblConvert(formData);
 
         if (result.error) {
-          showAlert('Error converting/uploading PDF', 'tomato');
-          console.log(result.data);
+          showAlert(
+            result.data.message
+              ? result.data.message
+              : 'Error converting/uploading PDF',
+            'tomato'
+          );
+          console.log(result.data, 'THIS IS THERERRRRREREERRR');
         } else {
           showAlert('PDF successfully converted to UBL', 'green');
 
