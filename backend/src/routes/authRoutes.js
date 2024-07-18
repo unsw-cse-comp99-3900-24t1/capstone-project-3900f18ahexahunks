@@ -163,4 +163,50 @@ router.put('/user/update-password', async (req, res) => {
     });
 });
 
+router.put('/user/update-username', async (req, res) => {
+    const { newUsername, 'user-id': userId, password } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.json({
+                status: 401,
+                message: "User must be logged in"
+            });
+        }
+
+        // Verify the user's password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.json({
+                status: 400,
+                message: "Invalid password"
+            });
+        }
+
+        // Check for valid new username
+        if (!/^[a-zA-Z ]*$/.test(newUsername)) {
+            return res.json({
+                status: 400,
+                message: "Invalid Username"
+            });
+        }
+
+        // Update the username
+        user.username = newUsername;
+        await user.save();
+
+        return res.json({
+            status: 200,
+            message: "Username updated successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        return res.json({
+            status: 500,
+            message: "Please try again later"
+        });
+    }
+});
+
 module.exports = router;
