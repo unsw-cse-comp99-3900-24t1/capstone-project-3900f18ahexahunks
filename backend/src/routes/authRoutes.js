@@ -55,6 +55,9 @@ router.post('/register', async (req, res) => {
     savedUser.token = token;
     await savedUser.save();
 
+    // Set token in cookie
+    res.cookie('token', token, { httpOnly: true, secure: true, maxAge: 3600000 }); // Set cookie for 1 hour
+
     return res.json({
       status: 200,
       message: "Register successfully",
