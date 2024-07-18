@@ -15,6 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
 import usePdfStore from '../zustand/usePdfStore';
 import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
+import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
 
 const Container = styled('div')({
   width: '100vw',
@@ -197,6 +198,9 @@ const FileManagerDashboard = () => {
             break;
           case 'validate':
             content = <ValidBoard fileId={PdfUblValidateData.validatorId} />;
+            break;
+          case 'share':
+            content = <ShareFilesBoardPdfUbl />;
             break;
           default:
             content = <></>;
