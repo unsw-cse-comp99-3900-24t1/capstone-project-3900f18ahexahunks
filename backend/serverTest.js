@@ -1,4 +1,5 @@
 const express = require('express');
+const emailRoutes = require('./email');
 const { MongoClient, ObjectId, GridFSBucket } = require('mongodb');
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
@@ -169,6 +170,9 @@ app.get('/files/:id', (req, res) => {
     res.status(400).json({ error: 'Invalid file ID' });
   }
 });
+
+
+app.use('/api', emailRoutes);
 
 // Start the server
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
