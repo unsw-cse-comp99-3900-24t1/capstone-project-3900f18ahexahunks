@@ -1,56 +1,174 @@
 const express = require('express');
 const cors = require('cors');
-const { handleFileUpload, handleFileUploadHandler, validateUBLFile, validateUBLFileHandler, rerunValidation, getValidationReport } = require('./fileHandler');
-const { connectDB } = require('./utils');
+const bodyParser = require('body-parser');
+const { connectDB, getDb, getGfs } = require('./db');
+const http = require('http');
+const { ObjectId } = require('mongodb');
+const axios = require('axios');
+const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
+
+require('dotenv').config();
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const SWAGGER_UI_ENDPOINT = process.env.SWAGGER_UI_ENDPOINT || 'http://localhost:3000/validate-xml'; // Set your default endpoint here
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const app = express();
 
-app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/upload', handleFileUpload, handleFileUploadHandler);
-app.post('/validate-ubl', validateUBLFile, validateUBLFileHandler);
-app.put('/rerun-validation', rerunValidation);
-app.get('/validation-report/:type/:id', getValidationReport);
+const server = http.createServer(app);
 
-const server = app.listen(PORT, async () => {
-    await connectDB();
-    console.log(`Server running on port: ${PORT}`);
+connectDB();
+
+app.get('/test', (req, res) => {
+  res.json({ message: 'Hello World!' });
 });
 
-module.exports = app;
+// Function to generate the OAuth2 token
+const generateToken = async () => {
+  const tokenEndpoint = 'https://dev-eat.auth.eu-central-1.amazoncognito.com/oauth2/token';
+  const params = new URLSearchParams();
+  params.append('grant_type', 'client_credentials');
+  params.append('client_id', CLIENT_ID);
+  params.append('client_secret', CLIENT_SECRET);
+  params.append('scope', 'eat/read');
 
+  const response = await axios.post(tokenEndpoint, params, {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  });
 
-// frontend code client.js
-// $.post('/validate-ubl', { file: yourFile }, function(data) {
-//   const validationResults = data.validationResults;
-//   const pdfBuffer = data.pdfBuffer;
+  return response.data.access_token;
+};
 
-//   // Convert base64 string back to binary
-//   const byteCharacters = atob(pdfBuffer);
-//   const byteNumbers = new Array(byteCharacters.length);
-//   for (let i = 0; i < byteCharacters.length; i++) {
-//       byteNumbers[i] = byteCharacters.charCodeAt(i);
-//   }
-//   const byteArray = new Uint8Array(byteNumbers);
+// Function to validate XML content
+const validateXML = async (xmlContent) => {
+  const token = await generateToken();
+  const base64Content = Buffer.from(xmlContent).toString('base64');
+  const checksum = crypto.createHash('md5').update(base64Content).digest('hex');
 
-//   // Create a blob from the binary data
-//   const blob = new Blob([byteArray], { type: 'application/pdf' });
+  const response = await axios.post(SWAGGER_UI_ENDPOINT, {
+    filename: 'invoice.xml',
+    content: base64Content,
+    checksum: checksum
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
 
-//   // Create a link element
-//   const link = document.createElement('a');
-//   link.href = URL.createObjectURL(blob);
-//   link.download = 'Validation_Report.pdf';
+  return response.data;
+};
 
-//   // Append the link to the body
-//   document.body.appendChild(link);
+// Route to validate UBL XML file
+app.post('/validate-ubl', async (req, res) => {
+  try {
+    const { xmlFileId } = req.body;
+    const db = getDb();
+    const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(xmlFileId) });
 
-//   // Programmatically trigger the click event
-//   link.click();
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
 
-//   // Remove the link from the document
-//   document.body.removeChild(link);
+    const gfs = getGfs();
+    const readstream = gfs.openDownloadStream(file._id);
+    let xmlContent = '';
+    readstream.on('data', chunk => {
+      xmlContent += chunk;
+    });
 
-//   console.log(validationResults);
-// });
+    readstream.on('end', async () => {
+      const validationResponse = await validateXML(xmlContent);
+      await db.collection('uploads.files').updateOne({ _id: file._id }, { $set: { 'metadata.validationReport': validationResponse } });
+      res.status(200).json(validationResponse);
+    });
+
+    readstream.on('error', (err) => {
+      console.error('ReadStream Error:', err);
+      res.status(500).json({ error: 'Failed to read file from database' });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error, please try again later' });
+  }
+});
+
+// Route to rerun validation
+app.put('/rerun-validation', async (req, res) => {
+  try {
+    const { UBLId } = req.body;
+    const db = getDb();
+    const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(UBLId) });
+
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    const gfs = getGfs();
+    const readstream = gfs.openDownloadStream(file._id);
+    let xmlContent = '';
+    readstream.on('data', chunk => {
+      xmlContent += chunk;
+    });
+
+    readstream.on('end', async () => {
+      const validationResponse = await validateXML(xmlContent);
+      await db.collection('uploads.files').updateOne({ _id: file._id }, { $set: { 'metadata.validationReport': validationResponse } });
+      res.status(200).json(validationResponse);
+    });
+
+    readstream.on('error', (err) => {
+      console.error('ReadStream Error:', err);
+      res.status(500).json({ error: 'Failed to read file from database' });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error, please try again later' });
+  }
+});
+
+// Route to get validation report
+app.get('/validation-report/:type/:id', async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    const db = getDb();
+    const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(id), 'metadata.contentType': `application/${type}` });
+
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    const validationReport = file.metadata.validationReport;
+
+    if (!validationReport) {
+      return res.status(404).json({ error: 'Validation report not found for the provided ID' });
+    }
+
+    res.status(200).json(validationReport);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error, please try again later' });
+  }
+});
+
+// Endpoint to test token generation
+app.get('/test-token', async (req, res) => {
+  try {
+    const token = await generateToken();
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error('Token generation failed:', error);
+    res.status(500).json({ error: 'Token generation failed' });
+  }
+});
+
+// Start the server
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

@@ -1,86 +1,54 @@
-const xpath = require('xpath');
-const dom = require('xmldom').DOMParser;
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const FormData = require('form-data');
+require('dotenv').config();
 
-function validateUBL(xml, fileName) {
-  try {
-    const doc = new dom().parseFromString(xml);
-    const select = xpath.useNamespaces({
-      "": "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
-      "cbc": "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2",
-      "cac": "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2",
-      "ext": "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+async function getToken() {
+    const tokenUrl = 'https://dev-eat.auth.eu-central-1.amazoncognito.com/oauth2/token';
+    const client_id = '7d30bi87iptegbrf2bp37p42gg';
+    const client_secret = '880tema3rvh3h63j4nquvgoh0lgts11n09bq8597fgrkvvd62su';
+    const scope = 'eat/read';
+
+    const response = await axios.post(tokenUrl, null, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        params: {
+            grant_type: 'client_credentials',
+            client_id: client_id,
+            client_secret: client_secret,
+            scope: scope
+        }
     });
 
-    const invoiceIdNode = select('cbc:ID/text()', doc);
-    const issueDateNode = select('cbc:IssueDate/text()', doc);
-
-    const validationResults = {
-      fileDetails: {
-        fileName: fileName || 'Unknown',
-        fileType: 'UBL Invoice',
-        submissionDate: issueDateNode.length ? issueDateNode[0].nodeValue : 'Unknown',
-        checkedBy: 'DB_CEO_TC'
-      },
-      validationSummary: {
-        validationStatus: 'Passed',
-        totalChecksPerformed: 0,
-        checksPassed: 0,
-        checksFailed: 0
-      },
-      detailedFindings: {},
-      recommendations: [],
-      conclusion: {},
-      reportGeneratedBy: 'DB_CEO_TC',
-      reportDate: new Date().toISOString().split('T')[0]
-    };
-
-    const checks = [
-      {
-        field: 'generalInformation',
-        xpath: 'cbc:ID',
-        description: 'The UBL file contains the required general information including invoice number, issue date, and supplier details.',
-        expected: 'An invoice number and issue date should be present.',
-        found: invoiceIdNode.length ? invoiceIdNode[0].nodeValue : 'Missing'
-      },
-      // add more checks as needed in future
-    ];
-
-    checks.forEach((check, index) => {
-      validationResults.validationSummary.totalChecksPerformed += 1;
-      const nodes = select(check.xpath, doc);
-      if (nodes.length === 0 || !nodes[0].nodeValue) {
-        validationResults.validationSummary.checksFailed += 1;
-        validationResults.detailedFindings[check.field] = {
-          validationStatus: 'Failed',
-          description: check.description,
-          expected: check.expected,
-          found: check.found
-        };
-      } else {
-        validationResults.validationSummary.checksPassed += 1;
-        validationResults.detailedFindings[check.field] = {
-          validationStatus: 'Passed',
-          description: check.description
-        };
-      }
-    });
-
-    if (validationResults.validationSummary.checksFailed > 0) {
-      validationResults.validationSummary.validationStatus = 'Failed';
-      validationResults.recommendations.push('Ensure all required fields are present and correctly formatted.');
-      validationResults.conclusion.text = 'The UBL invoice file has failed the validation. Please rectify the identified issues and resubmit the invoice for validation.';
-    } else {
-      validationResults.conclusion.text = 'The UBL invoice file has passed the validation.';
-    }
-
-    return validationResults;
-  } catch (error) {
-    console.error('Error during UBL validation:', error);
-    return {
-      validationStatus: 'Failed',
-      message: `Validation failed: ${error.message}`
-    };
-  }
+    return response.data.access_token;
 }
 
-module.exports = { validateUBL };
+async function validateXML(filePath) {
+    const token = await getToken();
+    const xmlContent = fs.readFileSync(filePath, 'utf8');
+
+    const formData = new FormData();
+    formData.append('filename', path.basename(filePath));
+    formData.append('content', Buffer.from(xmlContent).toString('base64'));
+    formData.append('checksum', require('crypto').createHash('md5').update(Buffer.from(xmlContent).toString('base64')).digest('hex'));
+
+    const response = await axios.post('https://edi-services.ebxcloud.com/ess-schematron/v1/api/validate', formData, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            ...formData.getHeaders()
+        }
+    });
+
+    return response.data;
+}
+
+// Example usage
+const filePath = path.join(__dirname, 'tests', 'testData', 'testFile_1.xml');
+validateXML(filePath).then(result => {
+    console.log('Validation Result:', result);
+    fs.writeFileSync('validationResult.json', JSON.stringify(result, null, 2));
+}).catch(err => {
+    console.error('Error validating XML:', err);
+});
+
+module.exports = { validateXML };

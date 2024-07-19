@@ -1,0 +1,14 @@
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+    <cbc:ID>INV-002</cbc:ID>
+    <cbc:IssueDate>2024-07-12</cbc:IssueDate>
+    <cac:AccountingCustomerParty>
+        <cac:Party>
+            <cac:PartyName>
+                <cbc:Name>Jane Smith</cbc:Name>
+            </cac:PartyName>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+    <cac:LegalMonetaryTotal>
+        <cbc:PayableAmount currencyID="USD">200.00</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+</Invoice>
