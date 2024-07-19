@@ -1,22 +1,17 @@
 const connectDB = require('../db');
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 describe('MongoDB Connection', () => {
-  let client;
-
   beforeAll(async () => {
-    client = await connectDB();
+    await connectDB();
   });
 
   afterAll(async () => {
-    if (client) {
-      await client.close();
-    }
+    mongoose.disconnect();
   });
 
   it('should connect to the database', async () => {
-    const adminDb = client.db().admin();
-    const result = await adminDb.ping();
-    expect(result).toEqual({ ok: 1 });
+    const isConnected = mongoose.connection.readyState;
+    expect(isConnected).toBe(1);
   });
 });

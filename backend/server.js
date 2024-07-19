@@ -13,6 +13,10 @@ app.use(cookieParser());
 
 app.use('/', authRoutes);
 
+app.get('/test', (req, res) => {
+  res.status(200).json({ message: 'Hello World!' });
+});
+
 const PORT = process.env.BACKEND_SERVER_PORT || 3000;
 
 app.listen(PORT, () => {
