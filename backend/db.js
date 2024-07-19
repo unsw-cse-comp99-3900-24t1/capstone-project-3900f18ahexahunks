@@ -5,16 +5,20 @@ let db;
 let gfs;
 
 const connectDB = async () => {
-  try {
-    const client = new MongoClient(process.env.MONGO_URI);
+  const client = new MongoClient(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
+  try {
     await client.connect();
     db = client.db();
-    gfs = new GridFSBucket(db, { bucketName: 'uploads' });
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('Database connection failed:', err.message);
-    process.exit(1);
+    gfs = new GridFSBucket(db, {
+      bucketName: 'uploads'
+    });
+    console.log('Connected to database');
+  } catch (error) {
+    console.error('Failed to connect to database', error);
   }
 };
 

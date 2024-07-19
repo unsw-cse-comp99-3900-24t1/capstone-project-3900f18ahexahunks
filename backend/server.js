@@ -6,20 +6,16 @@ const http = require('http');
 const { ObjectId } = require('mongodb');
 const axios = require('axios');
 const crypto = require('crypto');
-const path = require('path');
-const fs = require('fs');
 
 require('dotenv').config();
 
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
-const SWAGGER_UI_ENDPOINT = process.env.SWAGGER_UI_ENDPOINT || 'http://localhost:3000/validate-xml'; // Set your default endpoint here
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const SWAGGER_UI_ENDPOINT = process.env.SWAGGER_UI_ENDPOINT || 'http://localhost:5003/validate-xml';
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' })); // Increase the limit here
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' })); // Increase the limit here
 
 const server = http.createServer(app);
 
@@ -29,13 +25,12 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Hello World!' });
 });
 
-// Function to generate the OAuth2 token
 const generateToken = async () => {
   const tokenEndpoint = 'https://dev-eat.auth.eu-central-1.amazoncognito.com/oauth2/token';
   const params = new URLSearchParams();
   params.append('grant_type', 'client_credentials');
-  params.append('client_id', CLIENT_ID);
-  params.append('client_secret', CLIENT_SECRET);
+  params.append('client_id', process.env.CLIENT_ID);
+  params.append('client_secret', process.env.CLIENT_SECRET);
   params.append('scope', 'eat/read');
 
   const response = await axios.post(tokenEndpoint, params, {
@@ -45,7 +40,6 @@ const generateToken = async () => {
   return response.data.access_token;
 };
 
-// Function to validate XML content
 const validateXML = async (xmlContent) => {
   const token = await generateToken();
   const base64Content = Buffer.from(xmlContent).toString('base64');
@@ -65,14 +59,15 @@ const validateXML = async (xmlContent) => {
   return response.data;
 };
 
-// Route to validate UBL XML file
 app.post('/validate-ubl', async (req, res) => {
   try {
-    const { xmlFileId } = req.body;
+    const { userId } = req.body;
+    console.log(`Received userId: ${userId}`); // Add logging
     const db = getDb();
-    const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(xmlFileId) });
+    const file = await db.collection('uploads.files').findOne({ 'metadata.userId': new ObjectId(userId) });
 
     if (!file) {
+      console.error(`File with userId ${userId} not found`);
       return res.status(404).json({ error: 'File not found' });
     }
 
@@ -84,6 +79,7 @@ app.post('/validate-ubl', async (req, res) => {
     });
 
     readstream.on('end', async () => {
+      console.log(`XML content length: ${xmlContent.length}`); // Add logging
       const validationResponse = await validateXML(xmlContent);
       await db.collection('uploads.files').updateOne({ _id: file._id }, { $set: { 'metadata.validationReport': validationResponse } });
       res.status(200).json(validationResponse);
@@ -99,7 +95,6 @@ app.post('/validate-ubl', async (req, res) => {
   }
 });
 
-// Route to rerun validation
 app.put('/rerun-validation', async (req, res) => {
   try {
     const { UBLId } = req.body;
@@ -107,6 +102,7 @@ app.put('/rerun-validation', async (req, res) => {
     const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(UBLId) });
 
     if (!file) {
+      console.error(`File with ID ${UBLId} not found`);
       return res.status(404).json({ error: 'File not found' });
     }
 
@@ -118,6 +114,7 @@ app.put('/rerun-validation', async (req, res) => {
     });
 
     readstream.on('end', async () => {
+      console.log(`XML content length: ${xmlContent.length}`); // Add logging
       const validationResponse = await validateXML(xmlContent);
       await db.collection('uploads.files').updateOne({ _id: file._id }, { $set: { 'metadata.validationReport': validationResponse } });
       res.status(200).json(validationResponse);
@@ -133,7 +130,6 @@ app.put('/rerun-validation', async (req, res) => {
   }
 });
 
-// Route to get validation report
 app.get('/validation-report/:type/:id', async (req, res) => {
   try {
     const { type, id } = req.params;
@@ -141,12 +137,14 @@ app.get('/validation-report/:type/:id', async (req, res) => {
     const file = await db.collection('uploads.files').findOne({ _id: new ObjectId(id), 'metadata.contentType': `application/${type}` });
 
     if (!file) {
+      console.error(`File with ID ${id} and type ${type} not found`);
       return res.status(404).json({ error: 'File not found' });
     }
 
     const validationReport = file.metadata.validationReport;
 
     if (!validationReport) {
+      console.error(`Validation report for file with ID ${id} not found`);
       return res.status(404).json({ error: 'Validation report not found for the provided ID' });
     }
 
@@ -157,7 +155,6 @@ app.get('/validation-report/:type/:id', async (req, res) => {
   }
 });
 
-// Endpoint to test token generation
 app.get('/test-token', async (req, res) => {
   try {
     const token = await generateToken();
@@ -168,7 +165,6 @@ app.get('/test-token', async (req, res) => {
   }
 });
 
-// Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
