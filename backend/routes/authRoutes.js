@@ -13,23 +13,23 @@ const registerSchema = joi.object({
 });
 
 const loginSchema = joi.object({
-	email: joi.string().email().required(),
+  email: joi.string().email().required(),
   password: joi.string().min(8).required()
 });
 
 const deleteSchema = joi.object({
-	username: joi.string().required(),
+  username: joi.string().required(),
   password: joi.string().min(8).required()
 });
 
 const updatePasswordSchema = joi.object({
-	'user-id': joi.string().required(),
+  'user-id': joi.string().required(),
   newPassword: joi.string().min(8).required()
 });
 
 const updateUsernameSchema = joi.object({
-	newUsername: joi.string().required(),
-	'user-id': joi.string().required(),
+  newUsername: joi.string().required(),
+  'user-id': joi.string().required(),
   password: joi.string().min(8).required()
 });
 
@@ -42,30 +42,30 @@ router
   );
 
 router
-	.route('/login')
+  .route('/login')
   .post(
-		validator.body(loginSchema),
+    validator.body(loginSchema),
     authController.controllers.postLogin
 );
 
 router
-	.route('/delete')
+  .route('/delete')
   .delete(
-		validator.body(deleteSchema),
+    validator.body(deleteSchema),
     authController.controllers.deleteUser
 );
 
 router
-	.route('/user/update-password')
+  .route('/user/update-password')
   .put(
-		validator.body(updatePasswordSchema),
+    validator.body(updatePasswordSchema),
     authController.controllers.putUpdatePassword
 );
 
 router
-	.route('/user/update-username')
+  .route('/user/update-username')
   .put(
-		validator.body(updateUsernameSchema),
+    validator.body(updateUsernameSchema),
     authController.controllers.putUpdateUsername
 );
 

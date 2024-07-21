@@ -5,9 +5,9 @@ const putUpdatePassword = require('./putUpdatePassword')
 const putUpdateUsername = require('./putUpdateUsername')
 
 exports.controllers = {
-	postLogin,
-	postRegister,
-	deleteUser,
-	putUpdatePassword,
-	putUpdateUsername
+  postLogin,
+  postRegister,
+  deleteUser,
+  putUpdatePassword,
+  putUpdateUsername
 };
