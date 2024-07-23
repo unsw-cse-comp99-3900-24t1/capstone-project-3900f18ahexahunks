@@ -15,8 +15,7 @@
 //         display: 'flex',
 //         justifyContent: 'center',
 //         alignItems: 'center',
-//       }}
-//     >
+//       }}>
 //       <div
 //         style={{
 //           maxWidth: '40%',
@@ -24,8 +23,7 @@
 //           justifyContent: 'center',
 //           alignItems: 'center',
 //           flexDirection: 'column',
-//         }}
-//       >
+//         }}>
 //         <h1
 //           style={{
 //             fontSize: '42px',
@@ -34,13 +32,11 @@
 //             letterSpacing: '0.1px',
 //             textAlign: 'center',
 //             color: '#000',
-//           }}
-//         >
+//           }}>
 //           <span
 //             style={{
 //               color: '#651FFF',
-//             }}
-//           >
+//             }}>
 //             All Invoices
 //           </span>{' '}
 //           in one simple place with privacy come first.

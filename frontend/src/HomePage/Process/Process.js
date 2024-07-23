@@ -81,7 +81,7 @@ const Process = () => {
       </AnimatedTypography>
       <DescriptionText variant="subtitle1">
         <b>
-          Deupload removes complexity and offers a simple interface that allows
+          De-upload removes complexity and offers a simple interface that allows
           users to take advantage of the vast array of decentralized storage
           with better security, performance, and pricing.
         </b>

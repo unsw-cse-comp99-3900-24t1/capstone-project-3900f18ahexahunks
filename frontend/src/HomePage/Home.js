@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 import Navbar from './Navbar/Navbar';
 import Hero from './Hero/Hero';
 import FeatureInfo from './FeatureInfo/FeatureInfo';
-// import InfoCards from './Info/InfoCards';
+import InfoCards from './Info/InfoCards';
 import Process from './Process/Process';
 import Footer from './Footer/Footer';
 
@@ -25,7 +25,7 @@ const Home = () => {
         <Navbar />
         <Hero />
         <FeatureInfo />
-        {/* <InfoCards /> */}
+        <InfoCards />
         <Process />
         {/* <div>Home</div> */}
         <Footer />
