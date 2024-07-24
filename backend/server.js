@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db');
 const authRoutes = require('../backend/routes/authRoutes');
+const authSendOTP = require('../backend/routes/authSendOtp')
 const http = require('http');
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/', authRoutes);
+app.use('/user', authSendOTP);
 
 app.get('/test', (req, res) => {
   res.status(200).json({ message: 'Hello World!' });
