@@ -1,34 +1,52 @@
-const { GridFsStorage } = require('multer-gridfs-storage');
-const multer = require('multer');
-const { ObjectId } = require('mongodb');
-require('dotenv').config();
+const xml2js = require('xml2js');
+const axios = require('axios');
+const pdf = require('html-pdf');
+const fs = require('fs');
+const path = require('path');
+const { getDb, getGfs } = require('./db');
 
-const storageXml = new GridFsStorage({
-  url: process.env.MONGO_URI,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      const userId = req.body.userId || req.query.userId;
+const validateUBLFileHandler = async (req, res) => {
+  try {
+    const xmlContent = req.body;
 
-      if (!ObjectId.isValid(userId)) {
-        console.error('Invalid userId:', userId);
-        return reject(new Error('Invalid userId'));
+    xml2js.parseString(xmlContent, { explicitArray: false }, async (err, result) => {
+      if (err) {
+        return res.status(400).json({ error: 'Invalid XML format' });
       }
+      try {
+        const validationResults = await validateXML(result);
+        const pdfContent = JSON.stringify(validationResults, null, 2);
+        pdf.create(pdfContent).toBuffer(async (err, buffer) => {
+          if (err) {
+            return res.status(500).json({ error: 'Failed to create PDF' });
+          }
 
-      const filename = `xml-${Date.now()}-${file.originalname}`;
-      const fileInfo = {
-        filename: filename,
-        metadata: { userId: new ObjectId(userId) },
-        bucketName: 'uploads',
-        contentType: 'application/xml',
-      };
-      resolve(fileInfo);
+          // Save PDF to MongoDB
+          await connectDB();
+          const db = getDb();
+          const gfs = getGfs();
+          const uploadStream = gfs.openUploadStream(`${new Date().toISOString()}_Validation_Report.pdf`);
+          uploadStream.end(buffer);
+
+          res.status(200).json({ validationResults, pdfBuffer: buffer.toString('base64') });
+        });
+      } catch (error) {
+        console.error('Error during UBL validation:', error);
+        res.status(500).json({ error: 'Validation failed due to internal error' });
+      }
     });
-  },
-});
-
-const uploadXml = multer({ storage: storageXml });
-
-module.exports = {
-  uploadXml
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Server error, please try again later' });
+  }
 };
+
+const validateXML = async (xmlContent) => {
+  const response = await axios.post(process.env.SWAGGER_UI_ENDPOINT, xmlContent, {
+    headers: { 'Content-Type': 'application/xml' }
+  });
+
+  return response.data;
+};
+
+module.exports = { validateUBLFileHandler };

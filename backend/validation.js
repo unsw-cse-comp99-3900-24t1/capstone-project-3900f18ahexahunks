@@ -6,8 +6,8 @@ require('dotenv').config();
 
 async function getToken() {
     const tokenUrl = 'https://dev-eat.auth.eu-central-1.amazoncognito.com/oauth2/token';
-    const client_id = '7d30bi87iptegbrf2bp37p42gg';
-    const client_secret = '880tema3rvh3h63j4nquvgoh0lgts11n09bq8597fgrkvvd62su';
+    const client_id = process.env.CLIENT_ID;
+    const client_secret = process.env.CLIENT_SECRET;
     const scope = 'eat/read';
 
     const response = await axios.post(tokenUrl, null, {
@@ -32,7 +32,7 @@ async function validateXML(filePath) {
     formData.append('content', Buffer.from(xmlContent).toString('base64'));
     formData.append('checksum', require('crypto').createHash('md5').update(Buffer.from(xmlContent).toString('base64')).digest('hex'));
 
-    const response = await axios.post('https://edi-services.ebxcloud.com/ess-schematron/v1/api/validate', formData, {
+    const response = await axios.post(process.env.SWAGGER_UI_ENDPOINT, formData, {
         headers: {
             'Authorization': `Bearer ${token}`,
             ...formData.getHeaders()
