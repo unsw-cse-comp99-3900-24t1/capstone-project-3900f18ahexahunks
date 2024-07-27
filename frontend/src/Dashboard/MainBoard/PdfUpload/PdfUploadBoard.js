@@ -138,7 +138,7 @@ const PdfUploadBoard = () => {
     <BoardContainer>
       <BoardWrapper>
         <ShowPdf isLoading={isLoading} pdfs={pdfs} />
-        <UploadBox handleUpload={handleUpload} />
+        <UploadBox handleUpload={handleUpload} setPdfs={setPdfs} />
       </BoardWrapper>
     </BoardContainer>
   );
