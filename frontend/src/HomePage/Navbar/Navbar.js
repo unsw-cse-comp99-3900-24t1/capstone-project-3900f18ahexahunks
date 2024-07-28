@@ -1,12 +1,12 @@
 import React from 'react';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { styled } from '@mui/system';
-import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { useNavigate } from 'react-router-dom';
 
-const Container = styled('div')({
-  width: '100%',
+const LogoContainer = styled(Box)({
   display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: '10px',
 });
 
 const Navbar = () => {
@@ -21,59 +21,42 @@ const Navbar = () => {
   };
 
   return (
-    <Container>
-      <div
-        style={{
-          display: 'flex',
-          alignContent: 'center',
-          justifyContent: 'center',
-          margin: '0',
-          gap: '20px',
-          padding: '20px',
-          paddingTop: '15px',
-        }}
-      >
-        <div style={{ margin: '0' }}>
-          <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="NavBarLogo" />
-        </div>
-        <div style={{ margin: '0', marginTop: '5px' }}>
-          <h1
-            style={{
-              margin: '0px',
-            }}
-          >
-            HexaHunks
-          </h1>
-          <h5
-            style={{
-              margin: '0px',
-            }}
-          >
-            Experience Hexa-Growth
-          </h5>
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          gap: '47.5px',
-          padding: '20px',
-        }}
-      >
-        <CustomPrimaryButton
-          label="Sign In"
-          onClick={goToLogin}
-          bgcolour="#ffffff"
-          additionalStyle={{ width: 'fit-content' }}
-        />
-        <CustomPrimaryButton
-          label="Create an account"
-          onClick={goToRegister}
-          bgcolour="#651FFF"
-          additionalStyle={{ width: 'fit-content' }}
-        />
-      </div>
-    </Container>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', boxShadow: 'none' }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <LogoContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="NavBarLogo"
+            style={{ height: '50px' }}
+          />
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Typography variant="h4" component="div" sx={{ margin: 0 }}>
+              HexaHunks
+            </Typography>
+            <Typography variant="subtitle2" component="div" sx={{ margin: 0 }}>
+              Experience Hexa-Growth...
+            </Typography>
+          </Box>
+        </LogoContainer>
+        <Box sx={{ display: 'flex', gap: '20px' }}>
+          <Button
+            variant="contained"
+            onClick={goToLogin}
+            sx={{ bgcolor: '#ffffff', color: '#000' }}>
+            Sign In
+          </Button>
+          <Button
+            variant="contained"
+            onClick={goToRegister}
+            sx={{ bgcolor: '#651FFF', color: '#ffffff' }}>
+            Create an Account
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
+
 export default Navbar;
