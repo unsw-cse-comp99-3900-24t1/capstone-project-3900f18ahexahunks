@@ -198,7 +198,10 @@ export const getAnyFile = async (data) => {
     });
     console.log(response.data);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to send particular file/files to a users email

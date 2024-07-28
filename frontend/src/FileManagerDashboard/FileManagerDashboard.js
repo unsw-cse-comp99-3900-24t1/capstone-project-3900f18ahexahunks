@@ -85,6 +85,7 @@ const FileManagerDashboard = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const navigate = useNavigate();
 
   const nav = useNavigate();
 
@@ -158,6 +159,10 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
+            if (UblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             content = (
               <ValidationSelectors
                 htmlContent={UblValidateData.validationHtml}
@@ -183,6 +188,10 @@ const FileManagerDashboard = () => {
         selector = <PdfUblValidSelector id={id} />;
         switch (file) {
           case 'pdf':
+            if (PdfUblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             if (typeof PdfUblValidateData.pdfId === 'string') {
               content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
             } else if (typeof PdfUblValidateData.pdfId === 'object') {
@@ -198,6 +207,10 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
+            if (PdfUblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             content = (
               <ValidationSelectors
                 htmlContent={PdfUblValidateData.validationHtml}
