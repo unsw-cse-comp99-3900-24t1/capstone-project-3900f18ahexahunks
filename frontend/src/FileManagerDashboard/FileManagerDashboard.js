@@ -18,6 +18,8 @@ import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
 import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
 import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
+import HtmlValidationBoard from './UblValidation/MainBoard/HtmlValidationBoard';
+import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
 
 const Container = styled('div')({
   width: '100vw',
@@ -169,7 +171,12 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <ValidBoard fileId={UblValidateData.validatorId} />;
+            content = (
+              <ValidationSelectors
+                htmlContent={UblValidateData.validationHtml}
+                fileId={UblValidateData.validatorId}
+              />
+            );
             break;
           case 'share':
             content = <ShareFilesBoard />;
@@ -203,7 +210,12 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <ValidBoard fileId={PdfUblValidateData.validatorId} />;
+            content = (
+              <ValidationSelectors
+                htmlContent={PdfUblValidateData.validationHtml}
+                fileId={PdfUblValidateData.validatorId}
+              />
+            );
             break;
           case 'share':
             content = <ShareFilesBoardPdfUbl />;

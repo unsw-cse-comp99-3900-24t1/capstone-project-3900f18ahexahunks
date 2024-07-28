@@ -71,6 +71,7 @@ const AccessManagerBoard = () => {
       ublId: data.ublId,
       validatorId: data.validatorId,
       name,
+      validationHtml: data.validationHtml,
     });
 
     setOpen(false);
