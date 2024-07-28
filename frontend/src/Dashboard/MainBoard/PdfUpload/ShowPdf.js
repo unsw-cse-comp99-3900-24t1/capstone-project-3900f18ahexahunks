@@ -13,12 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import useValidatorStore from '../../../zustand/useValidatorStore';
 import useUserStore from '../../../zustand/useUserStore';
-import {
-  deleteOnePdfInfo,
-  deleteOneValidationUblInfo,
-} from '../../../services/api';
+import { deleteOnePdfInfo } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getAnyFile } from '../../../services/api';
-import useValidatorStore from '../../../zustand/useValidatorStore';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 const BoardContainer = styled('div')(({ theme }) => ({
@@ -17,16 +16,10 @@ const BoardContainer = styled('div')(({ theme }) => ({
 const ValidBoard = ({ fileId }) => {
   const { id } = useParams();
   const [pdfUrl, setPdfUrl] = useState(null);
-  // const getValidatorDataById = useValidatorStore(
-  //   (state) => state.getValidatorDataById
-  // );
 
   useEffect(() => {
     const fetchPdf = async () => {
       try {
-        // const data = await getValidatorDataById(id);
-        // console.log('Validator Data:', data);
-
         const arrayBuffer = await getAnyFile({ fileId });
         console.log('File Response as ArrayBuffer:', arrayBuffer);
 
@@ -40,6 +33,7 @@ const ValidBoard = ({ fileId }) => {
     };
 
     fetchPdf();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (

@@ -138,7 +138,7 @@ const GuiForm = ({ setPdfs }) => {
       { id: '1', quantity: '1', total: '1', description: '1', price: '1' },
     ],
   });
-  const { getUser, updateGLN } = useUserStore();
+  const { getUser } = useUserStore();
   const user = getUser();
   const [vendorGln, setVendorGln] = useState(user.gln ? user.gln : '');
   const [customerGln, setCustomerGln] = useState('');

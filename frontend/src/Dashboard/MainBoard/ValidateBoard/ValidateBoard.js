@@ -71,6 +71,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUser, setLatestData]);
 
   // To handle upload of the latest xml and send for processing in backend

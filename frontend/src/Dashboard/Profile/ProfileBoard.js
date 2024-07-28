@@ -71,6 +71,7 @@ const ProfileBoard = () => {
 
   useEffect(() => {
     setProfileImage(user.googlePicture);
+    // eslint-disable-next-line
   }, []);
 
   const handleUsernameChange = (event) => {
@@ -87,6 +88,7 @@ const ProfileBoard = () => {
       }
     }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProfilePicChange = async (event) => {

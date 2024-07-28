@@ -69,6 +69,7 @@ const PdfUploadBoard = () => {
     };
 
     fetchInitialPdfs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // To handle upload of the latest PDF and send for processing in backend

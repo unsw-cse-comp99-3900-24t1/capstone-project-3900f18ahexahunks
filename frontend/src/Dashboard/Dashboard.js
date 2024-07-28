@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/system';
-import {
-  useMediaQuery,
-  Drawer,
-  IconButton,
-  Typography,
-  Avatar,
-} from '@mui/material';
+import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
@@ -16,8 +10,6 @@ import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
 import SettingsBoard from './Settings/SettingsBoard';
 import HelpBoard from './Help/HelpBoard';
-import ProfileBoard from './Profile/ProfileBoard';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Container = styled('div')(({ theme }) => ({
   width: '100vw',

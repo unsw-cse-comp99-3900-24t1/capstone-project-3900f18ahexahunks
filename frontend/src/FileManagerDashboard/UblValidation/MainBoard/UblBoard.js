@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useValidatorStore from '../../../zustand/useValidatorStore';
 import { styled } from '@mui/material/styles';
 import { getAnyFile } from '../../../services/api';
 import useUserStore from '../../../zustand/useUserStore';
@@ -8,7 +7,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-////sdsdsdsdsdsdsd
+
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
