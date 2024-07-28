@@ -8,6 +8,7 @@ const Container = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+  paddingTop: '100px',
 });
 
 const Heading = styled('div')({
@@ -16,10 +17,6 @@ const Heading = styled('div')({
   alignItems: 'center',
   flexDirection: 'column',
   gap: '0',
-});
-
-const Image = styled('img')({
-  width: '80%',
 });
 
 const Hero = () => {
@@ -41,8 +38,7 @@ const Hero = () => {
             fontWeight: '400',
             marginTop: '5px',
             marginBottom: '0',
-          }}
-        >
+          }}>
           Next Revolution <span style={{ color: '#FFE0E5' }}>#Industry4.0</span>
         </h1>
         <h4
@@ -51,8 +47,7 @@ const Hero = () => {
             textAlign: 'center',
             fontSize: '20px',
             fontWeight: '300',
-          }}
-        >
+          }}>
           HexaHunks is a online file manager allowing users to convert various
           file formats to UBL,
           <br /> validate UBL files, and securely share them with team
@@ -65,7 +60,6 @@ const Hero = () => {
           additionalStyle={{ width: '50%' }}
         />
       </Heading>
-      <Image src={`${process.env.PUBLIC_URL}/home-hero-2.png`} alt="hero" />
     </Container>
   );
 };
