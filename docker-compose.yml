@@ -8,8 +8,9 @@ services:
     ports:
       - '3005:3005'
     volumes:
-      - ./swagger:/app
+      - ./swagger-doc:/app
     command: ['node', 'index.js']
+
   frontend:
     build:
       context: ./frontend
@@ -17,4 +18,13 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - .:/app
+      - ./frontend:/app
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '5003:5003'
+    volumes:
+      - ./backend:/app
