@@ -17,6 +17,9 @@ import usePdfStore from '../zustand/usePdfStore';
 import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
 import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
 import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
+import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
+import HtmlValidationBoard from './UblValidation/MainBoard/HtmlValidationBoard';
+import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
 
 const Container = styled('div')({
   width: '100vw',
@@ -168,7 +171,13 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <ValidBoard fileId={UblValidateData.validatorId} />;
+            content = (
+              <ValidationSelectors
+                htmlContent={UblValidateData.validationHtml}
+                fileId={UblValidateData.validatorId}
+                jsonContent={UblValidateData.validationJson}
+              />
+            );
             break;
           case 'share':
             content = <ShareFilesBoard />;
@@ -187,7 +196,11 @@ const FileManagerDashboard = () => {
         selector = <PdfUblValidSelector id={id} />;
         switch (file) {
           case 'pdf':
-            content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
+            if (typeof PdfUblValidateData.pdfId === 'string') {
+              content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
+            } else if (typeof PdfUblValidateData.pdfId === 'object') {
+              content = <GuiFormDisplay invoice={PdfUblValidateData.pdfId} />;
+            }
             break;
           case 'ubl':
             content = (
@@ -198,7 +211,13 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
-            content = <ValidBoard fileId={PdfUblValidateData.validatorId} />;
+            content = (
+              <ValidationSelectors
+                htmlContent={PdfUblValidateData.validationHtml}
+                fileId={PdfUblValidateData.validatorId}
+                jsonContent={PdfUblValidateData.validationJson}
+              />
+            );
             break;
           case 'share':
             content = <ShareFilesBoardPdfUbl />;

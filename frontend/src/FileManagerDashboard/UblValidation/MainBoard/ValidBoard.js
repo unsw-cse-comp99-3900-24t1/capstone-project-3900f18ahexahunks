@@ -4,13 +4,12 @@ import useValidatorStore from '../../../zustand/useValidatorStore';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 const BoardContainer = styled('div')(({ theme }) => ({
-  padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
   margin: '0 auto',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'normal',
-  height: '80vh',
+  height: '90vh',
   overflow: 'auto',
   width: '90%',
   backgroundColor: '#fff',

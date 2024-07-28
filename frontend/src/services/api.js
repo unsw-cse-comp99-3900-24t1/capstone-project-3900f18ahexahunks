@@ -60,6 +60,16 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
+// API to convert GUI Form to ubl xml (CURRENTLY NOT WORKING)
+export const guiFormToUblConvert = async (data) => {
+  try {
+    const response = await apiClient.post('/convert/gui-form', data);
+    return response.data;
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
+
 // API to send UBl to backend for validation
 export const validateUBL = async (formData) => {
   try {

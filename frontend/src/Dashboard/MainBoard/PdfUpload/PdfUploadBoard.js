@@ -113,6 +113,8 @@ const PdfUploadBoard = () => {
             pdfId: result.pdfId,
             ublId: result.ublId,
             validatorId: result.validatorId,
+            validationHtml: result.validationHtml,
+            validationJson: result.validationJson,
             name,
           };
           setPdfs((prevPdfs) => [...prevPdfs, data]);
@@ -138,7 +140,7 @@ const PdfUploadBoard = () => {
     <BoardContainer>
       <BoardWrapper>
         <ShowPdf isLoading={isLoading} pdfs={pdfs} />
-        <UploadBox handleUpload={handleUpload} />
+        <UploadBox handleUpload={handleUpload} setPdfs={setPdfs} />
       </BoardWrapper>
     </BoardContainer>
   );

@@ -92,6 +92,7 @@ const ValidateBoard = () => {
 
         // Finally send the data to backend for processing
         const result = await validateUBL(formData);
+        console.log(result);
 
         if (result.error) {
           showAlert(
@@ -108,7 +109,8 @@ const ValidateBoard = () => {
             _id: result.newObjectId,
             ublId: result.ublId,
             validationId: result.validatorId,
-            validationReport: result.validationReport,
+            validationHtml: result.validationHtml,
+            validationJson: result.validationJson,
             date: result.date,
             name,
           };
