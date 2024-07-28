@@ -8,7 +8,10 @@ const Container = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-  paddingTop: '100px',
+  height: '86vh', // Set height to 80% of the viewport height
+  textAlign: 'center',
+  padding: '0 20px',
+  background: 'linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%)',
 });
 
 const Heading = styled('div')({
@@ -17,6 +20,8 @@ const Heading = styled('div')({
   alignItems: 'center',
   flexDirection: 'column',
   gap: '0',
+  maxWidth: '800px', // Limit the maximum width for better readability
+  padding: '0 20px', // Add padding for better spacing on small screens
 });
 
 const Hero = () => {
@@ -29,38 +34,47 @@ const Hero = () => {
   return (
     <Container>
       <Heading>
-        <h1 style={{ marginBottom: '0', fontSize: '56px', fontWeight: '400' }}>
+        <h1
+          style={{ marginBottom: '0', fontSize: '3.5rem', fontWeight: '400' }}
+        >
           Helping SME's Move Towards the
         </h1>
         <h1
           style={{
-            fontSize: '56px',
+            fontSize: '3.5rem',
             fontWeight: '400',
             marginTop: '5px',
             marginBottom: '0',
-          }}>
-          Next Revolution <span style={{ color: '#FFE0E5' }}>#Industry4.0</span>
+          }}
+        >
+          Next Revolution <span style={{ color: '#651FFF' }}>#Industry4.0</span>
         </h1>
         <h4
           style={{
             marginTop: '14px',
-            textAlign: 'center',
-            fontSize: '20px',
+            fontSize: '1.25rem',
             fontWeight: '300',
-          }}>
-          HexaHunks is a online file manager allowing users to convert various
-          file formats to UBL,
-          <br /> validate UBL files, and securely share them with team
-          collaboration
+            color: '#555',
+          }}
+        >
+          HexaHunks is an online file manager allowing users to convert various
+          file formats to UBL, validate UBL files, and securely share them with
+          team collaboration.
         </h4>
         <CustomPrimaryButton
           label="Get Started"
           onClick={goToRegister}
           bgcolour="#651FFF"
-          additionalStyle={{ width: '50%' }}
+          additionalStyle={{
+            width: '200px',
+            height: '50px',
+            fontSize: '1rem',
+            marginTop: '20px',
+          }}
         />
       </Heading>
     </Container>
   );
 };
+
 export default Hero;

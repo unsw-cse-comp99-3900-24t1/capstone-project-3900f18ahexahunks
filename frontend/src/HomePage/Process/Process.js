@@ -8,7 +8,7 @@ import { styled, keyframes } from '@mui/system';
 // Custom styles
 const iconStyle = {
   fontSize: 60,
-  color: 'purple',
+  color: '#651FFF',
 };
 
 const paperStyle = {
@@ -22,7 +22,7 @@ const paperStyle = {
   ':hover': {
     transform: 'scale(1.05)',
     boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
-    borderColor: 'purple',
+    borderColor: '#651FFF',
   },
 };
 
@@ -34,7 +34,7 @@ const typing = keyframes`
 
 const blinkingCursor = keyframes`
   from, to { border-color: transparent; }
-  50% { border-color: purple; }
+  50% { border-color: #651FFF; }
 `;
 
 const AnimatedTypography = styled(Typography)(({ theme }) => ({
@@ -43,7 +43,7 @@ const AnimatedTypography = styled(Typography)(({ theme }) => ({
   width: '0',
   textAlign: 'center',
   margin: 'auto',
-  borderRight: '3px solid purple',
+  borderRight: '3px solid #651FFF',
   animation: `${typing} 8s steps(40, end) 1, ${blinkingCursor} 0.75s step-end infinite`,
   '@media (min-width:600px)': {
     // Ensures that text is centered for larger screens
@@ -70,18 +70,19 @@ const Process = () => {
 
   return (
     <Container
-      maxWidth="lg"
-      sx={{ mt: 4, bgcolor: 'black', color: 'white', pb: 4 }}>
+      sx={{ mt: 4, bgcolor: 'black', color: 'white', pb: 4, width: '100vw' }}
+    >
       <AnimatedTypography
         variant="h4"
         component="h1"
         gutterBottom
-        key={resetAnimation}>
+        key={resetAnimation}
+      >
         How it works...?
       </AnimatedTypography>
       <DescriptionText variant="subtitle1">
         <b>
-          De-upload removes complexity and offers a simple interface that allows
+          Hexahunks removes complexity and offers a simple interface that allows
           users to take advantage of the vast array of decentralized storage
           with better security, performance, and pricing.
         </b>
@@ -90,7 +91,7 @@ const Process = () => {
         {' '}
         <Grid item xs={12} sm={6} md={4}>
           <Paper elevation={3} sx={paperStyle}>
-            <Box sx={{ color: 'purple' }}>
+            <Box sx={{ color: '#651FFF' }}>
               <AccountCircleIcon style={iconStyle} />
             </Box>
             <Typography variant="h6" component="h3">
@@ -103,7 +104,7 @@ const Process = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Paper elevation={3} sx={paperStyle}>
-            <Box sx={{ color: 'purple' }}>
+            <Box sx={{ color: '#651FFF' }}>
               <CloudUploadIcon style={iconStyle} />
             </Box>
             <Typography variant="h6" component="h3">
@@ -116,7 +117,7 @@ const Process = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Paper elevation={3} sx={paperStyle}>
-            <Box sx={{ color: 'purple' }}>
+            <Box sx={{ color: '#651FFF' }}>
               <EmailIcon style={iconStyle} />
             </Box>
             <Typography variant="h6" component="h3">
