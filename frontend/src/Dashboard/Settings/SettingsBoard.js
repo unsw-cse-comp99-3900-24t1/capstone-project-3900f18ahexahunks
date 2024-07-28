@@ -134,7 +134,7 @@ const SettingsBoard = () => {
           <strong>Email:</strong> {user.email}
         </UserField>
         <UserField>
-          <strong>GLN:</strong> {user.gln}
+          <strong>GLN:</strong> {user.gln ? user.gln : 'Not set'}
         </UserField>
       </UserInfo>
       <ButtonContainer>
