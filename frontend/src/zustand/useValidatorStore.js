@@ -31,9 +31,15 @@ const useValidatorStore = create((set, get) => ({
   },
 
   deleteValidatorDataById: (id) => {
-    set((state) => ({
-      validatorData: state.validatorData.filter((data) => data._id !== id),
-    }));
+    // set((state) => ({
+    //   validatorData: state.validatorData.filter((data) => data._id !== id),
+    // }));
+    set((state) => {
+      console.log('Deleting data with id:', id, state.validatorData); // Log deletion action
+      return {
+        validatorData: state.validatorData.filter((data) => data._id !== id),
+      };
+    });
   },
 
   clearValidatorData: () => set({ validatorData: [] }),

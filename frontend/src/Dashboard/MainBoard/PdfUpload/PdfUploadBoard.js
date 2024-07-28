@@ -6,6 +6,7 @@ import useUserStore from '../../../zustand/useUserStore';
 import { getAllPdfInfo, pdfToUblConvert } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
+import CustomInputBox from '../../../components/CustomInputBox';
 
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -34,6 +35,8 @@ const BoardWrapper = styled('div')({
 const PdfUploadBoard = () => {
   const [pdfs, setPdfs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterDate, setFilterDate] = useState('');
 
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
@@ -139,8 +142,47 @@ const PdfUploadBoard = () => {
 
   return (
     <BoardContainer>
+      {' '}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <CustomInputBox
+          value={searchTerm}
+          setValue={setSearchTerm}
+          label="Search Files"
+          placeholder="Search for files by name"
+        />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          style={{
+            marginRight: '10px',
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+          }}
+        />
+      </div>
       <BoardWrapper>
-        <ShowPdf isLoading={isLoading} pdfs={pdfs} />
+        <ShowPdf
+          isLoading={isLoading}
+          searchTerm={searchTerm}
+          filterDate={filterDate}
+        />
         <UploadBox handleUpload={handleUpload} setPdfs={setPdfs} />
       </BoardWrapper>
     </BoardContainer>
