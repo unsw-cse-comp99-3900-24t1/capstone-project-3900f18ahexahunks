@@ -74,6 +74,7 @@ const AccessManagerBoardPdfUbl = () => {
       validatorId: data.validatorId,
       pdfId: data.pdfId,
       validationHtml: data.validationHtml,
+      validationJson: data.validationJson,
       name,
     });
 
