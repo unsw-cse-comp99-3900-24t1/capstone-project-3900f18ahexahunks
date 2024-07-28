@@ -69,6 +69,7 @@ const AllSelectors = () => {
     } else {
       setSelectedRoute(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   return (

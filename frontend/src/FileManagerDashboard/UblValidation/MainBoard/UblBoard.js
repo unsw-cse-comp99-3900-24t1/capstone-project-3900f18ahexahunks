@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useValidatorStore from '../../../zustand/useValidatorStore';
 import { styled } from '@mui/material/styles';
 import { getAnyFile } from '../../../services/api';
 import useUserStore from '../../../zustand/useUserStore';
@@ -8,7 +7,8 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-////sdsdsdsdsdsdsd
+import { useNavigate } from 'react-router-dom';
+
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
@@ -55,11 +55,18 @@ const UblBoard = ({ getValidatorDataById, setLatestData }) => {
   const { id } = useParams();
   const [xmlData, setXmlData] = useState(null);
   const { getUser } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = getValidatorDataById(id);
+        console.log('ADSGDIUYWGEIUQYWGEHYQWGEITQWUFEGQWYUEGQWGEU', data);
+        if (data === undefined) {
+          navigate('/error/not-found');
+          return;
+        }
+
         const file = await getAnyFile({ fileId: data.ublId });
         const fileString =
           typeof file === 'string' ? file : new TextDecoder().decode(file);

@@ -71,6 +71,7 @@ const ValidateBoard = () => {
     };
 
     fetchInitialXmlFiles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUser, setLatestData]);
 
   // To handle upload of the latest xml and send for processing in backend
@@ -133,18 +134,6 @@ const ValidateBoard = () => {
     }
   };
 
-  // Filter xmlFiles based on search term and filter date
-  const filteredXmlFiles = xmlFiles.filter((file) => {
-    const matchesSearchTerm = file.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesFilterDate = filterDate
-      ? new Date(file.date).toDateString() ===
-        new Date(filterDate).toDateString()
-      : true;
-    return matchesSearchTerm && matchesFilterDate;
-  });
-
   console.log(xmlFiles);
 
   return (
@@ -184,7 +173,11 @@ const ValidateBoard = () => {
         />
       </div>
       <BoardWrapper>
-        <ShowUblBox xmlFiles={filteredXmlFiles} isLoading={isLoading} />
+        <ShowUblBox
+          isLoading={isLoading}
+          searchTerm={searchTerm}
+          filterDate={filterDate}
+        />
         <UblUploadBox handleUpload={handleUpload} />
       </BoardWrapper>
     </BoardContainer>

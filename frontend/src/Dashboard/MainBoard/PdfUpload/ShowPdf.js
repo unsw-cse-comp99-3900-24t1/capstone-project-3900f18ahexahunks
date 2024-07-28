@@ -13,12 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import useValidatorStore from '../../../zustand/useValidatorStore';
 import useUserStore from '../../../zustand/useUserStore';
-import {
-  deleteOnePdfInfo,
-  deleteOneValidationUblInfo,
-} from '../../../services/api';
+import { deleteOnePdfInfo } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
 
@@ -73,7 +69,7 @@ const DateTimeLabel = styled('p')({
   color: '#666',
 });
 
-const ShowPdf = ({ isLoading }) => {
+const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
@@ -83,7 +79,19 @@ const ShowPdf = ({ isLoading }) => {
   const deletePdfDataById = usePdfStore((state) => state.deletePdfDataById);
   const getUser = useUserStore((state) => state.getUser);
   const getPdfData = usePdfStore((state) => state.getPdfData);
-  const pdfs = getPdfData();
+  const FilesPDF = getPdfData();
+
+  // Filter xmlFiles based on search term and filter date
+  const pdfs = FilesPDF.filter((file) => {
+    const matchesSearchTerm = file.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesFilterDate = filterDate
+      ? new Date(file.date).toDateString() ===
+        new Date(filterDate).toDateString()
+      : true;
+    return matchesSearchTerm && matchesFilterDate;
+  });
 
   const handleOpenValidationReport = (pdf) => {
     nav(`/handle-files/convertion-reports/ubl/${pdf._id}`);

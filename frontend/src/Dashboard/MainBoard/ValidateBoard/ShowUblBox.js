@@ -66,10 +66,24 @@ const DateTimeLabel = styled('p')({
   color: '#666',
 });
 
-const ShowUblBox = ({ isLoading, xmlFiles }) => {
+const ShowUblBox = ({ isLoading, searchTerm, filterDate }) => {
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedXml, setSelectedXml] = useState(null);
+
+  const getValidatorData = useValidatorStore((state) => state.getValidatorData);
+  const FilesXML = getValidatorData();
+  // Filter xmlFiles based on search term and filter date
+  const xmlFiles = FilesXML.filter((file) => {
+    const matchesSearchTerm = file.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesFilterDate = filterDate
+      ? new Date(file.date).toDateString() ===
+        new Date(filterDate).toDateString()
+      : true;
+    return matchesSearchTerm && matchesFilterDate;
+  });
 
   const { showAlert } = useAlert();
 
@@ -96,7 +110,11 @@ const ShowUblBox = ({ isLoading, xmlFiles }) => {
       });
 
       deleteValidatorDataById(selectedXml._id);
-
+      console.log(
+        'CAMEH EIUHEQOIYRGQWIYEGUQTORIW',
+        selectedXml._id,
+        selectedXml
+      );
       showAlert('Deleted record successfully', 'green');
       setOpenDialog(false);
     } catch (error) {

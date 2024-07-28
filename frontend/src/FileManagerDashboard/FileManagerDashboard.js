@@ -11,14 +11,12 @@ import HelpBoard from '../Dashboard/Help/HelpBoard';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
 import usePdfStore from '../zustand/usePdfStore';
 import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
 import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
 import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
-import HtmlValidationBoard from './UblValidation/MainBoard/HtmlValidationBoard';
 import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
 
 const Container = styled('div')({
@@ -58,18 +56,6 @@ const Username = styled('div')(({ theme }) => ({
   },
 }));
 
-const Container1 = styled('div')({
-  width: '20%',
-  height: '100vh',
-  backgroundColor: '#ffffff',
-});
-
-const Container2 = styled('div')({
-  width: '80%',
-  height: '100vh',
-  backgroundColor: '#F9F9F9',
-});
-
 const HeaderContainer = styled('div')({
   height: '10vh',
   width: '80%',
@@ -99,6 +85,7 @@ const FileManagerDashboard = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const navigate = useNavigate();
 
   const nav = useNavigate();
 
@@ -149,6 +136,7 @@ const FileManagerDashboard = () => {
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUser, getValidatorData, setLatestData]);
 
   let content;
@@ -171,6 +159,10 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
+            if (UblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             content = (
               <ValidationSelectors
                 htmlContent={UblValidateData.validationHtml}
@@ -196,6 +188,10 @@ const FileManagerDashboard = () => {
         selector = <PdfUblValidSelector id={id} />;
         switch (file) {
           case 'pdf':
+            if (PdfUblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             if (typeof PdfUblValidateData.pdfId === 'string') {
               content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
             } else if (typeof PdfUblValidateData.pdfId === 'object') {
@@ -211,6 +207,10 @@ const FileManagerDashboard = () => {
             );
             break;
           case 'validate':
+            if (PdfUblValidateData === undefined) {
+              navigate('/error/not-found');
+              return;
+            }
             content = (
               <ValidationSelectors
                 htmlContent={PdfUblValidateData.validationHtml}

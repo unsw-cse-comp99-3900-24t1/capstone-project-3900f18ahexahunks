@@ -84,7 +84,7 @@ const LoadingAnimation = styled('div')({
 });
 
 const ShareFilesBoardPdfUbl = () => {
-  const { id, process, file } = useParams();
+  const { id, process } = useParams();
   const { showAlert } = useAlert();
   const { getUser } = useUserStore();
   const user = getUser();

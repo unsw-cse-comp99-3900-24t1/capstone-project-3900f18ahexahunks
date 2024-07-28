@@ -14,12 +14,8 @@ import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
 import { validateEmail } from '../../../shared/validators';
 import { useAlert } from '../../../components/AlertError';
-// import useValidatorStore from '../../../zustand/useValidatorStore';
 import { useParams } from 'react-router-dom';
-import {
-  giveAccessPdfUbl,
-  giveAccessValidationUbl,
-} from '../../../services/api';
+import { giveAccessPdfUbl } from '../../../services/api';
 import usePdfStore from '../../../zustand/usePdfStore';
 
 const AccessManagerContainer = styled(Box)(({ theme }) => ({

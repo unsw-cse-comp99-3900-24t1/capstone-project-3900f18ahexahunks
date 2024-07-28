@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import HtmlValidationBoard from './HtmlValidationBoard';
 import ValidBoard from './ValidBoard';
-import { ButtonGroup, Button, Box } from '@mui/material';
+import { ButtonGroup, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import JsonValidationBoard from './JsonValidationBoard';
 

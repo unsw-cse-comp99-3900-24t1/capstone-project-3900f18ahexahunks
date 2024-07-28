@@ -5,14 +5,7 @@ import Box from '@mui/material/Box';
 import CustomInputBox from '../../../components/CustomInputBox';
 import CustomPrimaryButton from '../../../components/CustomPrimaryButton';
 import useUserStore from '../../../zustand/useUserStore';
-import {
-  Tooltip,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Tooltip, Checkbox, FormControlLabel, Tabs, Tab } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import GuiForm from './uploadTypes/GuiForm';
 

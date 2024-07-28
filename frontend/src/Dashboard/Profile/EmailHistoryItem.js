@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Typography,
   Avatar,
@@ -11,22 +12,30 @@ import {
 import { Edit, Delete } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
-
+//
 const StyledListItem = styled(ListItem)({
   padding: '16px',
+  transition: 'background-color 0.3s ease, transform 0.2s ease',
   '&:hover': {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f0f0f0',
+    transform: 'scale(1.02)',
+  },
+  '&:hover .MuiIconButton-root': {
+    opacity: 1,
   },
 });
 
 const StyledListItemText = styled(ListItemText)({
   '& .MuiListItemText-primary': {
     fontWeight: 'bold',
+    fontSize: '1.1rem',
+    color: '#333',
   },
   '& .MuiListItemText-secondary': {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '4px',
+    color: '#666',
   },
 });
 
@@ -36,6 +45,17 @@ const FileTypeLink = styled(Link)({
   '&:hover': {
     textDecoration: 'underline',
   },
+});
+
+const StyledAvatar = styled(Avatar)({
+  backgroundColor: '#651FFF',
+  color: '#fff',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+});
+
+const HiddenIconButton = styled(IconButton)({
+  opacity: 0,
+  transition: 'opacity 0.2s ease',
 });
 
 const EmailHistoryItem = ({
@@ -51,9 +71,9 @@ const EmailHistoryItem = ({
         onClick={(e) => handleOpenReport(e, item)}
       >
         <ListItemAvatar>
-          <Avatar>
+          <StyledAvatar>
             <Edit />
-          </Avatar>
+          </StyledAvatar>
         </ListItemAvatar>
         <StyledListItemText
           primary={`Send to: ${item.email}`}
@@ -90,13 +110,13 @@ const EmailHistoryItem = ({
             </Box>
           }
         />
-        <IconButton
+        <HiddenIconButton
           edge="end"
           aria-label="delete"
           onClick={() => handleDeleteHistory(index)}
         >
-          <Delete />
-        </IconButton>
+          <Delete color="error" />
+        </HiddenIconButton>
       </StyledListItem>
       <Divider variant="inset" component="li" />
     </div>
