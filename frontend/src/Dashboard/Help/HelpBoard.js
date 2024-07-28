@@ -16,7 +16,7 @@ const StyledContainer = styled('div')(({ theme }) => ({
 const Navbar = styled(AppBar)(({ theme }) => ({
   position: 'sticky',
   top: '-30px',
-  backgroundColor: 'purple',
+  backgroundColor: '#651FFF',
   color: 'white',
   zIndex: theme.zIndex.drawer + 1,
   // width: '100%',
@@ -42,12 +42,18 @@ const HelpBoard = () => {
           <Button
             color="inherit"
             onClick={() => scrollToSection(validateUblHelpRef)}
+            style={{
+              fontWeight: '900',
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              marginRight: '20px',
+            }}
           >
             Validate UBL Help
           </Button>
           <Button
             color="inherit"
             onClick={() => scrollToSection(convertPdfInvoiceRef)}
+            style={{ fontWeight: '900', backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
           >
             Convert PDF Invoice
           </Button>
