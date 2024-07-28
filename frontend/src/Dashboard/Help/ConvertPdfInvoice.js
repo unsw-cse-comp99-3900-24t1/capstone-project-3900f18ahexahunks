@@ -8,7 +8,7 @@ import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
 
 const ContentWrapper = styled(Box)(({ theme }) => ({
-  marginTop: '80px',
+  marginTop: '90px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -35,11 +35,11 @@ const StepsPaper = styled(Paper)(({ theme }) => ({
   boxShadow: theme.shadows[3],
 }));
 
-const ValidateUblHelp = () => {
+const ConvertPdfInvoice = () => {
   return (
     <ContentWrapper>
       <Typography variant="h4" component="h1" gutterBottom>
-        UBL VALIDATION
+        PDF - UBL CONVERSION
       </Typography>
       <VideoWrapper>
         <iframe
@@ -81,4 +81,4 @@ const ValidateUblHelp = () => {
     </ContentWrapper>
   );
 };
-export default ValidateUblHelp;
+export default ConvertPdfInvoice;

@@ -6,10 +6,10 @@ import SelectorLinks from '../../components/SelectorLinks';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ReceiptIcon from '@mui/icons-material/Receipt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
 import Button from '@mui/material/Button';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const SelectorContainer = styled('div')(() => ({
   display: 'flex',
@@ -86,10 +86,10 @@ const MainSelectors = ({ handleLogout }) => {
         />
         <SelectorLinks
           routeTo="/dashboard/convert"
-          text="Invoices"
+          text="Convert"
           isSelected={selectedRoute === '/dashboard/convert'}
           onClick={() => setSelectedRoute('/dashboard/convert')}
-          icon={<ReceiptIcon />}
+          icon={<SwapHorizIcon />}
         />
         <SelectorLinks
           routeTo="/dashboard/settings"
