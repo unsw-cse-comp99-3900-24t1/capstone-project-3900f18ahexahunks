@@ -8,11 +8,9 @@ import Process from './Process/Process';
 import Footer from './Footer/Footer';
 
 const Container = styled('div')({
-  color: '#ffffff',
-  backgroundColor: '#000',
+  color: '#000',
+  // backgroundColor: '#000',
   height: '100%',
-  marginLeft: '50px',
-  marginRight: '50px',
   '@media (max-width: 750px)': {
     margin: '0',
   },
@@ -20,14 +18,42 @@ const Container = styled('div')({
 
 const Home = () => {
   return (
-    <div style={{ backgroundColor: '#000000' }}>
+    <div>
       <Container>
         <Navbar />
         <Hero />
-        <FeatureInfo />
-        <InfoCards />
-        <Process />
-        {/* <div>Home</div> */}
+        <div
+          style={{
+            backgroundColor: '#000',
+            paddingTop: '40px',
+            paddingBottom: '70px',
+          }}
+        >
+          <FeatureInfo />
+        </div>
+        <div
+          style={{
+            backgroundColor: '#fff',
+            paddingTop: '40px',
+            paddingBottom: '70px',
+          }}
+        >
+          <InfoCards />
+        </div>
+        <div
+          style={{
+            backgroundColor: '#000',
+            paddingTop: '40px',
+            paddingBottom: '70px',
+            height: '75vh',
+            marginTop: '100px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Process />
+        </div>
         <Footer />
       </Container>
     </div>
