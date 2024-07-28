@@ -114,6 +114,7 @@ const PdfUploadBoard = () => {
             ublId: result.ublId,
             validatorId: result.validatorId,
             validationHtml: result.validationHtml,
+            validationJson: result.validationJson,
             name,
           };
           setPdfs((prevPdfs) => [...prevPdfs, data]);

@@ -80,6 +80,7 @@ import HtmlValidationBoard from './HtmlValidationBoard';
 import ValidBoard from './ValidBoard';
 import { ButtonGroup, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import JsonValidationBoard from './JsonValidationBoard';
 
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -114,7 +115,7 @@ const StyledButton = styled(Button)(({ theme, selected }) => ({
   transition: 'background-color 0.3s ease, color 0.3s ease',
 }));
 
-const ValidationSelectors = ({ htmlContent, fileId }) => {
+const ValidationSelectors = ({ htmlContent, fileId, jsonContent }) => {
   const [selectedView, setSelectedView] = useState('html');
 
   const handleViewChange = (view) => {
@@ -132,6 +133,12 @@ const ValidationSelectors = ({ htmlContent, fileId }) => {
             HTML View
           </StyledButton>
           <StyledButton
+            selected={selectedView === 'json'}
+            onClick={() => handleViewChange('json')}
+          >
+            JSON View
+          </StyledButton>
+          <StyledButton
             selected={selectedView === 'pdf'}
             onClick={() => handleViewChange('pdf')}
           >
@@ -139,12 +146,20 @@ const ValidationSelectors = ({ htmlContent, fileId }) => {
           </StyledButton>
         </ButtonGroup>
       </SelectorContainer>
-      {selectedView === 'html' ? (
+      {selectedView === 'html' && (
         <BoardContainer>
           <HtmlValidationBoard htmlContent={htmlContent} />
         </BoardContainer>
-      ) : (
-        <ValidBoard fileId={fileId} />
+      )}
+      {selectedView === 'json' && (
+        <BoardContainer>
+          <JsonValidationBoard jsonContent={jsonContent} />
+        </BoardContainer>
+      )}
+      {selectedView === 'pdf' && (
+        <BoardContainer>
+          <ValidBoard fileId={fileId} />
+        </BoardContainer>
       )}
     </div>
   );

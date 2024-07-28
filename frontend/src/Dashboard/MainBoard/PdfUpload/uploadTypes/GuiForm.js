@@ -284,6 +284,7 @@ const GuiForm = ({ setPdfs }) => {
           ublId: response.ublId,
           validatorId: response.validatorId,
           validationHtml: response.validationHtml,
+          validationJson: response.validationJson,
           name,
         };
 

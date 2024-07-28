@@ -2,7 +2,7 @@ import parse from 'html-react-parser';
 
 const HtmlValidationBoard = ({ htmlContent }) => {
   return (
-    <div>
+    <div style={{ maxHeight: '80vh' }}>
       {htmlContent ? <div>{parse(htmlContent)}</div> : <p>Loading...</p>}
     </div>
   );

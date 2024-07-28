@@ -175,6 +175,7 @@ const FileManagerDashboard = () => {
               <ValidationSelectors
                 htmlContent={UblValidateData.validationHtml}
                 fileId={UblValidateData.validatorId}
+                jsonContent={UblValidateData.validationJson}
               />
             );
             break;
@@ -214,6 +215,7 @@ const FileManagerDashboard = () => {
               <ValidationSelectors
                 htmlContent={PdfUblValidateData.validationHtml}
                 fileId={PdfUblValidateData.validatorId}
+                jsonContent={PdfUblValidateData.validationJson}
               />
             );
             break;
