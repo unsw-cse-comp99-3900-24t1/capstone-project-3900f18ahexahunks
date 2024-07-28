@@ -33,6 +33,7 @@ const BoardWrapper = styled('div')({
 
 // Main component for keeping the record of PDFs and converting them to UBL
 const PdfUploadBoard = () => {
+  // eslint-disable-next-line no-unused-vars
   const [pdfs, setPdfs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

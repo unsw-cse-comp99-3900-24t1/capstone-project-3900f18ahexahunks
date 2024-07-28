@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import ValidateUblHelp from './ValidateUblHelp';
 import ConvertPdfInvoice from './ConvertPdfInvoice';
-import { AppBar, Toolbar, Button, Box } from '@mui/material';
+import { AppBar, Toolbar, Button } from '@mui/material';
 
 const StyledContainer = styled('div')(({ theme }) => ({
   display: 'flex',

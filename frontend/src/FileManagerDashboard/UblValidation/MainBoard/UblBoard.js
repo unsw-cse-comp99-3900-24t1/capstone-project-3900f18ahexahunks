@@ -77,6 +77,7 @@ const UblBoard = ({ getValidatorDataById, setLatestData }) => {
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, getValidatorDataById, getUser, setLatestData]);
 
   const renderXml = (node) => {
