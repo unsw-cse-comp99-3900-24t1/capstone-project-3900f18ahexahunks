@@ -17,7 +17,7 @@ import { useAlert } from '../../../components/AlertError';
 import { useParams } from 'react-router-dom';
 import { giveAccessPdfUbl } from '../../../services/api';
 import usePdfStore from '../../../zustand/usePdfStore';
-
+//
 const AccessManagerContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
