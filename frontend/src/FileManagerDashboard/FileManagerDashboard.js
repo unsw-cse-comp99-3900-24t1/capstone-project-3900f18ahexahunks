@@ -6,7 +6,7 @@ import { styled, useTheme } from '@mui/system';
 import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
 import UblBoard from './UblValidation/MainBoard/UblBoard';
-import ValidBoard from './UblValidation/MainBoard/ValidBoard';
+import ValidBoard from './shared/ValidBoard';
 import HelpBoard from '../Dashboard/Help/HelpBoard';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
@@ -18,7 +18,7 @@ import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUb
 import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
 import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
-import EmailHistory from './EmailHistoryManagement/EmailHistory';
+import EmailHistory from './shared/EmailHistory';
 
 const Container = styled('div')({
   width: '100vw',

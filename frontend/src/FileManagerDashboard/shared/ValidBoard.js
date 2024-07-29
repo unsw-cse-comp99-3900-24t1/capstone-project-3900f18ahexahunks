@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAnyFile } from '../../../services/api';
+import { getAnyFile } from '../../services/api';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 const BoardContainer = styled('div')(({ theme }) => ({

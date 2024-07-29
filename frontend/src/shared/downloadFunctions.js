@@ -12,13 +12,58 @@ export const downloadJSON = (email) => {
 export const downloadHTML = (email) => {
   const htmlContent = `
     <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+          }
+          .email-container {
+            max-width: 80vw;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            border-bottom: 2px solid #651fff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+          }
+          .header h1 {
+            margin: 0;
+            color: #651fff;
+          }
+          .content p {
+            line-height: 1.6;
+          }
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #777;
+          }
+        </style>
+      </head>
       <body>
-        <h1>${email.subject}</h1>
-        <p><strong>Email:</strong> ${email.email}</p>
-        <p><strong>Process:</strong> ${email.process}</p>
-        <p><strong>Date:</strong> ${new Date(email.date).toLocaleString()}</p>
-        <p><strong>Body:</strong> ${email.body}</p>
-        <p><strong>File Types:</strong> ${email.fileTypes.join(', ')}</p>
+        <div class="email-container">
+          <div class="header">
+            <h1>${email.subject}</h1>
+          </div>
+          <div class="content">
+            <p><strong>Email:</strong> ${email.email}</p>
+            <p><strong>Process:</strong> ${email.process}</p>
+            <p><strong>Date:</strong> ${new Date(email.date).toLocaleString()}</p>
+            <p><strong>Body:</strong> ${email.body}</p>
+            <p><strong>File Types:</strong> ${email.fileTypes.join(', ')}</p>
+          </div>
+          <div class="footer">
+            <p>&copy; ${new Date().getFullYear()} HexaHunks. All rights reserved.</p>
+          </div>
+        </div>
       </body>
     </html>
   `;

@@ -54,10 +54,6 @@ const EmailHistoryCard = ({ email }) => {
           <HighlightedText>{email.email}</HighlightedText>
         </StyledTypography>
         <StyledTypography variant="body1">
-          <strong>Process:</strong>{' '}
-          <HighlightedText>{email.process}</HighlightedText>
-        </StyledTypography>
-        <StyledTypography variant="body1">
           <strong>Date:</strong>{' '}
           <HighlightedText>
             {new Date(email.date).toLocaleString()}
