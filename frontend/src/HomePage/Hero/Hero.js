@@ -3,30 +3,34 @@ import { styled } from '@mui/system';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import { useNavigate } from 'react-router-dom';
 
+// Styled container for the hero section
 const Container = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-  height: '86vh', // Set height to 80% of the viewport height
+  height: '86vh',
   textAlign: 'center',
   padding: '0 20px',
   background: 'linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%)',
 });
 
+// Styled heading section for the hero content
 const Heading = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
   gap: '0',
-  maxWidth: '800px', // Limit the maximum width for better readability
-  padding: '0 20px', // Add padding for better spacing on small screens
+  maxWidth: '800px',
+  padding: '0 20px',
 });
 
+// Main hero component
 const Hero = () => {
-  const nav = useNavigate();
+  const nav = useNavigate(); // Hook to navigate programmatically
 
+  // Function to navigate to the register page
   const goToRegister = () => {
     nav('/dashboard/main');
   };

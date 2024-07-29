@@ -7,21 +7,22 @@ import InfoCards from './Info/InfoCards';
 import Process from './Process/Process';
 import Footer from './Footer/Footer';
 
+// Styled container for the home page
 const Container = styled('div')({
   color: '#000',
-  // backgroundColor: '#000',
   height: '100%',
   '@media (max-width: 750px)': {
     margin: '0',
   },
 });
 
+// Main Home component that combines all sections
 const Home = () => {
   return (
     <div>
       <Container>
-        <Navbar />
-        <Hero />
+        <Navbar /> {/* Navigation bar */}
+        <Hero /> {/* Hero section */}
         <div
           style={{
             backgroundColor: '#000',
@@ -29,7 +30,7 @@ const Home = () => {
             paddingBottom: '70px',
           }}
         >
-          <FeatureInfo />
+          <FeatureInfo /> {/* Feature information section */}
         </div>
         <div
           style={{
@@ -38,7 +39,7 @@ const Home = () => {
             paddingBottom: '70px',
           }}
         >
-          <InfoCards />
+          <InfoCards /> {/* Information cards section */}
         </div>
         <div
           style={{
@@ -52,11 +53,12 @@ const Home = () => {
             alignItems: 'center',
           }}
         >
-          <Process />
+          <Process /> {/* Process section */}
         </div>
-        <Footer />
+        <Footer /> {/* Footer section */}
       </Container>
     </div>
   );
 };
+
 export default Home;

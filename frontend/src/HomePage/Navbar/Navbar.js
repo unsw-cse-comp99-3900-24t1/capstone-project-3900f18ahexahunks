@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import Cookies from 'js-cookie';
 
+// Styled container for the logo in the navbar
 const LogoContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
 });
 
+// Styled container for the navbar with dynamic background based on scroll
 const NavbarContainer = styled(AppBar)(({ isScrolled }) => ({
   backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.5)' : '#000',
   boxShadow: 'none',
@@ -18,21 +20,25 @@ const NavbarContainer = styled(AppBar)(({ isScrolled }) => ({
   padding: '10px 50px',
 }));
 
+// Styled container for the toolbar in the navbar
 const ToolbarContainer = styled(Toolbar)({
   justifyContent: 'space-between',
 });
 
+// Styled container for elements in the navbar
 const CustomBox = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: '20px',
 });
 
+// Main navbar component
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState(null);
-  const nav = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false); // State to track if the page is scrolled
+  const [user, setUser] = useState(null); // State to track the logged-in user
+  const nav = useNavigate(); // Hook to navigate programmatically
 
+  // Function to handle the scroll event
   const handleScroll = () => {
     if (window.scrollY > 0) {
       setIsScrolled(true);
@@ -41,6 +47,7 @@ const Navbar = () => {
     }
   };
 
+  // Add and remove scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -48,6 +55,7 @@ const Navbar = () => {
     };
   }, []);
 
+  // Check for user token and data in cookies and localStorage
   useEffect(() => {
     const token = Cookies.get('token');
     const userData = localStorage.getItem('user');
@@ -56,14 +64,17 @@ const Navbar = () => {
     }
   }, []);
 
+  // Function to navigate to the register page
   const goToRegister = () => {
     nav('/register');
   };
 
+  // Function to navigate to the login page
   const goToLogin = () => {
     nav('/login');
   };
 
+  // Function to navigate to the dashboard
   const goToDashboard = () => {
     nav('/dashboard/main');
   };

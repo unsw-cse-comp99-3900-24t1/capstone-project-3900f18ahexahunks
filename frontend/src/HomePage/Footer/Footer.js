@@ -3,6 +3,7 @@ import { Box, Typography, Link, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
 
+// Styled container for the footer with a gradient background
 const FooterContainer = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(45deg, #3f51b5, #651FFF)',
   color: '#fff',
@@ -13,6 +14,7 @@ const FooterContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+// Styled section within the footer for organizing content
 const FooterSection = styled(Box)(({ theme }) => ({
   marginBottom: '30px',
   textAlign: 'center',
@@ -20,6 +22,7 @@ const FooterSection = styled(Box)(({ theme }) => ({
   maxWidth: '800px',
 }));
 
+// Styled link for the footer with hover effect
 const FooterLink = styled(Link)(({ theme }) => ({
   color: '#fff',
   textDecoration: 'none',
@@ -29,6 +32,7 @@ const FooterLink = styled(Link)(({ theme }) => ({
   },
 }));
 
+// Styled container for the social media icons
 const SocialIcons = styled(Box)(({ theme }) => ({
   marginTop: '20px',
   '& > *': {
@@ -36,6 +40,7 @@ const SocialIcons = styled(Box)(({ theme }) => ({
   },
 }));
 
+// This component represents the footer of the website
 const Footer = () => {
   return (
     <FooterContainer component="footer">

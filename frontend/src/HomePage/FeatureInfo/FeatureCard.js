@@ -4,17 +4,20 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ShareIcon from '@mui/icons-material/Share';
 
+// Keyframes for the fade-in animation
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
+// Keyframes for the pulse animation
 const pulse = keyframes`
   0% { background-color: rgba(255, 255, 255, 0.1); }
   50% { background-color: rgba(255, 255, 255, 0.3); }
   100% { background-color: rgba(255, 255, 255, 0.1); }
 `;
 
+// Styled component for the product card
 const ProductCard = styled('div')(({ hoverColor }) => ({
   height: '370px',
   display: 'flex',
@@ -22,44 +25,49 @@ const ProductCard = styled('div')(({ hoverColor }) => ({
   alignItems: 'center',
   textAlign: 'center',
   margin: '20px',
-  border: '2px solid #fff', // White border
+  border: '2px solid #fff',
   padding: '20px',
   borderRadius: '10px',
   width: '400px',
   boxSizing: 'border-box',
   backgroundColor: 'transparent',
-  transition: 'all 0.5s ease', // Slowed down from 0.3s to 0.5s
-  animation: `${fadeIn} 1.5s ease-out`, // Slowed down from 1s to 1.5s
+  transition: 'all 0.5s ease',
+  animation: `${fadeIn} 1.5s ease-out`,
   cursor: 'pointer',
   '&:hover': {
     transform: 'scale(1.08)',
     boxShadow: `0 8px 16px ${hoverColor}`,
     borderColor: hoverColor,
-    animation: `${pulse} 3s infinite ease-in-out`, // Slowed down from 2s to 3s
+    animation: `${pulse} 3s infinite ease-in-out`,
   },
   '@media (max-width: 750px)': {
     width: '80%',
   },
 }));
 
+// Styled component for the product image
 const ProductImage = styled('div')({
   width: '150px',
   height: '150px',
   borderRadius: '50%',
-  backgroundColor: '#651FFF', // Purple background for images
+  backgroundColor: '#651FFF',
   marginBottom: '20px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  color: '#fff', // White color for any icon/text inside
+  color: '#fff',
 });
 
+// Styled component for the product information
 const ProductInfo = styled('div')({
   fontSize: '1rem',
 });
-const FeatureCard = ({ hoverColor, info, type }) => {
-  const nav = useNavigate();
 
+// This component represents a feature card
+const FeatureCard = ({ hoverColor, info, type }) => {
+  const nav = useNavigate(); // Hook to navigate programmatically
+
+  // Function to navigate to a specific route based on the card type
   const handleGoTo = () => {
     console.log(type);
     if (type === 'Share') {
@@ -70,6 +78,7 @@ const FeatureCard = ({ hoverColor, info, type }) => {
     return;
   };
 
+  // Function to render the appropriate icon based on the card type
   const renderIcon = () => {
     switch (type) {
       case 'Convert':
@@ -93,4 +102,5 @@ const FeatureCard = ({ hoverColor, info, type }) => {
     </ProductCard>
   );
 };
+
 export default FeatureCard;
