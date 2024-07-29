@@ -19,7 +19,7 @@ const StyledContainer = styled('div')(({ theme }) => ({
 const Navbar = styled(AppBar)(({ theme }) => ({
   position: 'sticky',
   top: '-30px',
-  backgroundColor: '#651FFF',
+  backgroundColor: '#fff',
   color: 'white',
   zIndex: theme.zIndex.drawer + 1,
 }));
@@ -48,7 +48,7 @@ const HelpBoard = () => {
             onClick={() => scrollToSection(validateUblHelpRef)}
             style={{
               fontWeight: '900',
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              backgroundColor: '#651fff',
               marginRight: '20px',
             }}
           >
@@ -60,7 +60,7 @@ const HelpBoard = () => {
             onClick={() => scrollToSection(convertPdfInvoiceRef)}
             style={{
               fontWeight: '900',
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              backgroundColor: '#651fff',
               marginRight: '20px',
             }}
           >
@@ -70,7 +70,7 @@ const HelpBoard = () => {
           <Button
             color="inherit"
             onClick={() => scrollToSection(shareFilesHelp)}
-            style={{ fontWeight: '900', backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
+            style={{ fontWeight: '900', backgroundColor: '#651fff' }}
           >
             Share File Help
           </Button>
