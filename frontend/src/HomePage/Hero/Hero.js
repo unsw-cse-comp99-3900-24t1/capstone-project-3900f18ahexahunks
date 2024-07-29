@@ -28,7 +28,7 @@ const Hero = () => {
   const nav = useNavigate();
 
   const goToRegister = () => {
-    nav('/register');
+    nav('/dashboard/main');
   };
 
   return (

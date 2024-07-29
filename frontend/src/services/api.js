@@ -104,6 +104,15 @@ export const changeProfilePhoto = async (formData) => {
   }
 };
 
+// API to set a new Username
+export const changeUsername = async (data) => {
+  try {
+    return await apiClient.put('/edit/change-username', data);
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 // API to get validation info from userSchema
 export const getAllValidationUblInfo = async (data) => {
   try {
