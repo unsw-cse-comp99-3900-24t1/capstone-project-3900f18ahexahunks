@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import useUserStore from '../../../zustand/useUserStore';
+import useUserStore from '../../zustand/useUserStore';
 import { useEffect, useState } from 'react';
-import { getHistoryEmailById } from '../../../services/api';
+import { getHistoryEmailById } from '../../services/api';
 import { Typography } from '@mui/material';
 import EmailHistoryCard from './EmailHistoryCard';
 

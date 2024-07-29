@@ -11,6 +11,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import ShareIcon from '@mui/icons-material/Share';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DescriptionIcon from '@mui/icons-material/Description';
+import EmailIcon from '@mui/icons-material/Email';
 
 const SelectorContainer = styled('div')(() => ({
   display: 'flex',
@@ -69,6 +70,8 @@ const AllSelectors = () => {
       setSelectedRoute(`/handle-files/convertion-reports/share/${id}`);
     } else if (file === 'access') {
       setSelectedRoute(`/handle-files/convertion-reports/access/${id}`);
+    } else if (file === 'email-history') {
+      setSelectedRoute(`/handle-files/convertion-reports/email-history/${id}`);
     } else {
       setSelectedRoute(null);
     }
@@ -132,6 +135,20 @@ const AllSelectors = () => {
             setSelectedRoute(`/handle-files/convertion-reports/access/${id}`)
           }
           icon={<LockOpenIcon />}
+        />
+        <SelectorLinks
+          routeTo={`/handle-files/convertion-reports/email-history/${id}`}
+          text="Email History"
+          isSelected={
+            selectedRoute ===
+            `/handle-files/convertion-reports/email-history/${id}`
+          }
+          onClick={() =>
+            setSelectedRoute(
+              `/handle-files/convertion-reports/email-history/${id}`
+            )
+          }
+          icon={<EmailIcon />}
         />
       </SelectorContainer1>
       <SelectorContainer2>

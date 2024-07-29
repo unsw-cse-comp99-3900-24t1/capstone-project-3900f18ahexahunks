@@ -5,8 +5,8 @@ import {
   downloadHTML,
   downloadJSON,
   downloadPDF,
-} from '../../../shared/downloadFunctions';
-import CustomPrimaryButton from '../../../components/CustomPrimaryButton';
+} from '../../shared/downloadFunctions';
+import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: '16px',
