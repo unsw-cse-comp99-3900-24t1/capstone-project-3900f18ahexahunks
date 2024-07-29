@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { styled, keyframes } from '@mui/system';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import useUserStore from '../../zustand/useUserStore';
 import { useNavigate } from 'react-router-dom';
+import DeleteModal from './DeleteModal';
 
 // Keyframes for animations
 const fadeIn = keyframes`
@@ -103,6 +99,7 @@ const SettingsBoard = () => {
   const { getUser } = useUserStore();
   const user = getUser();
   const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleDeleteClick = () => {
@@ -146,23 +143,13 @@ const SettingsBoard = () => {
         </DeleteButton>
       </ButtonContainer>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete your account? This action cannot be
-            undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteModal
+        open={open}
+        handleClose={handleClose}
+        setPassword={setPassword}
+        password={password}
+        handleConfirmDelete={handleConfirmDelete}
+      />
     </SettingsContainer>
   );
 };
