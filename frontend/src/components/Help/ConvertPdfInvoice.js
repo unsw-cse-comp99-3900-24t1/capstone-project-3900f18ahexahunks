@@ -43,7 +43,7 @@ const ConvertPdfInvoice = () => {
       </Typography>
       <VideoWrapper>
         <iframe
-          src="https://www.youtube.com/embed/kiddMKPiQUw?mute=1"
+          src="https://www.youtube.com/embed/kiddMKPiQUw?mute=1&controls=0&modestbranding=1"
           title="Help Video"
           allowFullScreen
         ></iframe>
