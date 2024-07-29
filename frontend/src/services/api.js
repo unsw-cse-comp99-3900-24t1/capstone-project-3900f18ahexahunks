@@ -20,7 +20,7 @@ export const register = async (data) => {
   }
 };
 
-// API to send the login/register request for google auth users
+// API to send the login/register request for Google auth users
 export const googleLoginBackend = async (data) => {
   try {
     return await apiClient.post('/auth/google-login', data);
@@ -29,6 +29,7 @@ export const googleLoginBackend = async (data) => {
   }
 };
 
+// API to delete a user account
 export const deleteUserAccount = async (data) => {
   try {
     return await apiClient.post('/auth/delete-user-account', data);
@@ -37,7 +38,7 @@ export const deleteUserAccount = async (data) => {
   }
 };
 
-// API to send request to send email for reset password
+// API to send a request to send email for reset password
 export const forgotPassword = async (data) => {
   try {
     return await apiClient.post('/auth/forgot-password', data);
@@ -46,7 +47,7 @@ export const forgotPassword = async (data) => {
   }
 };
 
-// API to finally reset the user password on success
+// API to reset the user password on success
 export const resetPassword = async (data) => {
   try {
     return await apiClient.post('/auth/reset-password', data);
@@ -55,7 +56,7 @@ export const resetPassword = async (data) => {
   }
 };
 
-// API to convert pdf to ubl xml (CURRENTLY NOT WORKING)
+// API to convert PDF to UBL XML
 export const pdfToUblConvert = async (formData) => {
   try {
     const response = await apiClient.post('/convert/upload-pdf', formData, {
@@ -69,7 +70,7 @@ export const pdfToUblConvert = async (formData) => {
   }
 };
 
-// API to convert GUI Form to ubl xml (CURRENTLY NOT WORKING)
+// API to convert GUI Form to UBL XML
 export const guiFormToUblConvert = async (data) => {
   try {
     const response = await apiClient.post('/convert/gui-form', data);
@@ -79,7 +80,7 @@ export const guiFormToUblConvert = async (data) => {
   }
 };
 
-// API to send UBl to backend for validation
+// API to send UBL to backend for validation
 export const validateUBL = async (formData) => {
   try {
     const response = await apiClient.post('/validate/validate-ubl', formData, {
@@ -94,7 +95,7 @@ export const validateUBL = async (formData) => {
   }
 };
 
-// API to send UBl to backend for validation
+// API to change profile photo
 export const changeProfilePhoto = async (formData) => {
   try {
     const response = await apiClient.post(
@@ -113,7 +114,7 @@ export const changeProfilePhoto = async (formData) => {
   }
 };
 
-// API to set a new Username
+// API to set a new username
 export const changeUsername = async (data) => {
   try {
     return await apiClient.put('/edit/change-username', data);
@@ -122,7 +123,7 @@ export const changeUsername = async (data) => {
   }
 };
 
-// API to get validation info from userSchema
+// API to get validation info from user schema
 export const getAllValidationUblInfo = async (data) => {
   try {
     const response = await apiClient.get('/validate/get-all-validation-data', {
@@ -135,7 +136,7 @@ export const getAllValidationUblInfo = async (data) => {
   }
 };
 
-// API to give another user access to the same validation-ubl files
+// API to give another user access to the same validation-UBL files
 export const giveAccessValidationUbl = async (data) => {
   try {
     return await apiClient.post('/give-access-validation-ubl', data);
@@ -144,7 +145,7 @@ export const giveAccessValidationUbl = async (data) => {
   }
 };
 
-// API to give another user access to the same convertion pdf files
+// API to give another user access to the same conversion PDF files
 export const giveAccessPdfUbl = async (data) => {
   try {
     return await apiClient.post('/give-access-convertion-ubl', data);
@@ -163,7 +164,7 @@ export const getHistoryEmail = async () => {
   }
 };
 
-// API to get the historyEmail array for the user
+// API to get the historyEmail array for the user by ID
 export const getHistoryEmailById = async (data) => {
   try {
     const response = await apiClient.get('/get-history-email-by-id', {
@@ -175,7 +176,7 @@ export const getHistoryEmailById = async (data) => {
   }
 };
 
-// API to get pdf info from userSchema
+// API to get PDF info from user schema
 export const getAllPdfInfo = async (data) => {
   try {
     const response = await apiClient.get('/convert/get-all-convertion-data', {
@@ -191,7 +192,6 @@ export const getAllPdfInfo = async (data) => {
 // API to delete one record for validation data from backend and also the corresponding files
 export const deleteOnePdfInfo = async (data) => {
   try {
-    // return {};
     const response = await apiClient.delete(
       '/convert/delete-one-convertion-data',
       {
@@ -216,7 +216,9 @@ export const deleteOneValidationUblInfo = async (data) => {
     );
     console.log(response.data);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
 };
 
 // API to get any particular file from the backend
@@ -234,7 +236,7 @@ export const getAnyFile = async (data) => {
   }
 };
 
-// API to send particular file/files to a users email
+// API to send particular file/files to a user's email
 export const sendFileToEmail = async (data) => {
   try {
     return await apiClient.post('/sendFile', data);
@@ -263,7 +265,7 @@ export const fetchWeather = async (lat, lon) => {
   }
 };
 
-// API to get the thought of the day form the rapidAPI
+// API to get the thought of the day from the rapidAPI
 const STORAGE_KEY = 'thoughtOfTheDay';
 export async function getThoughtOfTheDay() {
   try {
