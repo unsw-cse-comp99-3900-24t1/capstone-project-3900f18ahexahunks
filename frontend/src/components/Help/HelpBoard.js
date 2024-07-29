@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import ValidateUblHelp from './ValidateUblHelp';
 import ConvertPdfInvoice from './ConvertPdfInvoice';
 import { AppBar, Toolbar, Button } from '@mui/material';
+import ShareFilesHelp from './ShareFilesHelp';
 
 const StyledContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -30,6 +31,7 @@ const Section = styled('div')(({ theme }) => ({
 const HelpBoard = () => {
   const validateUblHelpRef = useRef(null);
   const convertPdfInvoiceRef = useRef(null);
+  const shareFilesHelp = useRef(null);
 
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -38,7 +40,7 @@ const HelpBoard = () => {
   return (
     <StyledContainer>
       <Navbar>
-        <Toolbar>
+        <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             color="inherit"
             onClick={() => scrollToSection(validateUblHelpRef)}
@@ -53,9 +55,20 @@ const HelpBoard = () => {
           <Button
             color="inherit"
             onClick={() => scrollToSection(convertPdfInvoiceRef)}
-            style={{ fontWeight: '900', backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
+            style={{
+              fontWeight: '900',
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              marginRight: '20px',
+            }}
           >
             Convert PDF Invoice
+          </Button>
+          <Button
+            color="inherit"
+            onClick={() => scrollToSection(shareFilesHelp)}
+            style={{ fontWeight: '900', backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
+          >
+            Share File Help
           </Button>
         </Toolbar>
       </Navbar>
@@ -64,6 +77,9 @@ const HelpBoard = () => {
       </Section>
       <Section ref={convertPdfInvoiceRef}>
         <ConvertPdfInvoice />
+      </Section>
+      <Section ref={shareFilesHelp}>
+        <ShareFilesHelp />
       </Section>
     </StyledContainer>
   );
