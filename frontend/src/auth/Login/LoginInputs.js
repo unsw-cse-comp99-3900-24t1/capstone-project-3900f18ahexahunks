@@ -10,39 +10,42 @@ import { login } from '../../services/api';
 import useUserStore from '../../zustand/useUserStore';
 import GoogleAuth from '../GoogleAuth';
 
-// Main component where login happens all the inputs and the login request is managed here
+// Main component where login happens. All the inputs and the login request are managed here
 const LoginInputs = ({ goToDashboard }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [newUser, setNewUser] = useState([]);
+  const [email, setEmail] = useState(''); // State to manage the email input
+  const [password, setPassword] = useState(''); // State to manage the password input
+  const [loading, setLoading] = useState(false); // State to manage the loading indicator
+  const [newUser, setNewUser] = useState([]); // State to manage new user data from GoogleAuth
 
-  // To show the alerts to user, whether success or failure (error)
+  // To show alerts to the user, whether success or failure (error)
   const { showAlert } = useAlert();
 
-  const { setUser } = useUserStore();
+  const { setUser } = useUserStore(); // Zustand store hook to set user data
 
-  // function to post login request
+  // This function posts the login request
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Shows loader for user feedback
+    // Show loader for user feedback
     setLoading(true);
 
     const response = await login({ email, password });
 
     if (response.error) {
+      // Show error alert
       showAlert(response.data.error, 'tomato');
     } else {
+      // Show success alert
       showAlert('Welcome back', 'green');
 
-      // Set the user in zustand on successful login
+      // Set the user in Zustand on successful login
       setUser({ user: response.data });
 
-      // Divert user to dashboard on success
+      // Redirect user to dashboard on success
       goToDashboard();
     }
 
+    // Hide loader
     setLoading(false);
   };
 
@@ -116,4 +119,5 @@ const LoginInputs = ({ goToDashboard }) => {
     </div>
   );
 };
+
 export default LoginInputs;
