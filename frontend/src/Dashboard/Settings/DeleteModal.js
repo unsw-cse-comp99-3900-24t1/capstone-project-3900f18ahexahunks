@@ -6,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
+import useUserStore from '../../zustand/useUserStore';
 
 const DeleteModal = ({
   open,
@@ -13,25 +14,41 @@ const DeleteModal = ({
   setPassword,
   password,
   handleConfirmDelete,
+  username,
+  setUsername,
 }) => {
+  const { getUser } = useUserStore();
+  const user = getUser();
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Confirm Delete</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Are you sure you want to delete your account? This action cannot be
-          undone.
+          undone. ({user.username})
         </DialogContentText>
       </DialogContent>
-      <CustomInputBox
-        style={{ marginLeft: '70px', marginBottom: '30px', width: '70%' }}
-        placeholder="########"
-        label="Password"
-        type="password"
-        setValue={setPassword}
-        value={password}
-        data-testid={'login-password'}
-      />
+      {user.googleId ? (
+        <CustomInputBox
+          style={{ marginLeft: '70px', marginBottom: '30px', width: '70%' }}
+          label="Enter Username"
+          type="text"
+          setValue={setUsername}
+          value={username}
+          data-testid={'login-password'}
+        />
+      ) : (
+        <CustomInputBox
+          style={{ marginLeft: '70px', marginBottom: '30px', width: '70%' }}
+          placeholder="########"
+          label="Password"
+          type="password"
+          setValue={setPassword}
+          value={password}
+          data-testid={'login-password'}
+        />
+      )}
       <DialogActions
         sx={{
           width: '100%',

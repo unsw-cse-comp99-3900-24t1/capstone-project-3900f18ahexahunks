@@ -4,6 +4,12 @@ import Button from '@mui/material/Button';
 import useUserStore from '../../zustand/useUserStore';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
+import { deleteUserAccount } from '../../services/api';
+import { useAlert } from '../../components/AlertError';
+import { googleLogout } from '@react-oauth/google';
+import Cookies from 'js-cookie';
+import useValidatorStore from '../../zustand/useValidatorStore';
+import usePdfStore from '../../zustand/usePdfStore';
 
 // Keyframes for animations
 const fadeIn = keyframes`
@@ -98,8 +104,10 @@ const EditButton = styled(Button)({
 const SettingsBoard = () => {
   const { getUser } = useUserStore();
   const user = getUser();
+  const { showAlert } = useAlert();
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   const handleDeleteClick = () => {
@@ -114,9 +122,34 @@ const SettingsBoard = () => {
     setOpen(false);
   };
 
+  const clearValidatorData = useValidatorStore(
+    (state) => state.clearValidatorData
+  );
+  const clearPdfData = usePdfStore((state) => state.clearPdfData);
+  const clearUser = useUserStore((state) => state.clearUser);
+
   const handleConfirmDelete = () => {
     console.log('User deleted');
     setOpen(false);
+    const res = deleteUserAccount({
+      password,
+      googleId: user.googleId,
+      username,
+      userId: user._id,
+    });
+
+    if (res.error) {
+      showAlert('Unauthorized', 'tomato');
+    } else {
+      googleLogout();
+      localStorage.clear();
+      Cookies.remove('token', { path: '/' });
+      localStorage.clear();
+      clearValidatorData();
+      clearPdfData();
+      clearUser();
+      navigate('/');
+    }
     // Add the logic to delete the user here
   };
 
@@ -149,6 +182,8 @@ const SettingsBoard = () => {
         setPassword={setPassword}
         password={password}
         handleConfirmDelete={handleConfirmDelete}
+        username={username}
+        setUsername={setUsername}
       />
     </SettingsContainer>
   );

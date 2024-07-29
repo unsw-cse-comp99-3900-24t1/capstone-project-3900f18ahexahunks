@@ -6,6 +6,7 @@ import MainSelectors from './MainSelectors';
 import useValidatorStore from '../../zustand/useValidatorStore';
 import useUserStore from '../../zustand/useUserStore';
 import { googleLogout } from '@react-oauth/google';
+import usePdfStore from '../../zustand/usePdfStore';
 
 // One component that can be called to set all the
 // selector settings on the main dashboard
@@ -15,6 +16,7 @@ const Selector = () => {
     (state) => state.clearValidatorData
   );
   const clearUser = useUserStore((state) => state.clearUser);
+  const clearPdfData = usePdfStore((state) => state.clearPdfData);
 
   // Additional logout handler for user on the main dashboard (CLEANS EVERYTHING!)
   const handleLogout = () => {
@@ -23,6 +25,7 @@ const Selector = () => {
     Cookies.remove('token', { path: '/' });
     localStorage.clear();
     clearValidatorData();
+    clearPdfData();
     clearUser();
     navigate('/');
   };

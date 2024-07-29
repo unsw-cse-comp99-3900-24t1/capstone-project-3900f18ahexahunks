@@ -28,6 +28,14 @@ export const googleLoginBackend = async (data) => {
   }
 };
 
+export const deleteUserAccount = async (data) => {
+  try {
+    return await apiClient.post('/auth/delete-user-account', data);
+  } catch (error) {
+    return { error: true, data: error.response.data };
+  }
+};
+
 // API to send request to send email for reset password
 export const forgotPassword = async (data) => {
   try {
