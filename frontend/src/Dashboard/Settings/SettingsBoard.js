@@ -117,7 +117,7 @@ const SettingsBoard = () => {
   const handleEditClick = () => {
     navigate(`/profile/${user._id}`);
   };
-
+  //
   const handleClose = () => {
     setOpen(false);
   };
