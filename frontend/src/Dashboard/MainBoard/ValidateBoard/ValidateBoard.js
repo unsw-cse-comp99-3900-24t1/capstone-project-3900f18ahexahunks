@@ -55,7 +55,12 @@ const ValidateBoard = () => {
         // sends request to get the latest validation data
         const result = await getAllValidationUblInfo({ userId });
         if (result.error) {
-          showAlert('Error fetching initial XML files', 'tomato');
+          showAlert(
+            result.data.error
+              ? result.data.error
+              : 'Error fetching initial XML files',
+            'tomato'
+          );
         } else {
           // sets the latest data to zustand and state
           setXmlFiles(result);

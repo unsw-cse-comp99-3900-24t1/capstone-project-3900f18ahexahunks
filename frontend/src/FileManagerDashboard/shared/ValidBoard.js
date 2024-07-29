@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getAnyFile } from '../../services/api';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
+import { useAlert } from '../../components/AlertError';
+
 const BoardContainer = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   margin: '0 auto',
@@ -16,6 +18,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
 const ValidBoard = ({ fileId }) => {
   const { id } = useParams();
   const [pdfUrl, setPdfUrl] = useState(null);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     const fetchPdf = async () => {
@@ -23,12 +26,22 @@ const ValidBoard = ({ fileId }) => {
         const arrayBuffer = await getAnyFile({ fileId });
         console.log('File Response as ArrayBuffer:', arrayBuffer);
 
-        const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+        if (arrayBuffer.error) {
+          showAlert(
+            arrayBuffer.data.error
+              ? arrayBuffer.data.error
+              : 'Error opening the file',
+            'tomato'
+          );
+        } else {
+          const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
-        const url = URL.createObjectURL(blob);
-        setPdfUrl(url);
+          const url = URL.createObjectURL(blob);
+          setPdfUrl(url);
+        }
       } catch (error) {
         console.error('Error fetching PDF:', error);
+        showAlert('Error fetching PDF', 'tomato');
       }
     };
 

@@ -176,7 +176,10 @@ const ShareFilesBoardPdfUbl = () => {
         _id: id,
       });
       if (result.error) {
-        showAlert('Email not sent', 'tomato');
+        showAlert(
+          result.data.error ? result.data.error : 'Email not sent',
+          'tomato'
+        );
       } else {
         showAlert('Email sent successfully!', 'green');
       }

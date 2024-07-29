@@ -56,7 +56,12 @@ const PdfUploadBoard = () => {
         // sends request to get the latest PDF data
         const result = await getAllPdfInfo({ userId });
         if (result.error) {
-          showAlert('Error fetching initial PDFs', 'tomato');
+          showAlert(
+            result.data.error
+              ? result.data.error
+              : 'Error fetching initial PDFs',
+            'tomato'
+          );
         } else {
           // sets the latest data to zustand and state
           setPdfs(result);

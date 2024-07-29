@@ -98,7 +98,10 @@ const ProfileBoard = () => {
       if (!res.error) {
         setHistory(res);
       } else {
-        showAlert('Failed to fetch history email:', 'tomato');
+        showAlert(
+          res.data.error ? res.data.error : 'Failed to fetch history email',
+          'tomato'
+        );
       }
     }
     fetchData();
@@ -152,7 +155,7 @@ const ProfileBoard = () => {
       userId: user._id,
     });
     if (res.error) {
-      showAlert(res.data, 'tomato');
+      showAlert(res.data.error, 'tomato');
       setUsername(user.username);
     } else {
       showAlert('Username successfully updated', 'green');

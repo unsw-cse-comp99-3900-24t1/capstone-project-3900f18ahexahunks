@@ -79,9 +79,12 @@ const AccessManagerBoard = () => {
     console.log(response, 'LOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOL');
 
     if (response.error) {
-      showAlert(`${response.data.message}`, 'tomato');
+      showAlert(
+        `${response.data.error ? response.data.error : 'Error giving access to the user'}`,
+        'tomato'
+      );
     } else {
-      showAlert(`${response.data.message}`, 'green');
+      showAlert(`${response.data.message? response.data.message:"Access Granted"}`, 'green');
     }
   };
 

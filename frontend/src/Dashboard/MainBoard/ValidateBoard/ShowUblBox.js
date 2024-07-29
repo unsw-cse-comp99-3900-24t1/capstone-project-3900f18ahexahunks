@@ -104,19 +104,26 @@ const ShowUblBox = ({ isLoading, searchTerm, filterDate }) => {
   const handleConfirmDelete = async () => {
     const user = getUser();
     try {
-      await deleteOneValidationUblInfo({
+      setOpenDialog(false);
+      const res = await deleteOneValidationUblInfo({
         userId: user._id,
         dataId: selectedXml._id,
       });
 
-      deleteValidatorDataById(selectedXml._id);
-      console.log(
-        'CAMEH EIUHEQOIYRGQWIYEGUQTORIW',
-        selectedXml._id,
-        selectedXml
-      );
-      showAlert('Deleted record successfully', 'green');
-      setOpenDialog(false);
+      if (res.error) {
+        showAlert(
+          res.data.error ? res.data.error : 'Error: Cannot delete',
+          'tomato'
+        );
+      } else {
+        deleteValidatorDataById(selectedXml._id);
+        console.log(
+          'CAMEH EIUHEQOIYRGQWIYEGUQTORIW',
+          selectedXml._id,
+          selectedXml
+        );
+        showAlert('Deleted record successfully', 'green');
+      }
     } catch (error) {
       showAlert(
         'Failed to delete the validation data. Please try again.',

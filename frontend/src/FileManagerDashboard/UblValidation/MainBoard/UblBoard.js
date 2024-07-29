@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from '../../../components/AlertError';
 
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
@@ -56,6 +57,7 @@ const UblBoard = ({ getValidatorDataById, setLatestData }) => {
   const [xmlData, setXmlData] = useState(null);
   const { getUser } = useUserStore();
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     async function fetchData() {
@@ -68,9 +70,16 @@ const UblBoard = ({ getValidatorDataById, setLatestData }) => {
         }
 
         const file = await getAnyFile({ fileId: data.ublId });
-        const fileString =
-          typeof file === 'string' ? file : new TextDecoder().decode(file);
-        setXmlData(fileString);
+        if (file.error) {
+          showAlert(
+            file.data.error ? file.data.error : 'Error opening the file',
+            'tomato'
+          );
+        } else {
+          const fileString =
+            typeof file === 'string' ? file : new TextDecoder().decode(file);
+          setXmlData(fileString);
+        }
       } catch (error) {
         console.error('An unexpected error occurred:', error);
       }

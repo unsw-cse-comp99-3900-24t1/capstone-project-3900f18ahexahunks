@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { getHistoryEmailById } from '../../services/api';
 import { Typography } from '@mui/material';
 import EmailHistoryCard from './EmailHistoryCard';
+import { useAlert } from '../../components/AlertError';
 
 const EmailHistory = () => {
   const { id } = useParams();
   const { getUser } = useUserStore();
   const user = getUser();
   const [emails, setEmails] = useState([]);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     async function getData() {
@@ -21,13 +23,16 @@ const EmailHistory = () => {
       console.log(res);
 
       if (res.error) {
-        // Handle error case
-        console.error(res.error);
+        showAlert(
+          res.data.error ? res.data.error : 'Failed to fetch history email',
+          '#cab201'
+        );
       } else {
         setEmails(res);
       }
     }
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user._id]);
 
   return (

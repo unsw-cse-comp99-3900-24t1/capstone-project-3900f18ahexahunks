@@ -19,6 +19,7 @@ import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoar
 import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
 import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
 import EmailHistory from './shared/EmailHistory';
+import { useAlert } from '../components/AlertError';
 
 const Container = styled('div')({
   width: '100vw',
@@ -87,6 +88,7 @@ const FileManagerDashboard = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const nav = useNavigate();
 
@@ -121,14 +123,16 @@ const FileManagerDashboard = () => {
         if (result.error) {
           console.error('Error fetching initial XML files:', result);
           console.log('Error fetching initial XML files', 'tomato');
+          showAlert(
+            result.data.error ? result.data.error : "Error fetching XML's"
+          );
         } else {
-          console.log('CAME HERE', result);
           setLatestData(result);
         }
         setLoading(false);
       } catch (error) {
         console.error('An unexpected error occurred:', error);
-        console.log(
+        showAlert(
           'An unexpected error occurred while fetching initial XML files. Please try again later.',
           'tomato'
         );

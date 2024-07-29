@@ -176,7 +176,14 @@ const ShareFilesBoard = () => {
       console.log('File IDs:', fileIds);
       console.log(fileIds, selectedFiles);
 
-      showAlert('Email sent successfully!', 'green');
+      if (result.error) {
+        showAlert(
+          result.data.error ? result.data.error : 'Email not sent',
+          'tomato'
+        );
+      } else {
+        showAlert('Email sent successfully!', 'green');
+      }
     } catch (error) {
       console.error('Error sending email:', error);
       showAlert(

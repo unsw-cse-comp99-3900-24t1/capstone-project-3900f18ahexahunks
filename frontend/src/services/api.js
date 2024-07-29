@@ -130,8 +130,8 @@ export const getAllValidationUblInfo = async (data) => {
     });
     console.log(response.data);
     return response.data.ublValidation;
-  } catch (error) {
-    return { error: true, data: error.response.data };
+  } catch (e) {
+    return { error: true, data: e.response.data };
   }
 };
 
