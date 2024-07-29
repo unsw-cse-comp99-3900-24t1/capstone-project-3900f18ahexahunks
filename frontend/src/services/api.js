@@ -1,7 +1,7 @@
 import axios from 'axios';
 import apiClient from './client';
 
-// API to send the login request
+// API to send the login requests
 export const login = async (data) => {
   try {
     return await apiClient.post('/auth/login', data);
