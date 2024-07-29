@@ -45,21 +45,16 @@ const RegisterInputs = ({ goToDashboard }) => {
     }
 
     setLoading(true);
-    try {
-      const response = await register({ username: name, email, password });
-      if (response.error) {
-        showAlert(response.data, 'tomato');
-      } else {
-        showAlert(`Welcome ${name}`, 'green');
-        console.log(response.data);
-        setUser({ user: response.data });
-        goToDashboard();
-      }
-    } catch (e) {
-      showAlert('An unexpected error occurred.', 'tomato');
-    } finally {
-      setLoading(false);
+    const response = await register({ username: name, email, password });
+    if (response.error) {
+      showAlert(response.data.error, 'tomato');
+    } else {
+      showAlert(`Welcome ${name}`, 'green');
+      setUser({ user: response.data });
+      goToDashboard();
     }
+
+    setLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -73,7 +68,8 @@ const RegisterInputs = ({ goToDashboard }) => {
       style={{
         padding: '40px',
         width: '100%',
-      }}>
+      }}
+    >
       <p style={{ margin: '0', fontSize: '12.8px' }}>LET'S GET YOU STARTED</p>
       <h2
         style={{
@@ -81,7 +77,8 @@ const RegisterInputs = ({ goToDashboard }) => {
           fontSize: '25px',
           marginTop: '16px',
           marginBottom: '50px',
-        }}>
+        }}
+      >
         Create an Account
       </h2>
       <CustomInputBox

@@ -10,6 +10,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { forgotPassword } from '../../services/api';
 import { useAlert } from '../../components/AlertError';
+import CircularProgress from '@mui/material/CircularProgress';
+
+const LoadingOverlay = styled('div')(({ theme }) => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000,
+}));
 
 const ForgotPasswordWrapper = styled('div')(({ theme }) => ({
   marginBottom: '10px',
@@ -33,6 +47,7 @@ const ForgotPassword = () => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const { showAlert } = useAlert();
+  const [loading, setLoading] = useState(false);
 
   // open the modal
   const handleClickOpen = () => {
@@ -46,28 +61,25 @@ const ForgotPassword = () => {
 
   // To send the email to user to reset password
   const handleSubmit = async () => {
+    setLoading(true);
     handleClose();
     console.log('Email:', email);
     if (!email) {
       showAlert('Please enter a valid email address.', 'tomato');
+      setLoading(false);
       return;
     }
 
-    try {
-      const response = await forgotPassword({ email });
-      if (response.error) {
-        showAlert(
-          response.data.message || 'Failed to send reset password email.',
-          'tomato'
-        );
-      } else {
-        showAlert('Password reset email sent successfully.', 'green');
-      }
-    } catch (e) {
+    const response = await forgotPassword({ email });
+    if (response.error) {
       showAlert(
-        'An unexpected error occurred. Please try again later.',
+        response.data.error || 'Failed to send reset password email.',
         'tomato'
       );
+      setLoading(false);
+    } else {
+      showAlert('Password reset email sent successfully.', 'green');
+      setLoading(false);
     }
   };
   console.log('App component loaded');
@@ -103,6 +115,11 @@ const ForgotPassword = () => {
           <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
+      {loading && (
+        <LoadingOverlay>
+          <CircularProgress />
+        </LoadingOverlay>
+      )}
     </div>
   );
 };

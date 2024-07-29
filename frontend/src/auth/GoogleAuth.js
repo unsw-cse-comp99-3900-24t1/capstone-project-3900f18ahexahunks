@@ -35,35 +35,31 @@ const GoogleAuth = ({ setNewUser, newUser, goToDashboard }) => {
   // If newUser is set by google Auth then this code runs
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (newUser) {
-          // Gets the user info from the google oAuth api
-          const userInfo = await fetchGoogleUserInfo(newUser.access_token);
+      if (newUser) {
+        // Gets the user info from the google oAuth api
+        const userInfo = await fetchGoogleUserInfo(newUser.access_token);
 
-          // After data is received from the access key we save it in the mongoDB
-          const response = await googleLoginBackend({
-            googleId: userInfo.id,
-            email: userInfo.email, //googleEmail
-            username: userInfo.name, //googleName
-            googlePicture: userInfo.picture,
-          });
+        // After data is received from the access key we save it in the mongoDB
+        const response = await googleLoginBackend({
+          googleId: userInfo.id,
+          email: userInfo.email, //googleEmail
+          username: userInfo.name, //googleName
+          googlePicture: userInfo.picture,
+        });
 
-          if (response.error) {
-            showAlert(response.data, 'tomato');
-          } else {
-            // If everything works successfully log user in
-            showAlert(`Welcome ${userInfo.name}`, 'green');
+        if (response.error) {
+          showAlert(response.data.error, 'tomato');
+        } else {
+          // If everything works successfully log user in
+          showAlert(`Welcome ${userInfo.name}`, 'green');
 
-            // set user to the zustand as well
-            setUser({ user: response.data });
+          // set user to the zustand as well
+          setUser({ user: response.data });
 
-            // Finally take then to the dashboard
-            goToDashboard();
-          }
-          console.log('Google User Info:', userInfo);
+          // Finally take then to the dashboard
+          goToDashboard();
         }
-      } catch (error) {
-        showAlert('Error fetching user data', 'error');
+        console.log('Google User Info:', userInfo);
       }
     };
 

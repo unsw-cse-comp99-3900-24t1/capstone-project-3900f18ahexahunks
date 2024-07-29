@@ -29,27 +29,21 @@ const LoginInputs = ({ goToDashboard }) => {
     // Shows loader for user feedback
     setLoading(true);
 
-    try {
-      // Await login request
-      const response = await login({ email, password });
+    const response = await login({ email, password });
 
-      if (response.error) {
-        showAlert(response.data, 'tomato');
-      } else {
-        showAlert('Welcome back', 'green');
+    if (response.error) {
+      showAlert(response.data.error, 'tomato');
+    } else {
+      showAlert('Welcome back', 'green');
 
-        // Set the user in zustand on successful login
-        setUser({ user: response.data });
+      // Set the user in zustand on successful login
+      setUser({ user: response.data });
 
-        // Divert user to dashboard on success
-        goToDashboard();
-      }
-    } catch (e) {
-      showAlert('An unexpected error occurred.', 'tomato');
-    } finally {
-      // Closes the loader
-      setLoading(false);
+      // Divert user to dashboard on success
+      goToDashboard();
     }
+
+    setLoading(false);
   };
 
   // To handle the enter key press and then start the login process

@@ -56,24 +56,14 @@ const ResetPassword = () => {
       return;
     }
 
-    try {
-      // sends the request to reset password
-      const response = await resetPassword({ newPassword: password, token });
-      if (response.error) {
-        showAlert(
-          response.data.message || 'Failed to reset password',
-          'tomato'
-        );
-      } else {
-        // On success user is sent to login page to login with new password
-        showAlert('Password reset successfully', 'green');
-        navigate('/login');
-      }
-    } catch (e) {
-      showAlert(
-        'An unexpected error occurred. Please try again later.',
-        'tomato'
-      );
+    // sends the request to reset password
+    const response = await resetPassword({ newPassword: password, token });
+    if (response.error) {
+      showAlert(response.data.error || 'Failed to reset password', 'tomato');
+    } else {
+      // On success user is sent to login page to login with new password
+      showAlert('Password reset successfully', 'green');
+      navigate('/login');
     }
   };
 

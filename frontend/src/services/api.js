@@ -15,6 +15,7 @@ export const register = async (data) => {
   try {
     return await apiClient.post('/auth/register', data);
   } catch (e) {
+    console.log(e);
     return { error: true, data: e.response.data };
   }
 };
@@ -31,8 +32,8 @@ export const googleLoginBackend = async (data) => {
 export const deleteUserAccount = async (data) => {
   try {
     return await apiClient.post('/auth/delete-user-account', data);
-  } catch (error) {
-    return { error: true, data: error.response.data };
+  } catch (e) {
+    return { error: true, data: e.response.data };
   }
 };
 

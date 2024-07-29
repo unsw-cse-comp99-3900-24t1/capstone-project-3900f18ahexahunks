@@ -139,7 +139,7 @@ const SettingsBoard = () => {
     });
 
     if (res.error) {
-      showAlert('Unauthorized', 'tomato');
+      showAlert(res.data.error, 'tomato');
     } else {
       googleLogout();
       localStorage.clear();
