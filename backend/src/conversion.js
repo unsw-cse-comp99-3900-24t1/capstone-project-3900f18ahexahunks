@@ -1,72 +1,102 @@
 const axios = require('axios');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const FormData = require('form-data');
 const { convertJsonToUbl } = require('./jsonToUbl');
+const { log } = require('console');
 
-const UPBRAINS_API_URL = 'https://api.upbrainsai.com/pdf-to-json';
-const UPBRAINS_API_KEY = 'oZNEo-1Jq3Okd6JNu94DzwB9W3oHFW0jMESJNme186sfY803YA7GkdxIO0xc';
+const apiKey = 'oW9Ow-jrS0wNu2nZSDkkHvs54kiDpaeeIqrUpN1C2QQqjzj4fAq5xZRflIJK';
+const pdfFilePath = './testPDFs/Invoice_001.pdf';
+const UPBRAINS_API_URL = 'https://api.upbrainsai.com/';
+const UPBRAINS_API_KEY = 'oW9Ow-jrS0wNu2nZSDkkHvs54kiDpaeeIqrUpN1C2QQqjzj4fAq5xZRflIJK';
 
-/**
- * Convert PDF to JSON using UpbrainAI API
- * @param {string} filePath - The path to the PDF file to be converted
- * @returns {Promise<object>} - The JSON representation of the PDF data
- */
+/*
 async function convertPdfToJson(filePath) {
     try {
-        const form = new FormData();
-        form.append('file', fs.createReadStream(filePath));
+      // Read the file and convert it to base64
+      const fileBuffer = await fs.readFile(filePath);
+      const fileBase64 = fileBuffer.toString("base64");
+  
+      let data = JSON.stringify({
+        file_data: fileBase64,
+      });
+  
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://api.veryfi.com/api/v7/partner/documents/",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "CLIENT-ID": "vrfCYzUE2vEN62oSAYwEHI8T1jKkrL8tg9mV3Hs",
+          AUTHORIZATION: "apikey bzzzz19322:1cfbc7dece83885ec58faf4349be26bd",
+          "X-Veryfi-Client-Id": "vrfCYzUE2vEN62oSAYwEHI8T1jKkrL8tg9mV3Hs",
+          "X-Veryfi-Client-Secret": "xPVk82Ti2yHUOHsS0ns002LoFHybvJ7WWHvkT8Hoa2ucgkiC6T9ovFSvGRotehXT2DWuj7XR3vIxfeh88u5MXEdugJ6VwE52DdynPjMCZja1xcG3XWpL1jeylgnAu1jt",
+        },
+        data: data,
+      };
+  
+      const response = await axios(config);
+      console.log(JSON.stringify(response.data));
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+*/
+async function convertPdfToJson(fileBuffer) {
+    try {
+        
+        // Convert the binary file data to base64
+        const fileBase64 = fileBuffer.toString("base64");
 
-        const response = await axios.post(UPBRAINS_API_URL, form, {
-            headers: {
-                ...form.getHeaders(),
-                'Authorization': `Bearer ${UPBRAINS_API_KEY}`
-            }
+        let data = JSON.stringify({
+            file_data: fileBase64,
         });
 
+        let config = {
+            method: "post",
+            maxBodyLength: Infinity,
+            url: "https://api.veryfi.com/api/v7/partner/documents/",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "CLIENT-ID": "vrfCYzUE2vEN62oSAYwEHI8T1jKkrL8tg9mV3Hs",
+                AUTHORIZATION: "apikey bzzzz19322:1cfbc7dece83885ec58faf4349be26bd",
+                "X-Veryfi-Client-Id": "vrfCYzUE2vEN62oSAYwEHI8T1jKkrL8tg9mV3Hs",
+                "X-Veryfi-Client-Secret": "xPVk82Ti2yHUOHsS0ns002LoFHybvJ7WWHvkT8Hoa2ucgkiC6T9ovFSvGRotehXT2DWuj7XR3vIxfeh88u5MXEdugJ6VwE52DdynPjMCZja1xcG3XWpL1jeylgnAu1jt",
+            },
+            data: data,
+        };
+
+        const response = await axios(config);
+        console.log(JSON.stringify(response.data));
         return response.data;
     } catch (error) {
-        console.error('Error converting PDF to JSON:', error.message);
+        console.error(error);
         throw error;
     }
 }
-
-/**
- * Convert a local PDF file to UBL XML
- * @param {string} pdfFilePath - The path to the local PDF file
- * @returns {Promise<string>} - The UBL XML string
- */
-async function convertPdfToUbl(pdfFilePath) {
-    try {
-      const jsonData = await convertPdfToJson(pdfFilePath);
-      const ublXml = convertJsonToUbl(jsonData);
-      return ublXml;
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        throw {
-          status: 400,
-          message: {
-            error: 'Insufficient data in the PDF, please add more information',
-            requiredInformation: error.response.data.requiredInformation || [],
-          },
-        };
-      } else if (error.response && error.response.status === 404) {
-        throw {
-          status: 404,
-          message: { error: 'Failed to convert PDF to UBL' },
-        };
-      } else {
-        throw {
-          status: 500,
-          message: { error: 'Server error, please try again later' },
-        };
-      }
-    }
-  }
 
 module.exports = {
     convertPdfToJson,
     convertJsonToUbl
 };
 
-module.exports = { convertPdfToUbl };
+
+async function run() {
+    const pdfFilePath = './testPDFs/Invoice_001.pdf'; // Adjust the path to your PDF file
+    try {
+        const data = await fs.readFile(pdfFilePath);
+        console.log(data);
+        console.log("-----");
+        const jsonResponse = convertPdfToJson(data);
+        //const ublXml = await convertPdfToUbl(data);
+        //console.log('UBL XML:', ublXml);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// run();

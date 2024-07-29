@@ -1,8 +1,11 @@
 const express = require('express');
-const emailRoutes = require('./email');
+// const emailRoutes = require('./email');
 const { MongoClient, ObjectId, GridFSBucket } = require('mongodb');
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
+const bodyParser = require('body-parser');
+const { convertPdfToJson } = require('./src/conversion');
+const { convertJsonToUbl } = require('./src/jsonToUbl');
 require('dotenv').config();
 
 // Initialize Express app
@@ -171,8 +174,34 @@ app.get('/files/:id', (req, res) => {
   }
 });
 
+app.use(bodyParser.json());
 
-app.use('/api', emailRoutes);
+
+const upload = multer();
+// Endpoint to convert PDF to UBL XML
+app.post('/convert-pdf-to-ubl', upload.single('file'), async (req, res) => {
+    try {
+        console.log(req.file);
+        const fileBuffer = req.file.buffer; // Get the file buffer
+        console.log(fileBuffer);
+        const jsonResult = await convertPdfToJson(fileBuffer);
+        const ublXml = convertJsonToUbl(jsonResult);
+        
+        res.set('Content-Type', 'application/xml; charset=utf-8');
+        res.send(ublXml);
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            res.status(400).json({
+                error: 'Insufficient data in the PDF, please add more information',
+                requiredInformation: error.response.data.requiredInformation || [],
+            });
+        } else if (error.response && error.response.status === 404) {
+            res.status(404).json({ error: 'Failed to convert PDF to UBL' });
+        } else {
+            res.status(500).json({ error: 'Server error, please try again later' });
+        }
+    }
+});
 
 // Start the server
 const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;

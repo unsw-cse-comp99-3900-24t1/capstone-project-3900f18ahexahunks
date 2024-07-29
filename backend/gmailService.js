@@ -1,35 +1,58 @@
 const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
+const { OAuth2 } = google.auth;
+const fs = require('fs');
 
-async function sendEmail(accessToken, recipient, subject, text, attachment) {
-  const oauth2Client = new google.auth.OAuth2();
-  oauth2Client.setCredentials({ access_token: accessToken });
+// Load OAuth2 credentials from the JSON file you downloaded
+const credentials = require('./credentials.json');
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: 'bzzzz19322@gmail.com',
-      clientId: '953169530538-uamtvuq43l3bvegac98lddok9k502fti.apps.googleusercontent.com',
-      clientSecret: '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',
-      refreshToken: '1//0g1f4hQ0xuFwZCgYIARAAGBASNwF-L9IrCT7XeVx9ikdD9fLKjDOJzPlt7DPtEwvwCt_IRgPca5Ivqq-DvuF7AoxtghnEEmYdUmw',
-      accessToken: accessToken,
-    },
-  });
+const { client_secret, client_id, redirect_uris } = credentials.web;
+const oAuth2Client = new OAuth2(
+  client_id,
+  client_secret,
+  redirect_uris[0] // First redirect URI
+);
 
-  const mailOptions = {
-    from: 'bzzzz19322@gmail.com',
-    to: recipient,
-    subject: subject,
-    text: text,
-    attachments: [{
-      filename: 'invoice.pdf',
-      path: attachment,
-      contentType: 'application/pdf'
-    }]
-  };
+// Set the access and refresh tokens obtained from the OAuth 2.0 Playground
+oAuth2Client.setCredentials({
+  refresh_token: '1//04k5zCpeH1hThCgYIARAAGAQSNwF-L9Ir8t6WABDxLl_KMcTJ15Uzp0Y6RhdhNvssiep43Gccx_O-ad2wnQL3Q_E4cFymJiiqd_U',
+  access_token:"ya29.a0AXooCgtGHqlFaW9Wt5NGTFm_nCCMp94eIUTbR6iDTSJqlF1HTNWAjiz-9PMow4dcGFiZY1HGsUJAAI2pE8-cIusYUM-bCkOH0xljna0ROYdhhK6mhI8z2AQvVFYU4lxZ_58mZH9mys_sYTKzpJqVsVgJOfnG9oKgWqGnaCgYKAbkSARMSFQHGX2MiEyizpBWnl-Y7aaP7E6V2Ww0171"
+});
 
-  return transporter.sendMail(mailOptions);
+async function sendEmail() {
+  try {
+    // const accessToken = await oAuth2Client.getAccessToken();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: 'bzzzz19322@gmail.com',
+        clientId: client_id,
+        clientSecret: client_secret,
+        refreshToken: '1//04k5zCpeH1hThCgYIARAAGAQSNwF-L9Ir8t6WABDxLl_KMcTJ15Uzp0Y6RhdhNvssiep43Gccx_O-ad2wnQL3Q_E4cFymJiiqd_U',
+        accessToken: "ya29.a0AXooCgtGHqlFaW9Wt5NGTFm_nCCMp94eIUTbR6iDTSJqlF1HTNWAjiz-9PMow4dcGFiZY1HGsUJAAI2pE8-cIusYUM-bCkOH0xljna0ROYdhhK6mhI8z2AQvVFYU4lxZ_58mZH9mys_sYTKzpJqVsVgJOfnG9oKgWqGnaCgYKAbkSARMSFQHGX2MiEyizpBWnl-Y7aaP7E6V2Ww0171",
+      },
+    });
+
+    const mailOptions = {
+      from: 'Bernard Zhou <bzzzz19322@gmail.com>',
+      to: '1293465052@qq.com',
+      subject: 'Test Email with Attachment',
+      text: 'Hello from Node.js using Gmail API and OAuth2!',
+      attachments: [
+        {
+          filename: 'example.pdf',
+          path: './src/testPDFs/example.pdf',
+        },
+      ],
+    };
+
+    const result = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', result);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 }
 
-module.exports = sendEmail;
+sendEmail();

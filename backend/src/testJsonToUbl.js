@@ -4,7 +4,7 @@ const { convertJsonToUbl } = require('./jsonToUbl');
 
 // Function to test the JSON to UBL conversion
 const testJsonToUblConversion = () => {
-  const inputFilePath = path.join(__dirname, 'testJSONs/example.json');
+  const inputFilePath = path.join(__dirname, 'testJSONs/Invoice.json');
   const outputFilePath = path.join(__dirname, 'testXMLs/output.xml');
 
   // Read the sample JSON file
