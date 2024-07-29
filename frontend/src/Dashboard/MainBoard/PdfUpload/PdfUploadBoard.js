@@ -101,8 +101,8 @@ const PdfUploadBoard = () => {
 
         if (result.error) {
           showAlert(
-            result.data.message
-              ? result.data.message
+            result.data.error
+              ? result.data.error
               : 'Error converting/uploading PDF',
             'tomato'
           );
@@ -132,7 +132,7 @@ const PdfUploadBoard = () => {
       // Error handling
       console.error('An unexpected error occurred:', error);
       showAlert(
-        'An unexpected error occurred. Please try again later.',
+        error.data.error ? error.data.error : 'Error converting/uploading PDF',
         'tomato'
       );
     } finally {

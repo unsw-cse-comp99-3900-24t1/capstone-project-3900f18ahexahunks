@@ -270,7 +270,9 @@ const GuiForm = ({ setPdfs }) => {
       });
       if (response.error) {
         showAlert(
-          response.data ? response.data : 'Error converting/uploading PDF',
+          response.data.error
+            ? response.data.error
+            : 'Error converting/uploading PDF',
           'tomato'
         );
         return;
