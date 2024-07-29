@@ -1,15 +1,18 @@
 import jsPDF from 'jspdf';
 
+// Function to download email data as a JSON file
 export const downloadJSON = (email) => {
-  const json = JSON.stringify(email, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `${email.subject}.json`;
-  link.click();
+  const json = JSON.stringify(email, null, 2); // Convert email object to JSON string
+  const blob = new Blob([json], { type: 'application/json' }); // Create a Blob with the JSON data
+  const link = document.createElement('a'); // Create a link element
+  link.href = URL.createObjectURL(blob); // Create an object URL for the Blob
+  link.download = `${email.subject}.json`; // Set the download attribute with the email subject
+  link.click(); // Programmatically click the link to trigger the download
 };
 
+// Function to download email data as an HTML file
 export const downloadHTML = (email) => {
+  // HTML content with email details
   const htmlContent = `
     <html>
       <head>
@@ -67,27 +70,29 @@ export const downloadHTML = (email) => {
       </body>
     </html>
   `;
-  const blob = new Blob([htmlContent], { type: 'text/html' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `${email.subject}.html`;
-  link.click();
+  const blob = new Blob([htmlContent], { type: 'text/html' }); // Create a Blob with the HTML data
+  const link = document.createElement('a'); // Create a link element
+  link.href = URL.createObjectURL(blob); // Create an object URL for the Blob
+  link.download = `${email.subject}.html`; // Set the download attribute with the email subject
+  link.click(); // Programmatically click the link to trigger the download
 };
 
+// Function to download email data as a PDF file
 export const downloadPDF = (email) => {
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const margin = 10;
-  const maxLineWidth = pageWidth - 2 * margin;
-  let cursorY = 20;
+  const doc = new jsPDF(); // Create a new jsPDF instance
+  const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
+  const margin = 10; // Set a margin
+  const maxLineWidth = pageWidth - 2 * margin; // Calculate the maximum line width
+  let cursorY = 20; // Set the initial cursor position
 
-  doc.setFontSize(18);
-  const subjectText = doc.splitTextToSize(email.subject, maxLineWidth);
-  doc.text(subjectText, margin, cursorY);
-  cursorY += doc.getTextDimensions(subjectText).h + 10;
+  doc.setFontSize(18); // Set font size for the subject
+  const subjectText = doc.splitTextToSize(email.subject, maxLineWidth); // Split the subject text to fit within the line width
+  doc.text(subjectText, margin, cursorY); // Add the subject text to the PDF
+  cursorY += doc.getTextDimensions(subjectText).h + 10; // Update the cursor position
 
-  doc.setFontSize(12);
+  doc.setFontSize(12); // Set font size for the rest of the text
 
+  // Add the email details to the PDF, updating the cursor position each time
   const emailText = doc.splitTextToSize(`Email: ${email.email}`, maxLineWidth);
   doc.text(emailText, margin, cursorY);
   cursorY += doc.getTextDimensions(emailText).h + 10;
@@ -117,5 +122,5 @@ export const downloadPDF = (email) => {
   doc.text(fileTypesText, margin, cursorY);
   cursorY += doc.getTextDimensions(fileTypesText).h + 10;
 
-  doc.save(`${email.subject}.pdf`);
+  doc.save(`${email.subject}.pdf`); // Save the PDF with the email subject as the file name
 };
