@@ -7,7 +7,7 @@ import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
 import UblValidSelector from './UblValidation/Selector/UblValidSelector';
 import UblBoard from './UblValidation/MainBoard/UblBoard';
 import ValidBoard from './shared/ValidBoard';
-import HelpBoard from '../Dashboard/Help/HelpBoard';
+import HelpBoard from '../components/Help/HelpBoard';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
@@ -235,6 +235,9 @@ const FileManagerDashboard = () => {
             break;
           case 'email-history':
             content = <EmailHistory />;
+            break;
+          case 'help':
+            content = <HelpBoard />;
             break;
           default:
             content = <></>;

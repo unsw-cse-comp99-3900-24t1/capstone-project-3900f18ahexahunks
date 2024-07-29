@@ -9,7 +9,7 @@ import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
 import SettingsBoard from './Settings/SettingsBoard';
-import HelpBoard from './Help/HelpBoard';
+import HelpBoard from '../components/Help/HelpBoard';
 
 const Container = styled('div')(({ theme }) => ({
   width: '100vw',
