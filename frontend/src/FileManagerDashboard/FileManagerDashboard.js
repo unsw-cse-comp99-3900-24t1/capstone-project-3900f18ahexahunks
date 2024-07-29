@@ -18,6 +18,7 @@ import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUb
 import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
 import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
 import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
+import EmailHistory from './UblValidation/MainBoard/EmailHistory';
 
 const Container = styled('div')({
   width: '100vw',
@@ -179,6 +180,9 @@ const FileManagerDashboard = () => {
             break;
           case 'help':
             content = <HelpBoard />;
+            break;
+          case 'email-history':
+            content = <EmailHistory />;
             break;
           default:
             content = <></>;

@@ -154,6 +154,18 @@ export const getHistoryEmail = async () => {
   }
 };
 
+// API to get the historyEmail array for the user
+export const getHistoryEmailById = async (data) => {
+  try {
+    const response = await apiClient.get('/get-history-email-by-id', {
+      params: { ...data },
+    });
+    return response.data;
+  } catch (e) {
+    return { error: true, data: e.response.data };
+  }
+};
+
 // API to get pdf info from userSchema
 export const getAllPdfInfo = async (data) => {
   try {
