@@ -163,7 +163,7 @@ const ShareFilesBoardPdfUbl = () => {
       const result = await sendFileToEmail({
         email,
         xmlId: selectedFiles.xml ? fileIds.xml : null,
-        pdfId: selectedFiles.pdf ? fileIds.pdf : null,
+        pdfId: selectedFiles.pdf ? JSON.stringify(fileIds.pdf) : null,
         validatorPdfId: selectedFiles.validatorPdf
           ? fileIds.validatorPdf
           : null,
@@ -173,7 +173,13 @@ const ShareFilesBoardPdfUbl = () => {
         process: process,
         fileTypes,
         userId: user._id,
+        _id: id,
       });
+      if (result.error) {
+        showAlert('Email not sent', 'tomato');
+      } else {
+        showAlert('Email sent successfully!', 'green');
+      }
 
       console.log(result, 'RESDSDSDSDSDD');
 
@@ -183,8 +189,6 @@ const ShareFilesBoardPdfUbl = () => {
       console.log('Selected Files:', selectedFiles);
       console.log('File IDs:', fileIds);
       console.log(fileIds, selectedFiles);
-
-      showAlert('Email sent successfully!', 'green');
     } catch (error) {
       console.error('Error sending email:', error);
       showAlert(
