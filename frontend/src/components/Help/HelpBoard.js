@@ -5,6 +5,7 @@ import ConvertPdfInvoice from './ConvertPdfInvoice';
 import { AppBar, Toolbar, Button } from '@mui/material';
 import ShareFilesHelp from './ShareFilesHelp';
 
+// This is a styled container for the main content
 const StyledContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -14,25 +15,25 @@ const StyledContainer = styled('div')(({ theme }) => ({
   overflowY: 'auto',
 }));
 
+// This is a styled AppBar for the navigation bar
 const Navbar = styled(AppBar)(({ theme }) => ({
   position: 'sticky',
   top: '-30px',
   backgroundColor: '#651FFF',
   color: 'white',
   zIndex: theme.zIndex.drawer + 1,
-  // width: '100%',
 }));
 
-const Section = styled('div')(({ theme }) => ({
-  // padding: theme.spacing(4),
-  // width: '100%',
-}));
+// This is a styled section for individual help components
+const Section = styled('div')(({ theme }) => ({}));
 
+// This component represents the help board with different sections
 const HelpBoard = () => {
-  const validateUblHelpRef = useRef(null);
-  const convertPdfInvoiceRef = useRef(null);
-  const shareFilesHelp = useRef(null);
+  const validateUblHelpRef = useRef(null); // Reference for ValidateUblHelp section
+  const convertPdfInvoiceRef = useRef(null); // Reference for ConvertPdfInvoice section
+  const shareFilesHelp = useRef(null); // Reference for ShareFilesHelp section
 
+  // Function to scroll to a specific section smoothly
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
   };
@@ -41,6 +42,7 @@ const HelpBoard = () => {
     <StyledContainer>
       <Navbar>
         <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>
+          {/* Button to scroll to ValidateUblHelp section */}
           <Button
             color="inherit"
             onClick={() => scrollToSection(validateUblHelpRef)}
@@ -52,6 +54,7 @@ const HelpBoard = () => {
           >
             Validate UBL Help
           </Button>
+          {/* Button to scroll to ConvertPdfInvoice section */}
           <Button
             color="inherit"
             onClick={() => scrollToSection(convertPdfInvoiceRef)}
@@ -63,6 +66,7 @@ const HelpBoard = () => {
           >
             Convert PDF Invoice
           </Button>
+          {/* Button to scroll to ShareFilesHelp section */}
           <Button
             color="inherit"
             onClick={() => scrollToSection(shareFilesHelp)}
@@ -72,12 +76,15 @@ const HelpBoard = () => {
           </Button>
         </Toolbar>
       </Navbar>
+      {/* Section for ValidateUblHelp */}
       <Section ref={validateUblHelpRef}>
         <ValidateUblHelp />
       </Section>
+      {/* Section for ConvertPdfInvoice */}
       <Section ref={convertPdfInvoiceRef}>
         <ConvertPdfInvoice />
       </Section>
+      {/* Section for ShareFilesHelp */}
       <Section ref={shareFilesHelp}>
         <ShareFilesHelp />
       </Section>

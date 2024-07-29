@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
 
+// This is a styled container for the main content wrapper
 const ContentWrapper = styled(Box)(({ theme }) => ({
   marginTop: '90px',
   display: 'flex',
@@ -17,6 +18,7 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
 }));
 
+// This is a styled container for the video wrapper
 const VideoWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   margin: theme.spacing(4, 0),
@@ -29,12 +31,14 @@ const VideoWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
+// This is a styled Paper component for the steps list
 const StepsPaper = styled(Paper)(({ theme }) => ({
   width: '100%',
   padding: theme.spacing(4),
   boxShadow: theme.shadows[3],
 }));
 
+// This component represents the help section for sharing files
 const ShareFilesHelp = () => {
   return (
     <ContentWrapper>
@@ -74,11 +78,12 @@ const ShareFilesHelp = () => {
           </ListItem>
           <Divider />
           <ListItem>
-            <ListItemText primary="Step 6: Further more you can email, give access, download and view the files in the chosen file's dashboard as well." />
+            <ListItemText primary="Step 6: Furthermore, you can email, give access, download, and view the files in the chosen file's dashboard as well." />
           </ListItem>
         </List>
       </StepsPaper>
     </ContentWrapper>
   );
 };
+
 export default ShareFilesHelp;
