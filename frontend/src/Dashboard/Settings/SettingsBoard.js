@@ -128,10 +128,10 @@ const SettingsBoard = () => {
   const clearPdfData = usePdfStore((state) => state.clearPdfData);
   const clearUser = useUserStore((state) => state.clearUser);
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     console.log('User deleted');
     setOpen(false);
-    const res = deleteUserAccount({
+    const res = await deleteUserAccount({
       password,
       googleId: user.googleId,
       username,
