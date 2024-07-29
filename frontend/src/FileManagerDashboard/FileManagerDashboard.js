@@ -4,22 +4,11 @@ import useValidatorStore from '../zustand/useValidatorStore';
 import useUserStore from '../zustand/useUserStore';
 import { styled, useTheme } from '@mui/system';
 import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
-import UblValidSelector from './UblValidation/Selector/UblValidSelector';
-import UblBoard from './UblValidation/MainBoard/UblBoard';
-import ValidBoard from './shared/ValidBoard';
-import HelpBoard from '../components/Help/HelpBoard';
 import MenuIcon from '@mui/icons-material/Menu';
-import ShareFilesBoard from './UblValidation/MainBoard/ShareFilesBoard';
 import { getAllValidationUblInfo } from '../services/api';
-import AccessManagerBoard from './UblValidation/MainBoard/AccessManagerBoard';
 import usePdfStore from '../zustand/usePdfStore';
-import PdfUblValidSelector from './PdfConverter/Selector/PdfUblValidSelector';
-import ShareFilesBoardPdfUbl from './PdfConverter/MainBoard/ShareFilesBoardPdfUbl';
-import AccessManagerBoardPdfUbl from './PdfConverter/MainBoard/AccessManagerBoardPdfUbl';
-import GuiFormDisplay from './PdfConverter/MainBoard/GuiFormDisplay';
-import ValidationSelectors from './UblValidation/MainBoard/ValidationSelectors';
-import EmailHistory from './shared/EmailHistory';
 import { useAlert } from '../components/AlertError';
+import { getContentSelectorForFileDash } from '../shared/getContentSelectorForFileDash';
 
 const Container = styled('div')({
   width: '100vw',
@@ -151,102 +140,20 @@ const FileManagerDashboard = () => {
     content = <div>Loading...</div>;
     selector = <div>Loading...</div>;
   } else {
-    switch (process) {
-      case 'validation-reports':
-        selector = <UblValidSelector id={id} />;
-        switch (file) {
-          case 'ubl':
-            content = (
-              <UblBoard
-                getValidatorDataById={getValidatorDataById}
-                setLatestData={setLatestData}
-              />
-            );
-            break;
-          case 'validate':
-            if (UblValidateData === undefined) {
-              navigate('/error/not-found');
-              return;
-            }
-            content = (
-              <ValidationSelectors
-                htmlContent={UblValidateData.validationHtml}
-                fileId={UblValidateData.validatorId}
-                jsonContent={UblValidateData.validationJson}
-              />
-            );
-            break;
-          case 'share':
-            content = <ShareFilesBoard />;
-            break;
-          case 'access':
-            content = <AccessManagerBoard />;
-            break;
-          case 'help':
-            content = <HelpBoard />;
-            break;
-          case 'email-history':
-            content = <EmailHistory />;
-            break;
-          default:
-            content = <></>;
-        }
-        break;
-      case 'convertion-reports':
-        selector = <PdfUblValidSelector id={id} />;
-        switch (file) {
-          case 'pdf':
-            if (PdfUblValidateData === undefined) {
-              navigate('/error/not-found');
-              return;
-            }
-            if (typeof PdfUblValidateData.pdfId === 'string') {
-              content = <ValidBoard fileId={PdfUblValidateData.pdfId} />;
-            } else if (typeof PdfUblValidateData.pdfId === 'object') {
-              content = <GuiFormDisplay invoice={PdfUblValidateData.pdfId} />;
-            }
-            break;
-          case 'ubl':
-            content = (
-              <UblBoard
-                getValidatorDataById={getPdfDataById}
-                setLatestData={setLatestDataPdf}
-              />
-            );
-            break;
-          case 'validate':
-            if (PdfUblValidateData === undefined) {
-              navigate('/error/not-found');
-              return;
-            }
-            content = (
-              <ValidationSelectors
-                htmlContent={PdfUblValidateData.validationHtml}
-                fileId={PdfUblValidateData.validatorId}
-                jsonContent={PdfUblValidateData.validationJson}
-              />
-            );
-            break;
-          case 'share':
-            content = <ShareFilesBoardPdfUbl />;
-            break;
-          case 'access':
-            content = <AccessManagerBoardPdfUbl />;
-            break;
-          case 'email-history':
-            content = <EmailHistory />;
-            break;
-          case 'help':
-            content = <HelpBoard />;
-            break;
-          default:
-            content = <></>;
-        }
-        break;
-      default:
-        content = <></>;
-        selector = <></>;
-    }
+    const result = getContentSelectorForFileDash(
+      id,
+      process,
+      file,
+      getValidatorDataById,
+      setLatestData,
+      UblValidateData,
+      PdfUblValidateData,
+      getPdfDataById,
+      setLatestDataPdf,
+      navigate
+    );
+    selector = result?.selector ? result.selector : <></>;
+    content = result?.content ? result.content : <></>;
   }
 
   return (

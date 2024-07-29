@@ -7,8 +7,10 @@ const InvoiceContainer = styled('div')({
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   width: '80%',
+  height: '80vh',
   margin: '20px auto',
   fontFamily: 'Arial, sans-serif',
+  overflow: 'auto',
 });
 
 const InvoiceTitle = styled('h1')({
