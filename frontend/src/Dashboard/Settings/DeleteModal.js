@@ -29,10 +29,10 @@ const DeleteModal = ({
       <DialogContent>
         <DialogContentText>
           Are you sure you want to delete your account? This action cannot be
-          undone. ({user.username})
+          undone. ({user?.username})
         </DialogContentText>
       </DialogContent>
-      {user.googleId ? (
+      {user?.googleId ? (
         <CustomInputBox
           style={{ marginLeft: '70px', marginBottom: '30px', width: '70%' }}
           label="Enter Username"
