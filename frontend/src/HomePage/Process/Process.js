@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import EmailIcon from '@mui/icons-material/Email';
 import { styled, keyframes } from '@mui/system';
 
-// Custom styles
+// Custom styles for icons
 const iconStyle = {
   fontSize: 60,
   color: '#651FFF',
 };
 
+// Custom styles for paper components with hover effects
 const paperStyle = {
   p: 2,
   textAlign: 'center',
@@ -26,17 +27,20 @@ const paperStyle = {
   },
 };
 
+// Keyframes for typing animation
 const typing = keyframes`
   from { width: 0; }
   50% { width: 100%; }
   to { width: 100%; }
 `;
 
+// Keyframes for blinking cursor animation
 const blinkingCursor = keyframes`
   from, to { border-color: transparent; }
   50% { border-color: #651FFF; }
 `;
 
+// Styled Typography component with typing and blinking cursor animation
 const AnimatedTypography = styled(Typography)(({ theme }) => ({
   overflow: 'hidden',
   whiteSpace: 'nowrap',
@@ -46,19 +50,20 @@ const AnimatedTypography = styled(Typography)(({ theme }) => ({
   borderRight: '3px solid #651FFF',
   animation: `${typing} 8s steps(40, end) 1, ${blinkingCursor} 0.75s step-end infinite`,
   '@media (min-width:600px)': {
-    // Ensures that text is centered for larger screens
-    width: '100%',
+    width: '100%', // Ensures that text is centered for larger screens
   },
 }));
 
+// Styled Typography component for description text
 const DescriptionText = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(2),
   color: 'white',
   textAlign: 'center',
 }));
 
+// Main component for the process section
 const Process = () => {
-  const [resetAnimation, setResetAnimation] = useState(false);
+  const [resetAnimation, setResetAnimation] = useState(false); // State to toggle animation
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -88,7 +93,6 @@ const Process = () => {
         </b>
       </DescriptionText>
       <Grid container spacing={4} justifyContent="center" sx={{ mt: 6 }}>
-        {' '}
         <Grid item xs={12} sm={6} md={4}>
           <Paper elevation={3} sx={paperStyle}>
             <Box sx={{ color: '#651FFF' }}>

@@ -2,11 +2,13 @@ import React from 'react';
 import { styled, keyframes } from '@mui/system';
 import FeatureCard from './FeatureCard';
 
+// Keyframes for the glow animation
 const glow = keyframes`
   from { text-shadow: 0 0 10px #fff, 0 0 20px #651FFF, 0 0 30px #651FFF, 0 0 40px #651FFF, 0 0 50px #651FFF, 0 0 60px #651FFF, 0 0 70px #651FFF; }
   to { text-shadow: 0 0 20px #fff, 0 0 30px #651FFF, 0 0 40px #651FFF, 0 0 50px #651FFF, 0 0 60px #651FFF, 0 0 70px #651FFF, 0 0 80px #651FFF; }
 `;
 
+// Styled component for the product showcase section
 const ProductShowcaseSection = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -20,17 +22,20 @@ const ProductShowcaseSection = styled('div')({
   },
 });
 
+// Styled component for the product heading container
 const ProductHeadingContainer = styled('div')({
   marginBottom: '20px',
   textAlign: 'center',
 });
 
+// Styled component for the product heading with glow animation
 const ProductHeading = styled('h1')({
   fontSize: '2.5rem',
   color: '#fff',
   animation: `${glow} 2.5s ease-in-out infinite alternate`,
 });
 
+// Styled component for the product cards container
 const ProductCardsContainer = styled('div')({
   display: 'flex',
   justifyContent: 'space-around',
@@ -43,6 +48,7 @@ const ProductCardsContainer = styled('div')({
   },
 });
 
+// This component represents the feature information section with product cards
 const FeatureInfo = () => {
   return (
     <ProductShowcaseSection>

@@ -5,16 +5,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 
+// Creating a context for the alert system
 const AlertContext = createContext();
 
+// This is a styled SnackbarContent component to customize its appearance
 const StyledSnackbarContent = styled(SnackbarContent)(
   ({ theme, bgcolor2 }) => ({
     backgroundColor: bgcolor2 || theme.palette.primary.main,
   })
 );
 
+// Custom hook to use the alert context
 export const useAlert = () => useContext(AlertContext);
 
+// This is the provider component that wraps around parts of the app that need alerts
 export const AlertProvider = ({ children }) => {
   const [alertState, setAlertState] = useState({
     open: false,
@@ -22,6 +26,7 @@ export const AlertProvider = ({ children }) => {
     bgColor2: 'default',
   });
 
+  // Function to show an alert with a message and optional background color
   const showAlert = (message, bgColor2 = 'default') => {
     setAlertState({
       open: true,
@@ -30,6 +35,7 @@ export const AlertProvider = ({ children }) => {
     });
   };
 
+  // Function to handle closing the alert
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -43,6 +49,7 @@ export const AlertProvider = ({ children }) => {
   return (
     <AlertContext.Provider value={{ showAlert }}>
       {children}
+      {/* Snackbar component to display the alert */}
       <Snackbar
         open={alertState.open}
         autoHideDuration={3000}

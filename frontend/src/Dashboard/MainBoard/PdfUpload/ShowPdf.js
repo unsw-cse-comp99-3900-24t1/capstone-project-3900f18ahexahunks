@@ -1,6 +1,3 @@
-// !!! IF SOME PART IS MISSING IN THE PDF INVOICE THAT IS REQUIRED FOR UBL THEN TELL THE USER THAT THIS PART MUST BE INCLUDED IN THE INVOICE IMPORTANT
-// !!! INSTEAD OF SIMPLY FILLING IT WITH WRONG INFO
-
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -18,6 +15,7 @@ import { deleteOnePdfInfo } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
 
+// This is the styling for the box that contains each PDF preview
 const PdfBox = styled('div')(({ theme }) => ({
   position: 'relative',
   width: '200px',
@@ -41,6 +39,7 @@ const PdfBox = styled('div')(({ theme }) => ({
   },
 }));
 
+// This is the styling for the delete button
 const DeleteButton = styled(IconButton)({
   position: 'absolute',
   top: '8px',
@@ -52,6 +51,7 @@ const DeleteButton = styled(IconButton)({
   },
 });
 
+// This is the styling for the share button
 const ShareButton = styled(IconButton)({
   position: 'absolute',
   top: '8px',
@@ -63,25 +63,30 @@ const ShareButton = styled(IconButton)({
   },
 });
 
+// This is the styling for the date and time label
 const DateTimeLabel = styled('p')({
   margin: '8px 0 0 0',
   fontSize: '12px',
   color: '#666',
 });
 
+// Main component for showing PDF files
 const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
+  // Here, we are defining the state for dialog visibility and selected PDF
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
 
+  // Function to show alerts
   const { showAlert } = useAlert();
 
+  // Function to delete PDF data by ID
   const deletePdfDataById = usePdfStore((state) => state.deletePdfDataById);
   const getUser = useUserStore((state) => state.getUser);
   const getPdfData = usePdfStore((state) => state.getPdfData);
   const FilesPDF = getPdfData();
 
-  // Filter xmlFiles based on search term and filter date
+  // Filter PDF files based on search term and filter date
   const pdfs = FilesPDF.filter((file) => {
     const matchesSearchTerm = file.name
       .toLowerCase()
@@ -93,33 +98,43 @@ const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
     return matchesSearchTerm && matchesFilterDate;
   });
 
+  // Handle opening the validation report for a PDF
   const handleOpenValidationReport = (pdf) => {
     nav(`/handle-files/convertion-reports/ubl/${pdf._id}`);
   };
 
+  // Handle sharing a PDF
   const handleShareClick = (pdf) => {
     nav(`/handle-files/convertion-reports/share/${pdf._id}`);
   };
 
   console.log(pdfs, 'EWR(ew9ryE98wryewyruewiruewuYRIG');
 
+  // Handle delete button click
   const handleDeleteClick = (pdf) => {
     setSelectedPdf(pdf);
     setOpenDialog(true);
   };
 
+  // Handle confirming the deletion of a PDF
   const handleConfirmDelete = async () => {
     const user = getUser();
     try {
-      await deleteOnePdfInfo({
+      setOpenDialog(false);
+      const res = await deleteOnePdfInfo({
         userId: user._id,
         dataId: selectedPdf._id,
       });
 
-      deletePdfDataById(selectedPdf._id);
-
-      showAlert('Deleted record successfully', 'green');
-      setOpenDialog(false);
+      if (res.error) {
+        showAlert(
+          res.data.error ? res.data.error : 'Error: Cannot delete',
+          'tomato'
+        );
+      } else {
+        deletePdfDataById(selectedPdf._id);
+        showAlert('Deleted record successfully', 'green');
+      }
     } catch (error) {
       showAlert(
         'Failed to delete the validation data. Please try again.',
@@ -128,10 +143,12 @@ const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
     }
   };
 
+  // Handle closing the delete confirmation dialog
   const handleClose = () => {
     setOpenDialog(false);
   };
 
+  // Here, we return the JSX for rendering the PDF preview boxes and dialogs
   return (
     <>
       {pdfs.map((pdf) => (

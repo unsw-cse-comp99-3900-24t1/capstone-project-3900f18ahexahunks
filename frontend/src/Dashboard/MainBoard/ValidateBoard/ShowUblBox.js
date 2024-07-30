@@ -15,6 +15,7 @@ import useUserStore from '../../../zustand/useUserStore';
 import { deleteOneValidationUblInfo } from '../../../services/api';
 import { useAlert } from '../../../components/AlertError';
 
+// This is the styling for the box that contains each UBL file preview
 const PdfBox = styled('div')(({ theme }) => ({
   position: 'relative',
   width: '200px',
@@ -38,6 +39,7 @@ const PdfBox = styled('div')(({ theme }) => ({
   },
 }));
 
+// This is the styling for the delete button
 const DeleteButton = styled(IconButton)({
   position: 'absolute',
   top: '8px',
@@ -49,6 +51,7 @@ const DeleteButton = styled(IconButton)({
   },
 });
 
+// This is the styling for the share button
 const ShareButton = styled(IconButton)({
   position: 'absolute',
   top: '8px',
@@ -60,20 +63,25 @@ const ShareButton = styled(IconButton)({
   },
 });
 
+// This is the styling for the date and time label
 const DateTimeLabel = styled('p')({
   margin: '8px 0 0 0',
   fontSize: '12px',
   color: '#666',
 });
 
+// Main component for showing UBL files
 const ShowUblBox = ({ isLoading, searchTerm, filterDate }) => {
+  // Here, we are defining the state for dialog visibility and selected UBL file
   const nav = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedXml, setSelectedXml] = useState(null);
 
+  // Function to get validator data from the store
   const getValidatorData = useValidatorStore((state) => state.getValidatorData);
   const FilesXML = getValidatorData();
-  // Filter xmlFiles based on search term and filter date
+
+  // Filter XML files based on search term and filter date
   const xmlFiles = FilesXML.filter((file) => {
     const matchesSearchTerm = file.name
       .toLowerCase()
@@ -85,38 +93,52 @@ const ShowUblBox = ({ isLoading, searchTerm, filterDate }) => {
     return matchesSearchTerm && matchesFilterDate;
   });
 
+  // Function to show alerts
   const { showAlert } = useAlert();
 
+  // Function to delete validator data by ID
   const deleteValidatorDataById = useValidatorStore(
     (state) => state.deleteValidatorDataById
   );
+
+  // Function to get user information from the store
   const getUser = useUserStore((state) => state.getUser);
 
+  // Handle opening the validation report for a UBL file
   const handleOpenValidationReport = (xml) => {
     nav(`/handle-files/validation-reports/ubl/${xml._id}`);
   };
 
+  // Handle delete button click
   const handleDeleteClick = (xml) => {
     setSelectedXml(xml);
     setOpenDialog(true);
   };
 
+  // Handle confirming the deletion of a UBL file
   const handleConfirmDelete = async () => {
     const user = getUser();
     try {
-      await deleteOneValidationUblInfo({
+      setOpenDialog(false);
+      const res = await deleteOneValidationUblInfo({
         userId: user._id,
         dataId: selectedXml._id,
       });
 
-      deleteValidatorDataById(selectedXml._id);
-      console.log(
-        'CAMEH EIUHEQOIYRGQWIYEGUQTORIW',
-        selectedXml._id,
-        selectedXml
-      );
-      showAlert('Deleted record successfully', 'green');
-      setOpenDialog(false);
+      if (res.error) {
+        showAlert(
+          res.data.error ? res.data.error : 'Error: Cannot delete',
+          'tomato'
+        );
+      } else {
+        deleteValidatorDataById(selectedXml._id);
+        console.log(
+          'CAMEH EIUHEQOIYRGQWIYEGUQTORIW',
+          selectedXml._id,
+          selectedXml
+        );
+        showAlert('Deleted record successfully', 'green');
+      }
     } catch (error) {
       showAlert(
         'Failed to delete the validation data. Please try again.',
@@ -125,14 +147,17 @@ const ShowUblBox = ({ isLoading, searchTerm, filterDate }) => {
     }
   };
 
+  // Handle closing the delete confirmation dialog
   const handleClose = () => {
     setOpenDialog(false);
   };
 
+  // Handle sharing a UBL file
   const handleShareClick = (xml) => {
     nav(`/handle-files/validation-reports/share/${xml._id}`);
   };
 
+  // Here, we return the JSX for rendering the UBL file preview boxes and dialogs
   return (
     <>
       {xmlFiles.map((xml) => (
