@@ -6,22 +6,24 @@ import { Typography } from '@mui/material';
 import EmailHistoryCard from './EmailHistoryCard';
 import { useAlert } from '../../components/AlertError';
 
+// This is the main component for displaying email history
 const EmailHistory = () => {
-  const { id } = useParams();
-  const { getUser } = useUserStore();
-  const user = getUser();
-  const [emails, setEmails] = useState([]);
-  const { showAlert } = useAlert();
+  const { id } = useParams(); // Retrieve the id from URL parameters
+  const { getUser } = useUserStore(); // Hook to get the current user from the store
+  const user = getUser(); // Get the current user object
+  const [emails, setEmails] = useState([]); // State to store the list of emails
+  const { showAlert } = useAlert(); // Hook to show alerts
 
+  // useEffect hook to fetch email history when the component mounts or id changes
   useEffect(() => {
     async function getData() {
+      // Make an API call to get email history by userId and shareObjId
       const res = await getHistoryEmailById({
         userId: user._id,
         shareObjId: id,
       });
 
-      console.log(res);
-
+      // Show an alert if there's an error, otherwise set the emails state
       if (res.error) {
         showAlert(
           res.data.error ? res.data.error : 'Failed to fetch history email',
@@ -55,6 +57,7 @@ const EmailHistory = () => {
         }}
       >
         <h2>Email History</h2>
+        {/* Conditionally render EmailHistoryCard components if emails exist */}
         {emails.length > 0 ? (
           emails.map((email) => (
             <EmailHistoryCard key={email._id} email={email} />
