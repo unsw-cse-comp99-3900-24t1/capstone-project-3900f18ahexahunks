@@ -127,7 +127,8 @@ app.post('/upload/pdf', uploadPdf.single('file'), (req, res) => {
     length: req.file.size,
     timestamp: new Date(),
     filename: req.file.filename,
-    url: req.file.metadata.url
+    url: req.file.metadata.url,
+    userId: userId
   };
 
   console.log('Uploaded PDF file:', req.file);
@@ -151,7 +152,8 @@ app.post('/upload/xml', uploadXml.single('file'), (req, res) => {
     length: req.file.size,
     timestamp: new Date(),
     filename: req.file.filename,
-    url: req.file.metadata.url
+    url: req.file.metadata.url,
+    userId: userId
   };
 
   console.log('Uploaded XML file:', req.file);
@@ -179,11 +181,11 @@ app.use(bodyParser.json());
 
 const upload = multer();
 // Endpoint to convert PDF to UBL XML
-app.post('/convert-pdf-to-ubl', upload.single('file'), async (req, res) => {
+app.post('/convert-pdf-to-ubl', uploadP.single('file'), async (req, res) => {
     try {
-        console.log(req.file);
         const fileBuffer = req.file.buffer; // Get the file buffer
-        console.log(fileBuffer);
+
+
         const jsonResult = await convertPdfToJson(fileBuffer);
         const ublXml = convertJsonToUbl(jsonResult);
         
