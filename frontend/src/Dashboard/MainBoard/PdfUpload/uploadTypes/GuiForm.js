@@ -9,6 +9,7 @@ import InvoiceLineItem from './InvoiceLineItem';
 import CustomerInformation from './CustomerInformation';
 import VendorInformation from './VendorInformation';
 import InvoiceFormInputs from './InvoiceFormInputs';
+import { Tooltip } from '@mui/material';
 
 // Styling for the form container
 const FormContainer = styled('div')({
@@ -80,7 +81,7 @@ const FlexContainer = styled('div')({
 });
 
 // Main component for the GUI form
-const GuiForm = ({ setPdfs }) => {
+const GuiForm = ({ setPdfs, handleClose, setIsLoading }) => {
   // State to manage invoice data
   const [invoice, setInvoice] = useState({
     invoice_number: '',
@@ -231,6 +232,8 @@ const GuiForm = ({ setPdfs }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsLoading(true);
+      handleClose();
       const userId = user._id;
       const response = await guiFormToUblConvert({
         invoice: invoice,
@@ -265,7 +268,10 @@ const GuiForm = ({ setPdfs }) => {
         setPdfs((prevPdfs) => [...prevPdfs, data]);
         addPdfData(data);
       }
+      setIsLoading(false);
       console.log(response);
+    } else {
+      showAlert('Error: All required fields must be filled', 'tomato');
     }
   };
 
@@ -386,15 +392,24 @@ const GuiForm = ({ setPdfs }) => {
           saveGln={saveGln}
           setSaveGln={setSaveGln}
         />
-
-        <SubmitButton
-          disabled={
+        <Tooltip
+          title={
             name === '' || vendorGln.length !== 13 || customerGln.length !== 13
+              ? 'File Name and GLN are also compulsory'
+              : ''
           }
-          type="submit"
         >
-          Submit
-        </SubmitButton>
+          <SubmitButton
+            disabled={
+              name === '' ||
+              vendorGln.length !== 13 ||
+              customerGln.length !== 13
+            }
+            type="submit"
+          >
+            Submit
+          </SubmitButton>
+        </Tooltip>
       </form>
     </FormContainer>
   );

@@ -196,7 +196,11 @@ const PdfUploadBoard = () => {
           searchTerm={searchTerm}
           filterDate={filterDate}
         />
-        <UploadBox handleUpload={handleUpload} setPdfs={setPdfs} />
+        <UploadBox
+          setIsLoading={setIsLoading}
+          handleUpload={handleUpload}
+          setPdfs={setPdfs}
+        />
       </BoardWrapper>
     </BoardContainer>
   );

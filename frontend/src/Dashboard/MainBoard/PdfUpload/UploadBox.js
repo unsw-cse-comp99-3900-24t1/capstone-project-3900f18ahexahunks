@@ -76,7 +76,7 @@ const FileInput = styled('input')({
 });
 
 // Main component for uploading PDF or filling the form
-const UploadBox = ({ handleUpload, setPdfs }) => {
+const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
   // Here, we are defining the state for modal visibility, file, name, and GLNs
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
@@ -249,7 +249,11 @@ const UploadBox = ({ handleUpload, setPdfs }) => {
             )}
             {activeTab === 1 && (
               <div>
-                <GuiForm setPdfs={setPdfs} />
+                <GuiForm
+                  setIsLoading={setIsLoading}
+                  handleClose={handleClose}
+                  setPdfs={setPdfs}
+                />
               </div>
             )}
           </div>
