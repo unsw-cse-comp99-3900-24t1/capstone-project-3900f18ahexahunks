@@ -1,3 +1,4 @@
+import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,18 +9,20 @@ import CustomInputBox from '../../components/CustomInputBox';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import useUserStore from '../../zustand/useUserStore';
 
+// Component to display a delete confirmation modal
 const DeleteModal = ({
-  open,
-  handleClose,
-  setPassword,
-  password,
-  handleConfirmDelete,
-  username,
-  setUsername,
+  open, // Indicates if the modal is open
+  handleClose, // Function to handle closing the modal
+  setPassword, // Function to set the password state
+  password, // Password value from state
+  handleConfirmDelete, // Function to handle the delete confirmation
+  username, // Username value from state
+  setUsername, // Function to set the username state
 }) => {
   const { getUser } = useUserStore();
-  const user = getUser();
+  const user = getUser(); // Gets the current user data from the store
 
+  // Here, we return the JSX for rendering the delete confirmation modal
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Confirm Delete</DialogTitle>
@@ -84,4 +87,5 @@ const DeleteModal = ({
     </Dialog>
   );
 };
+
 export default DeleteModal;

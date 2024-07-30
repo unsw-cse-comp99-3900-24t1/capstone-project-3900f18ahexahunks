@@ -32,6 +32,7 @@ const popIn = keyframes`
   }
 `;
 
+// This is the styling for the main settings container
 const SettingsContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -47,6 +48,7 @@ const SettingsContainer = styled('div')({
   animation: `${fadeIn} 0.5s ease-out`,
 });
 
+// This is the styling for the profile picture
 const ProfilePicture = styled('img')({
   width: '140px',
   height: '140px',
@@ -58,12 +60,14 @@ const ProfilePicture = styled('img')({
   animation: `${popIn} 0.5s ease-out`,
 });
 
+// This is the styling for the user info container
 const UserInfo = styled('div')({
   textAlign: 'center',
   marginBottom: '20px',
   color: '#fff',
 });
 
+// This is the styling for individual user fields
 const UserField = styled('div')({
   marginBottom: '12px',
   fontSize: '18px',
@@ -73,12 +77,14 @@ const UserField = styled('div')({
   animation: `${fadeIn} 0.5s ease-out`,
 });
 
+// This is the styling for the button container
 const ButtonContainer = styled('div')({
   display: 'flex',
   gap: '10px',
   marginTop: '20px',
 });
 
+// This is the styling for the delete button
 const DeleteButton = styled(Button)({
   backgroundColor: '#e74c3c',
   color: '#fff',
@@ -90,6 +96,7 @@ const DeleteButton = styled(Button)({
   animation: `${fadeIn} 0.5s ease-out`,
 });
 
+// This is the styling for the edit button
 const EditButton = styled(Button)({
   backgroundColor: '#3498db',
   color: '#fff',
@@ -101,6 +108,7 @@ const EditButton = styled(Button)({
   animation: `${fadeIn} 0.5s ease-out`,
 });
 
+// Main component for displaying the user settings board
 const SettingsBoard = () => {
   const { getUser } = useUserStore();
   const user = getUser();
@@ -110,14 +118,17 @@ const SettingsBoard = () => {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
+  // Handles the click event for the delete button
   const handleDeleteClick = () => {
     setOpen(true);
   };
 
+  // Handles the click event for the edit button
   const handleEditClick = () => {
     navigate(`/profile/${user._id}`);
   };
-  //
+
+  // Handles the close event for the delete modal
   const handleClose = () => {
     setOpen(false);
   };
@@ -128,6 +139,7 @@ const SettingsBoard = () => {
   const clearPdfData = usePdfStore((state) => state.clearPdfData);
   const clearUser = useUserStore((state) => state.clearUser);
 
+  // Handles the confirmation of account deletion
   const handleConfirmDelete = async () => {
     console.log('User deleted');
     setOpen(false);
@@ -144,15 +156,14 @@ const SettingsBoard = () => {
       googleLogout();
       localStorage.clear();
       Cookies.remove('token', { path: '/' });
-      localStorage.clear();
       clearValidatorData();
       clearPdfData();
       clearUser();
       navigate('/');
     }
-    // Add the logic to delete the user here
   };
 
+  // Here, we return the JSX for rendering the settings board
   return (
     <SettingsContainer>
       <ProfilePicture src={user.googlePicture} alt="Profile" />
