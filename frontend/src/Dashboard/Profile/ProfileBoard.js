@@ -25,6 +25,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import CloseIcon from '@mui/icons-material/Close';
 import useUserStore from '../../zustand/useUserStore';
 
+// This is the styling for the main container of the profile board
 const StyledContainer = styled(Container)({
   marginTop: '32px',
   padding: '16px',
@@ -33,6 +34,7 @@ const StyledContainer = styled(Container)({
   boxShadow: '0 3px 6px rgba(0,0,0,0.1)',
 });
 
+// This is the styling for the profile card
 const ProfileCard = styled(Paper)({
   padding: '32px',
   textAlign: 'center',
@@ -41,6 +43,7 @@ const ProfileCard = styled(Paper)({
   backgroundColor: '#ffffff',
 });
 
+// This is the styling for the profile avatar
 const ProfileAvatar = styled(Avatar)({
   width: 120,
   height: 120,
@@ -50,6 +53,7 @@ const ProfileAvatar = styled(Avatar)({
   boxShadow: '0 3px 6px rgba(0,0,0,0.1)',
 });
 
+// This is the styling for the history card
 const HistoryCard = styled(Paper)({
   padding: '32px',
   borderRadius: '16px',
@@ -57,11 +61,13 @@ const HistoryCard = styled(Paper)({
   backgroundColor: '#ffffff',
 });
 
+// This is the styling for the list of email history items
 const StyledList = styled(List)({
   maxHeight: 400,
   overflowY: 'auto',
 });
 
+// This is the styling for the icon button used to close the profile board
 const LargeIconButton = styled(IconButton)({
   position: 'absolute',
   top: '20px',
@@ -73,6 +79,7 @@ const LargeIconButton = styled(IconButton)({
   },
 });
 
+// Main component for displaying the user profile board
 const ProfileBoard = () => {
   const { getUser, updateGoogleImage, updateUsername } = useUserStore();
   const user = getUser();
@@ -84,14 +91,17 @@ const ProfileBoard = () => {
   const { showAlert } = useAlert();
   const navigate = useNavigate();
 
+  // Set the profile image when the component mounts
   useEffect(() => {
     setProfileImage(user.googlePicture);
   }, [user.googlePicture]);
 
+  // Handle changes to the username input field
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
 
+  // Fetch the email history when the component mounts
   useEffect(() => {
     async function fetchData() {
       const res = await getHistoryEmail();
@@ -107,6 +117,7 @@ const ProfileBoard = () => {
     fetchData();
   }, [showAlert]);
 
+  // Handle changes to the profile picture
   const handleProfilePicChange = async (event) => {
     const userId = user._id;
     const file = event.target.files[0];
@@ -133,22 +144,25 @@ const ProfileBoard = () => {
     }
   };
 
+  // Handle deletion of an email history item
   const handleDeleteHistory = (index) => {
     const newHistory = [...history];
     newHistory.splice(index, 1);
     setHistory(newHistory);
   };
 
+  // Handle opening of an email report
   const handleOpenReport = (e, item) => {
     e.stopPropagation();
   };
 
+  // Toggle the edit mode for the username
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
   };
 
+  // Handle updating the username
   const handleUpdate = async () => {
-    console.log(username);
     setIsEditing(false);
     const res = await changeUsername({
       newUsername: username,
@@ -163,10 +177,12 @@ const ProfileBoard = () => {
     }
   };
 
+  // Handle closing the profile board
   const handleClose = () => {
     navigate('/dashboard/main');
   };
 
+  // Here, we return the JSX for rendering the profile board
   return (
     <StyledContainer maxWidth="md">
       <LargeIconButton onClick={handleClose}>
