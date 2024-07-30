@@ -9,6 +9,7 @@ import { Tooltip, Checkbox, FormControlLabel, Tabs, Tab } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import GuiForm from './uploadTypes/GuiForm';
 
+// This is the styling for the upload container
 const UploadContainer = styled('div')({
   width: '200px',
   height: '200px',
@@ -28,6 +29,7 @@ const UploadContainer = styled('div')({
   },
 });
 
+// This is the styling for the upload label
 const UploadLabel = styled('label')({
   fontSize: '3em',
   color: '#007BFF',
@@ -37,12 +39,12 @@ const UploadLabel = styled('label')({
   },
 });
 
+// This is the style for the modal box
 const modalStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  // width: 500,
   height: '80vh',
   bgcolor: '#f9f9f9',
   borderRadius: '10px',
@@ -50,6 +52,7 @@ const modalStyle = {
   p: 4,
 };
 
+// This is the header for the modal
 const ModalHeader = styled('h2')({
   margin: 0,
   marginBottom: '16px',
@@ -58,6 +61,7 @@ const ModalHeader = styled('h2')({
   color: '#333',
 });
 
+// This is the styling for the file input field
 const FileInput = styled('input')({
   display: 'block',
   marginBottom: '16px',
@@ -71,7 +75,9 @@ const FileInput = styled('input')({
   },
 });
 
+// Main component for uploading PDF or filling the form
 const UploadBox = ({ handleUpload, setPdfs }) => {
+  // Here, we are defining the state for modal visibility, file, name, and GLNs
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
@@ -82,13 +88,18 @@ const UploadBox = ({ handleUpload, setPdfs }) => {
   const [saveGln, setSaveGln] = useState(false);
   const [activeTab, setActiveTab] = useState(0); // 0 for Upload, 1 for Fill Form
 
+  // Function to open the modal
   const handleOpen = () => setOpen(true);
+
+  // Function to close the modal
   const handleClose = () => setOpen(false);
 
+  // Function to handle file input change
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
+  // Function to handle form submission
   const handleSubmit = () => {
     if (file) {
       handleUpload(file, vendorGln, customerGln, saveGln, name);
@@ -101,10 +112,12 @@ const UploadBox = ({ handleUpload, setPdfs }) => {
     setName('');
   };
 
+  // Function to handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
+  // Here, we return the JSX for rendering the upload box and modal
   return (
     <>
       <UploadContainer onClick={handleOpen}>

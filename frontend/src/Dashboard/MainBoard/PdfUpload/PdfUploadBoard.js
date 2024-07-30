@@ -8,6 +8,7 @@ import { useAlert } from '../../../components/AlertError';
 import usePdfStore from '../../../zustand/usePdfStore';
 import CustomInputBox from '../../../components/CustomInputBox';
 
+// This is the main container for the board with styled properties
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
@@ -21,6 +22,7 @@ const BoardContainer = styled('div')(({ theme }) => ({
   width: '80%',
 }));
 
+// This is the wrapper for arranging the board content in a grid layout
 const BoardWrapper = styled('div')({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
@@ -33,15 +35,18 @@ const BoardWrapper = styled('div')({
 
 // Main component for keeping the record of PDFs and converting them to UBL
 const PdfUploadBoard = () => {
+  // State to keep track of the PDFs
   // eslint-disable-next-line no-unused-vars
   const [pdfs, setPdfs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState('');
 
+  // Here, we are getting the user information from the store
   const { getUser } = useUserStore();
   const { showAlert } = useAlert();
 
+  // Function to add PDF data to the store
   const addPdfData = usePdfStore((state) => state.addPdfData);
   const setLatestData = usePdfStore((state) => state.setLatestData);
 
@@ -49,11 +54,11 @@ const PdfUploadBoard = () => {
   useEffect(() => {
     const fetchInitialPdfs = async () => {
       try {
-        // gets user data
+        // Gets user data
         const user = getUser();
         const userId = user._id;
 
-        // sends request to get the latest PDF data
+        // Sends request to get the latest PDF data
         const result = await getAllPdfInfo({ userId });
         if (result.error) {
           showAlert(
@@ -63,7 +68,7 @@ const PdfUploadBoard = () => {
             'tomato'
           );
         } else {
-          // sets the latest data to zustand and state
+          // Sets the latest data to zustand and state
           setPdfs(result);
           setLatestData(result);
         }
@@ -77,6 +82,7 @@ const PdfUploadBoard = () => {
       }
     };
 
+    // Fetches the initial PDFs when the component is mounted
     fetchInitialPdfs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,7 +92,7 @@ const PdfUploadBoard = () => {
     // Start loading so that user knows something is working in the backend
     setIsLoading(true);
     try {
-      // get user data
+      // Get user data
       const user = getUser();
       const userId = user._id;
 
@@ -113,6 +119,7 @@ const PdfUploadBoard = () => {
           );
           console.log(result.data, 'THIS IS THERERRRRREREERRR');
         } else {
+          // Show success alert
           showAlert('PDF successfully converted to UBL', 'green');
 
           // On success save the new PDF data to zustand and the state
@@ -146,9 +153,9 @@ const PdfUploadBoard = () => {
     }
   };
 
+  // Here, we return the JSX for rendering the PDF upload board
   return (
     <BoardContainer>
-      {' '}
       <div
         style={{
           width: '100%',
