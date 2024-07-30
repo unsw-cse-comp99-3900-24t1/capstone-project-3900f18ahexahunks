@@ -67,7 +67,7 @@ const Navbar = () => {
     const token = Cookies.get('token');
     const userData = localStorage.getItem('user');
     if (token && userData) {
-      setUser(JSON.parse(userData).user);
+      setUser(JSON.parse(userData)?.user);
     }
   }, []);
 

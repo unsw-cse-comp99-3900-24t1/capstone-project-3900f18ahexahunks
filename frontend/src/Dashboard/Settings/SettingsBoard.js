@@ -151,7 +151,12 @@ const SettingsBoard = () => {
     });
 
     if (res.error) {
-      showAlert(res.data.error, 'tomato');
+      showAlert(
+        res.data.error
+          ? res.data.error
+          : 'Error deleting the account, try again later',
+        'tomato'
+      );
     } else {
       googleLogout();
       localStorage.clear();
@@ -166,16 +171,16 @@ const SettingsBoard = () => {
   // Here, we return the JSX for rendering the settings board
   return (
     <SettingsContainer>
-      <ProfilePicture src={user.googlePicture} alt="Profile" />
+      <ProfilePicture src={user?.googlePicture} alt="Profile" />
       <UserInfo>
         <UserField>
-          <strong>Username:</strong> {user.username}
+          <strong>Username:</strong> {user?.username}
         </UserField>
         <UserField>
-          <strong>Email:</strong> {user.email}
+          <strong>Email:</strong> {user?.email}
         </UserField>
         <UserField>
-          <strong>GLN:</strong> {user.gln ? user.gln : 'Not set'}
+          <strong>GLN:</strong> {user?.gln ? user?.gln : 'Not set'}
         </UserField>
       </UserInfo>
       <ButtonContainer>

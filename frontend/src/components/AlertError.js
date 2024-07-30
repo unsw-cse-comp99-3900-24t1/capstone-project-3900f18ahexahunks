@@ -3,15 +3,38 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled, keyframes } from '@mui/system';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import HelpIcon from '@mui/icons-material/Help';
 
 // Creating a context for the alert system
 const AlertContext = createContext();
 
+// Keyframes for the drop-down animation
+const dropDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
 // This is a styled SnackbarContent component to customize its appearance
 const StyledSnackbarContent = styled(SnackbarContent)(
   ({ theme, bgcolor2 }) => ({
-    backgroundColor: bgcolor2 || theme.palette.primary.main,
+    backgroundColor:
+      bgcolor2 === 'tomato'
+        ? 'tomato'
+        : bgcolor2 === 'green'
+          ? 'green'
+          : null || 'black',
+    display: 'flex',
+    alignItems: 'center',
+    animation: `${dropDown} 0.5s ease-out`,
   })
 );
 
@@ -46,6 +69,17 @@ export const AlertProvider = ({ children }) => {
     }));
   };
 
+  const getIcon = (bgColor2) => {
+    switch (bgColor2) {
+      case 'tomato':
+        return <ErrorIcon style={{ marginRight: 8, color: '#fff' }} />;
+      case 'green':
+        return <CheckCircleIcon style={{ marginRight: 8, color: '#fff' }} />;
+      default:
+        return <HelpIcon style={{ marginRight: 8, color: '#fff' }} />;
+    }
+  };
+
   return (
     <AlertContext.Provider value={{ showAlert }}>
       {children}
@@ -56,12 +90,20 @@ export const AlertProvider = ({ children }) => {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
       >
         <StyledSnackbarContent
           bgcolor2={alertState.bgColor2}
-          message={<span id="client-snackbar">{alertState.message}</span>}
+          message={
+            <span
+              id="client-snackbar"
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              {getIcon(alertState.bgColor2)}
+              {alertState.message}
+            </span>
+          }
           action={[
             <IconButton
               key="close"

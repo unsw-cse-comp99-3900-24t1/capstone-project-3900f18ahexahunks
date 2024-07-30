@@ -29,7 +29,7 @@ const useUserStore = create((set, get) => ({
   // Function to get the user data
   getUser: () => {
     const state = get();
-    return state.user.user;
+    return state?.user?.user ? state?.user?.user : null;
   },
 
   // Function to update the user's Google profile picture

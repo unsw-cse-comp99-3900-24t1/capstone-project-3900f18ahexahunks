@@ -84,7 +84,6 @@ const Dashboard = () => {
   // Get user info from the store
   const { getUser } = useUserStore();
   const user = getUser();
-  const username = user.username;
 
   const { process } = useParams();
 
@@ -145,8 +144,8 @@ const Dashboard = () => {
             </IconButton>
           )}
           <Username onClick={handleOpenProfile}>
-            <ProfileAvatar src={user.googlePicture} alt="Profile Picture" />
-            {username}
+            <ProfileAvatar src={user?.googlePicture} alt="Profile Picture" />
+            {user?.username}
           </Username>
         </HeaderContainer>
         <div>{content}</div>
