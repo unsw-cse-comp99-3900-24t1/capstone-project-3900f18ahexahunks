@@ -12,7 +12,6 @@ const JsonContainer = styled('div')({
   color: '#abb2bf',
   padding: '20px 30px',
   borderRadius: '10px',
-  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)',
   fontFamily: 'Fira Code, monospace',
   fontSize: '16px',
   lineHeight: '1.5',
@@ -23,7 +22,6 @@ const JsonContainer = styled('div')({
 
 // This button is for downloading the JSON content
 const DownloadButton = styled('button')({
-  position: 'sticky',
   top: '10px',
   left: '10px',
   backgroundColor: '#6200ea',
