@@ -26,6 +26,15 @@ const Heading = styled('div')({
   padding: '0 20px',
 });
 
+const Header = styled('h1')({
+  marginBottom: '-10px',
+  fontSize: '3.5rem',
+  fontWeight: '400',
+  '@media (max-width: 550px)': {
+    fontSize: '2.6rem',
+  },
+});
+
 // Main hero component
 const Hero = () => {
   const nav = useNavigate(); // Hook to navigate programmatically
@@ -38,21 +47,10 @@ const Hero = () => {
   return (
     <Container>
       <Heading>
-        <h1
-          style={{ marginBottom: '0', fontSize: '3.5rem', fontWeight: '400' }}
-        >
-          Helping SME's Move Towards the
-        </h1>
-        <h1
-          style={{
-            fontSize: '3.5rem',
-            fontWeight: '400',
-            marginTop: '5px',
-            marginBottom: '0',
-          }}
-        >
+        <Header>Helping SME's Move Towards the</Header>
+        <Header>
           Next Revolution <span style={{ color: '#651FFF' }}>#Industry4.0</span>
-        </h1>
+        </Header>
         <h4
           style={{
             marginTop: '14px',

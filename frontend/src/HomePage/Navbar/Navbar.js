@@ -4,12 +4,16 @@ import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import CustomPrimaryButton from '../../components/CustomPrimaryButton';
 import Cookies from 'js-cookie';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Styled container for the logo in the navbar
 const LogoContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
+  '@media (max-width: 800px)': {
+    marginLeft: '-20px',
+  },
 });
 
 // Styled container for the navbar with dynamic background based on scroll
@@ -23,6 +27,7 @@ const NavbarContainer = styled(AppBar)(({ isScrolled }) => ({
 // Styled container for the toolbar in the navbar
 const ToolbarContainer = styled(Toolbar)({
   justifyContent: 'space-between',
+  gap: '30px',
 });
 
 // Styled container for elements in the navbar
@@ -46,6 +51,8 @@ const Navbar = () => {
       setIsScrolled(false);
     }
   };
+
+  const isSmallScreen = useMediaQuery('(min-width: 800px)');
 
   // Add and remove scroll event listener
   useEffect(() => {
@@ -83,25 +90,35 @@ const Navbar = () => {
     <NavbarContainer position="sticky" isScrolled={isScrolled}>
       <Container>
         <ToolbarContainer>
-          <LogoContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="NavBarLogo"
-              style={{ height: '50px' }}
-            />
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Typography variant="h4" component="div" sx={{ margin: 0 }}>
-                HexaHunks
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                component="div"
-                sx={{ margin: 0 }}
-              >
-                Experience Hexa-Growth...
-              </Typography>
-            </Box>
-          </LogoContainer>
+          {isSmallScreen ? (
+            <LogoContainer>
+              <img
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="NavBarLogo"
+                style={{ height: '50px' }}
+              />
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Typography variant="h4" component="div" sx={{ margin: 0 }}>
+                  HexaHunks
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  component="div"
+                  sx={{ margin: 0 }}
+                >
+                  Experience Hexa-Growth...
+                </Typography>
+              </Box>
+            </LogoContainer>
+          ) : (
+            <LogoContainer>
+              <img
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="NavBarLogo"
+                style={{ height: '50px' }}
+              />{' '}
+            </LogoContainer>
+          )}
           <CustomBox>
             {user ? (
               <>
@@ -118,17 +135,26 @@ const Navbar = () => {
             ) : (
               <>
                 <CustomPrimaryButton
-                  label="Sign In"
+                  label="Login"
                   onClick={goToLogin}
                   bgcolour="#ffffff"
                   additionalStyle={{ width: 'fit-content' }}
                 />
-                <CustomPrimaryButton
-                  label="Create an account"
-                  onClick={goToRegister}
-                  bgcolour="#651FFF"
-                  additionalStyle={{ width: 'fit-content' }}
-                />
+                {isSmallScreen ? (
+                  <CustomPrimaryButton
+                    label="Create an account"
+                    onClick={goToRegister}
+                    bgcolour="#651FFF"
+                    additionalStyle={{ width: 'fit-content' }}
+                  />
+                ) : (
+                  <CustomPrimaryButton
+                    label="Create"
+                    onClick={goToRegister}
+                    bgcolour="#651FFF"
+                    additionalStyle={{ width: 'fit-content' }}
+                  />
+                )}
               </>
             )}
           </CustomBox>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Card from './Card';
-// import PurpleCard from './PurpleCard';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const rotateAnimation = {
   opacity: [1, 0.7, 1],
@@ -14,16 +14,18 @@ const rotateAnimation = {
 };
 
 const InfoCards = () => {
+  const isSmallScreen = useMediaQuery('(max-width: 1200px)');
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      style={{ padding: '0 5%' }}
+      style={{ padding: '0 5%', marginBottom: isSmallScreen ? '90px' : '' }}
     >
       <motion.h1
         style={{
-          fontSize: '4vw',
+          fontSize: isSmallScreen ? '40px' : '4vw',
           fontFamily: 'Adamina, serif',
           fontWeight: 'initial',
           marginTop: '5vw',

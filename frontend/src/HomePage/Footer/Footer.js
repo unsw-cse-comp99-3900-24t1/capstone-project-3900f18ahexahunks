@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Link, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Styled container for the footer with a gradient background
 const FooterContainer = styled(Box)(({ theme }) => ({
@@ -12,6 +13,9 @@ const FooterContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  '@media (max-width: 950px)': {
+    height: '100vh',
+  },
 }));
 
 // Styled section within the footer for organizing content
@@ -20,6 +24,10 @@ const FooterSection = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   width: '100%',
   maxWidth: '800px',
+
+  '@media (max-width: 450px)': {
+    marginBottom: '10px',
+  },
 }));
 
 // Styled link for the footer with hover effect
@@ -42,15 +50,21 @@ const SocialIcons = styled(Box)(({ theme }) => ({
 
 // This component represents the footer of the website
 const Footer = () => {
+  const isSmallScreen = useMediaQuery('(max-width: 950px)');
+
   return (
     <FooterContainer component="footer">
       <FooterSection>
         <Typography variant="h4" gutterBottom>
           HexaHunks
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>
-          Your partner in Hexa-Growth.
-        </Typography>
+        {isSmallScreen ? (
+          <></>
+        ) : (
+          <Typography variant="subtitle1" gutterBottom>
+            Your partner in Hexa-Growth.
+          </Typography>
+        )}
       </FooterSection>
       <FooterSection>
         <Typography variant="h6" gutterBottom>
