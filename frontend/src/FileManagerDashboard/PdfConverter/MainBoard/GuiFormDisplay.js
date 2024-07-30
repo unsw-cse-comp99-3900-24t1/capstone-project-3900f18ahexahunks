@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/system';
 
+// Styled container for the main invoice display
 const InvoiceContainer = styled('div')({
   backgroundColor: '#fff',
   padding: '20px',
@@ -13,12 +14,14 @@ const InvoiceContainer = styled('div')({
   overflow: 'auto',
 });
 
+// Styled title for the invoice
 const InvoiceTitle = styled('h1')({
   color: '#651FFF',
   textAlign: 'center',
   marginBottom: '20px',
 });
 
+// Styled title for each section within the invoice
 const SectionTitle = styled('h2')({
   color: '#651FFF',
   borderBottom: '2px solid #651FFF',
@@ -26,20 +29,24 @@ const SectionTitle = styled('h2')({
   marginBottom: '10px',
 });
 
+// Styled group for info labels and values
 const InfoGroup = styled('div')({
   marginBottom: '15px',
 });
 
+// Styled label for information fields
 const Label = styled('div')({
   color: '#000',
   fontWeight: 'bold',
 });
 
+// Styled value for information fields
 const Value = styled('div')({
   color: '#333',
   marginBottom: '10px',
 });
 
+// Styled container for flex layout
 const FlexContainer = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
@@ -47,15 +54,18 @@ const FlexContainer = styled('div')({
   gap: '20px',
 });
 
+// Styled container for each line item
 const LineItemContainer = styled('div')({
   marginBottom: '10px',
 });
 
+// Styled title for each line item
 const LineItemTitle = styled('h3')({
   color: '#651FFF',
   marginBottom: '10px',
 });
 
+// Component to display invoice information in a structured format
 const GuiFormDisplay = ({ invoice }) => {
   return (
     <InvoiceContainer>

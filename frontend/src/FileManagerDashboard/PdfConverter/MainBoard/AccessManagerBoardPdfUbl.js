@@ -17,7 +17,8 @@ import { useAlert } from '../../../components/AlertError';
 import { useParams } from 'react-router-dom';
 import { giveAccessPdfUbl } from '../../../services/api';
 import usePdfStore from '../../../zustand/usePdfStore';
-//
+
+// This is a styled container for the main Access Manager component
 const AccessManagerContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -31,6 +32,7 @@ const AccessManagerContainer = styled(Box)(({ theme }) => ({
   maxWidth: '600px',
 }));
 
+// This is a styled container for the form elements
 const FormContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -38,29 +40,33 @@ const FormContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
+// Main component for managing access to PDF UBLs
 const AccessManagerBoardPdfUbl = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Retrieve the ID from URL parameters
 
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [open, setOpen] = useState(false);
-  const { showAlert } = useAlert();
+  const [email, setEmail] = useState(''); // State for storing email input
+  const [name, setName] = useState(''); // State for storing name input
+  const [open, setOpen] = useState(false); // State for managing the dialog visibility
+  const { showAlert } = useAlert(); // Hook for showing alerts
 
-  const getPdfDataById = usePdfStore((state) => state.getPdfDataById);
+  const getPdfDataById = usePdfStore((state) => state.getPdfDataById); // Hook to retrieve PDF data by ID
 
+  // Handler to open the dialog
   const handleClickOpen = () => {
-    if (!validateEmail(email)) return showAlert('Invalid email', 'tomato');
-    const data = getPdfDataById(id);
-    setName(data.name);
-    setOpen(true);
+    if (!validateEmail(email)) return showAlert('Invalid email', 'tomato'); // Validate email before proceeding
+    const data = getPdfDataById(id); // Get PDF data by ID
+    setName(data.name); // Set the name state with the PDF data name
+    setOpen(true); // Open the dialog
   };
 
+  // Handler to close the dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Handler to submit the access request
   const handleSubmit = async () => {
-    const data = getPdfDataById(id);
+    const data = getPdfDataById(id); // Get PDF data by ID
     console.log(data, id);
     console.log('Access granted to:', email);
 
@@ -74,9 +80,10 @@ const AccessManagerBoardPdfUbl = () => {
       name,
     });
 
-    setOpen(false);
+    setOpen(false); // Close the dialog after submission
     console.log(response, 'LOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOL');
 
+    // Show alert based on the response
     if (response.error) {
       showAlert(
         `${response.data.error ? response.data.error : 'Error giving access to the user'}`,

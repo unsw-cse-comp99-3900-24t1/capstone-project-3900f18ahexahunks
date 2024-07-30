@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import SelectorLinks from '../../../components/SelectorLinks';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReceiptIcon from '@mui/icons-material/Receipt';
@@ -13,6 +12,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EmailIcon from '@mui/icons-material/Email';
 
+// Styled container for the selectors
 const SelectorContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -23,18 +23,21 @@ const SelectorContainer = styled('div')(() => ({
   alignContent: 'center',
 }));
 
+// Styled container for the first group of selectors
 const SelectorContainer1 = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignContent: 'center',
 }));
 
+// Styled container for the second group of selectors
 const SelectorContainer2 = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignContent: 'center',
 }));
 
+// Styled button for logging out
 const StyledLogoutButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#555555',
   color: '#fff',
@@ -46,17 +49,20 @@ const StyledLogoutButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+// Main component for rendering all selectors
 const AllSelectors = () => {
-  const { file, id } = useParams();
-  const [selectedRoute, setSelectedRoute] = useState('');
+  const { file, id } = useParams(); // Get file and id from URL parameters
+  const [selectedRoute, setSelectedRoute] = useState(''); // State for storing selected route
 
-  const nav = useNavigate();
+  const nav = useNavigate(); // Hook for navigation
 
+  // Handler to navigate to the dashboard
   const handleGotoDashboard = () => {
     nav('/dashboard/convert');
     return;
   };
 
+  // Effect to set the selected route based on the file type
   useEffect(() => {
     if (file === 'pdf') {
       setSelectedRoute(`/handle-files/convertion-reports/pdf/${id}`);
@@ -175,4 +181,5 @@ const AllSelectors = () => {
     </SelectorContainer>
   );
 };
+
 export default AllSelectors;
