@@ -4,13 +4,11 @@
 - [Frontend UI/UX documentation](./frontend/Documentation/UIUX.md)
 - [Frontend Usability documentation](./frontend/Documentation/usability.md)
 
-#
+###
 
-#
+###
 
-#
-
-### General Rules for the Group: (Vansh)
+# General Rules for the Group: (Vansh)
 
 1. Code should be tested before pushing and the testing coverage of the code should be above 80% else code cannot be pushed to git.
 2. Workload will be evenly distributed and if You are stuck reach out to everyone.
