@@ -1,7 +1,8 @@
-import { styled } from '@mui/system';
 import React from 'react';
+import { styled } from '@mui/system';
 import GetAppIcon from '@mui/icons-material/GetApp';
 
+// This is the container for displaying the JSON content
 const JsonContainer = styled('div')({
   maxWidth: 'fit-content',
   overflowWrap: 'break-word',
@@ -20,6 +21,7 @@ const JsonContainer = styled('div')({
   position: 'relative',
 });
 
+// This button is for downloading the JSON content
 const DownloadButton = styled('button')({
   position: 'sticky',
   top: '10px',
@@ -38,11 +40,13 @@ const DownloadButton = styled('button')({
   },
 });
 
+// This is the text for the download button
 const ButtonText = styled('span')({
   marginLeft: '8px',
   fontSize: '14px',
 });
 
+// This function highlights the JSON syntax
 const SyntaxHighlight = ({ json }) => {
   if (typeof json !== 'string') {
     json = JSON.stringify(json, null, 2);
@@ -68,6 +72,7 @@ const SyntaxHighlight = ({ json }) => {
   return { __html: json };
 };
 
+// This function downloads the JSON content as a file
 const downloadJson = (jsonContent) => {
   const element = document.createElement('a');
   const file = new Blob([JSON.stringify(jsonContent, null, 2)], {
@@ -80,13 +85,16 @@ const downloadJson = (jsonContent) => {
   document.body.removeChild(element); // Clean up
 };
 
+// This is the main component for displaying and downloading JSON validation content
 const JsonValidationBoard = ({ jsonContent }) => {
   return (
     <div>
+      {/* Here is the button to download the JSON content */}
       <DownloadButton onClick={() => downloadJson(jsonContent)}>
         <GetAppIcon fontSize="small" />
         <ButtonText>Download</ButtonText>
       </DownloadButton>
+      {/* This container displays the JSON content with syntax highlighting */}
       <JsonContainer>
         <pre dangerouslySetInnerHTML={SyntaxHighlight({ json: jsonContent })} />
       </JsonContainer>
@@ -96,6 +104,7 @@ const JsonValidationBoard = ({ jsonContent }) => {
 
 export default JsonValidationBoard;
 
+// Here are the global styles for syntax highlighting
 const globalStyles = `
   .string { color: #ce9178; }
   .number { color: #b5cea8; }
@@ -104,6 +113,7 @@ const globalStyles = `
   .key { color: #9cdcfe; }
 `;
 
+// This injects the global styles into the document
 const styleSheet = document.createElement('style');
 styleSheet.type = 'text/css';
 styleSheet.innerText = globalStyles;

@@ -5,6 +5,7 @@ import { ButtonGroup, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import JsonValidationBoard from './JsonValidationBoard';
 
+// This container wraps the entire board
 const BoardContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.shape.borderRadius,
@@ -20,15 +21,16 @@ const BoardContainer = styled('div')(({ theme }) => ({
   position: 'relative',
 }));
 
+// This container holds the view selector buttons
 const SelectorContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
   marginBottom: theme.spacing(2),
-  // width: '100%',
   marginRight: '10%',
 }));
 
+// This is the styled button for view selection
 const StyledButton = styled(Button)(({ theme, selected }) => ({
   backgroundColor: selected ? '#651FFF' : '#fff',
   color: selected ? '#fff' : '#000',
@@ -38,9 +40,11 @@ const StyledButton = styled(Button)(({ theme, selected }) => ({
   transition: 'background-color 0.3s ease, color 0.3s ease',
 }));
 
+// This is the main component for validation selectors
 const ValidationSelectors = ({ htmlContent, fileId, jsonContent }) => {
-  const [selectedView, setSelectedView] = useState('html');
+  const [selectedView, setSelectedView] = useState('html'); // State to manage selected view
 
+  // Handler to change the selected view
   const handleViewChange = (view) => {
     setSelectedView(view);
   };
@@ -48,6 +52,7 @@ const ValidationSelectors = ({ htmlContent, fileId, jsonContent }) => {
   return (
     <div>
       <SelectorContainer>
+        {/* Button group to select different views */}
         <ButtonGroup>
           <StyledButton
             selected={selectedView === 'html'}
@@ -69,6 +74,7 @@ const ValidationSelectors = ({ htmlContent, fileId, jsonContent }) => {
           </StyledButton>
         </ButtonGroup>
       </SelectorContainer>
+      {/* Conditionally render the view based on selected view state */}
       {selectedView === 'html' && (
         <BoardContainer>
           <HtmlValidationBoard htmlContent={htmlContent} />
