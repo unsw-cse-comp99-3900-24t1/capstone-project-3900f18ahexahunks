@@ -1,5 +1,6 @@
 import { styled } from '@mui/system';
 
+// Styling for the delete button
 const DeleteButton = styled('button')({
   backgroundColor: '#ff1744',
   color: 'white',
@@ -13,6 +14,7 @@ const DeleteButton = styled('button')({
   },
 });
 
+// Styling for the flex container to layout input groups
 const FlexContainer = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
@@ -20,6 +22,7 @@ const FlexContainer = styled('div')({
   gap: '20px',
 });
 
+// Styling for section titles within the form
 const SectionTitle = styled('h2')({
   color: '#651FFF',
   borderBottom: '2px solid #651FFF',
@@ -27,6 +30,7 @@ const SectionTitle = styled('h2')({
   marginBottom: '10px',
 });
 
+// Styling for the input group container
 const InputGroup = styled('div')({
   marginBottom: '15px',
   flex: '1',
@@ -34,12 +38,14 @@ const InputGroup = styled('div')({
   boxSizing: 'border-box',
 });
 
+// Styling for the label of the input fields
 const Label = styled('label')({
   color: '#000',
   marginBottom: '5px',
   display: 'block',
 });
 
+// Styling for the input fields
 const Input = styled('input')({
   width: '90%',
   padding: '10px',
@@ -52,24 +58,28 @@ const Input = styled('input')({
   },
 });
 
+// Styling for the error message text
 const ErrorMessage = styled('p')({
   color: 'red',
   fontSize: '12px',
   marginTop: '-4px',
 });
 
+// Functional component for rendering each line item in the invoice
 const InvoiceLineItem = ({
-  index,
-  item,
-  handleLineItemChange,
-  errors,
-  invoice,
-  deleteLineItem,
+  index, // Index of the line item in the list
+  item, // Data of the current line item
+  handleLineItemChange, // Function to handle changes in the line item input fields
+  errors, // Error messages for the line item input fields
+  invoice, // Invoice data containing all line items
+  deleteLineItem, // Function to delete a line item
 }) => {
   return (
     <div key={index}>
+      {/* Title for the line item section */}
       <SectionTitle>Item {index + 1}</SectionTitle>
       <FlexContainer>
+        {/* Input group for the line item ID */}
         <InputGroup>
           <Label>
             ID: <span style={{ color: 'red' }}>*</span>
@@ -85,6 +95,7 @@ const InvoiceLineItem = ({
           )}
         </InputGroup>
 
+        {/* Input group for the line item quantity */}
         <InputGroup>
           <Label>
             Quantity: <span style={{ color: 'red' }}>*</span>
@@ -102,6 +113,7 @@ const InvoiceLineItem = ({
           )}
         </InputGroup>
 
+        {/* Input group for the line item total */}
         <InputGroup>
           <Label>
             Total: <span style={{ color: 'red' }}>*</span>
@@ -119,6 +131,7 @@ const InvoiceLineItem = ({
       </FlexContainer>
 
       <FlexContainer>
+        {/* Input group for the line item description */}
         <InputGroup>
           <Label>
             Description: <span style={{ color: 'red' }}>*</span>
@@ -136,6 +149,7 @@ const InvoiceLineItem = ({
           )}
         </InputGroup>
 
+        {/* Input group for the line item price */}
         <InputGroup>
           <Label>
             Price: <span style={{ color: 'red' }}>*</span>
@@ -152,6 +166,7 @@ const InvoiceLineItem = ({
         </InputGroup>
       </FlexContainer>
 
+      {/* Button to delete the line item, displayed only if there are multiple line items */}
       {invoice.line_items.length > 1 && (
         <DeleteButton
           type="button"
@@ -167,4 +182,5 @@ const InvoiceLineItem = ({
     </div>
   );
 };
+
 export default InvoiceLineItem;

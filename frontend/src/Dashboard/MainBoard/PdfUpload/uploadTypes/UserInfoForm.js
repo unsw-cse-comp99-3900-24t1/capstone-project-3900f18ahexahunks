@@ -2,18 +2,20 @@ import { Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import CustomInputBox from '../../../../components/CustomInputBox';
 import InfoIcon from '@mui/icons-material/Info';
 
+// This component handles user information input fields and their corresponding labels and tooltips
 const UserInfoForm = ({
-  name,
-  setName,
-  vendorGln,
-  setVendorGln,
-  customerGln,
-  setCustomerGln,
-  saveGln,
-  setSaveGln,
+  name, // State variable for the name input
+  setName, // Function to update the name input
+  vendorGln, // State variable for the vendor GLN input
+  setVendorGln, // Function to update the vendor GLN input
+  customerGln, // State variable for the customer GLN input
+  setCustomerGln, // Function to update the customer GLN input
+  saveGln, // State variable for the save GLN checkbox
+  setSaveGln, // Function to update the save GLN checkbox
 }) => {
   return (
     <div>
+      {/* Input for file name */}
       <CustomInputBox
         value={name}
         setValue={setName}
@@ -22,6 +24,8 @@ const UserInfoForm = ({
         placeholder="File A"
         additionalStyles={{ width: '80%' }}
       />
+
+      {/* Input for vendor GLN with tooltip */}
       <div style={{ position: 'relative', marginTop: '30px' }}>
         <CustomInputBox
           value={vendorGln}
@@ -43,6 +47,8 @@ const UserInfoForm = ({
           />
         </Tooltip>
       </div>
+
+      {/* Input for customer GLN with tooltip */}
       <div style={{ position: 'relative', marginTop: '30px' }}>
         <CustomInputBox
           value={customerGln}
@@ -64,6 +70,8 @@ const UserInfoForm = ({
           />
         </Tooltip>
       </div>
+
+      {/* Checkbox to save GLN for future uploads */}
       <FormControlLabel
         style={{ marginLeft: '5px' }}
         control={
@@ -78,4 +86,5 @@ const UserInfoForm = ({
     </div>
   );
 };
+
 export default UserInfoForm;
