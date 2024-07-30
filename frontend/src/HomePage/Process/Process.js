@@ -4,6 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import EmailIcon from '@mui/icons-material/Email';
 import { styled, keyframes } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Custom styles for icons
 const iconStyle = {
@@ -64,6 +65,7 @@ const DescriptionText = styled(Typography)(({ theme }) => ({
 // Main component for the process section
 const Process = () => {
   const [resetAnimation, setResetAnimation] = useState(false); // State to toggle animation
+  const isSmallScreen = useMediaQuery('(max-width: 1200px)');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,7 +77,14 @@ const Process = () => {
 
   return (
     <Container
-      sx={{ mt: 4, bgcolor: 'black', color: 'white', pb: 4, width: '100vw' }}
+      sx={{
+        mt: 4,
+        bgcolor: 'black',
+        color: 'white',
+        pb: 4,
+        width: '100vw',
+        paddingTop: isSmallScreen ? '60px' : '',
+      }}
     >
       <AnimatedTypography
         variant="h4"
