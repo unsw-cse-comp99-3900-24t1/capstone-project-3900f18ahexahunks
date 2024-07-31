@@ -26,6 +26,7 @@ describe('Auth Testing', () => {
     cy.get('[data-testid="register-check-password"]').type('T@123timestamp');
     cy.get('[data-testid="register-submit"]').click();
 
+    cy.wait(2000);
     cy.url().should('include', '/dashboard');
 
     cy.wait(1000);
