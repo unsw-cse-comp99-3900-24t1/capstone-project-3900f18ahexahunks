@@ -21,6 +21,8 @@ const testUploadXml = async () => {
       },
     });
     console.log('Upload response:', response.data);
+    console.log('userId:', userId);
+    console.log('formData:', form);
   } catch (error) {
     console.error('Error uploading XML file:', error.response ? error.response.data : error.message);
   }
