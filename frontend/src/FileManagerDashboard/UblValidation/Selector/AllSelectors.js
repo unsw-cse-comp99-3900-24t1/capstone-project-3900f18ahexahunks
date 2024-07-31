@@ -85,6 +85,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
       <SelectorContainer1>
         {/* Link to UBL validation report */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-ubl'}
           routeTo={`/handle-files/validation-reports/ubl/${id}`}
           text="UBL"
           isSelected={
@@ -98,6 +99,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
         />
         {/* Link to validation report */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-validate'}
           routeTo={`/handle-files/validation-reports/validate/${id}`}
           text="Validation Report"
           isSelected={
@@ -111,6 +113,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
         />
         {/* Link to share the validation report */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-share'}
           routeTo={`/handle-files/validation-reports/share/${id}`}
           text="Share"
           isSelected={
@@ -124,6 +127,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
         />
         {/* Link to access control for the validation report */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-access'}
           routeTo={`/handle-files/validation-reports/access/${id}`}
           text="Access"
           isSelected={
@@ -137,6 +141,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
         />
         {/* Link to email history of the validation report */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-email-history'}
           routeTo={`/handle-files/validation-reports/email-history/${id}`}
           text="Email History"
           isSelected={
@@ -155,6 +160,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
       <SelectorContainer2>
         {/* Link to help section */}
         <SelectorLinks
+          dataTestId={'file-manager-validate-help'}
           routeTo={`/handle-files/validation-reports/help/${id}`}
           text="Help"
           isSelected={

@@ -88,6 +88,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
     <SelectorContainer>
       <SelectorContainer1>
         <SelectorLinks
+          dataTestId={'file-manager-convert-pdf'}
           routeTo={`/handle-files/convertion-reports/pdf/${id}`}
           text="Invoice Pdf"
           isSelected={
@@ -100,6 +101,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           icon={<ReceiptIcon />}
         />
         <SelectorLinks
+          dataTestId={'file-manager-convert-ubl'}
           routeTo={`/handle-files/convertion-reports/ubl/${id}`}
           text="UBL"
           isSelected={
@@ -112,6 +114,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           icon={<DescriptionIcon />}
         />
         <SelectorLinks
+          dataTestId={'file-manager-convert-validate'}
           routeTo={`/handle-files/convertion-reports/validate/${id}`}
           text="Validation Report"
           isSelected={
@@ -124,6 +127,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           icon={<CheckCircleIcon />}
         />
         <SelectorLinks
+          dataTestId={'file-manager-convert-share'}
           routeTo={`/handle-files/convertion-reports/share/${id}`}
           text="Share"
           isSelected={
@@ -136,6 +140,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           icon={<ShareIcon />}
         />
         <SelectorLinks
+          dataTestId={'file-manager-convert-access'}
           routeTo={`/handle-files/convertion-reports/access/${id}`}
           text="Access"
           isSelected={
@@ -148,6 +153,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           icon={<LockOpenIcon />}
         />
         <SelectorLinks
+          dataTestId={'file-manager-convert-email-history'}
           routeTo={`/handle-files/convertion-reports/email-history/${id}`}
           text="Email History"
           isSelected={
@@ -165,6 +171,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
       </SelectorContainer1>
       <SelectorContainer2>
         <SelectorLinks
+          dataTestId={'file-manager-convert-help'}
           routeTo={`/handle-files/convertion-reports/help/${id}`}
           text="Help"
           isSelected={
