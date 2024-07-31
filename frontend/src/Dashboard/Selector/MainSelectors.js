@@ -88,6 +88,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
         <SelectorLinks
           routeTo="/dashboard/validate"
           text="Validate"
+          dataTestId={'goto-validate-dashboard'}
           isSelected={selectedRoute === '/dashboard/validate'}
           onClick={() => {
             setDrawerOpen(false);
@@ -98,6 +99,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
         <SelectorLinks
           routeTo="/dashboard/convert"
           text="Convert"
+          dataTestId={'goto-convert-dashboard'}
           isSelected={selectedRoute === '/dashboard/convert'}
           onClick={() => {
             setDrawerOpen(false);
@@ -108,6 +110,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
         <SelectorLinks
           routeTo="/dashboard/settings"
           text="Settings"
+          dataTestId={'goto-settings-dashboard'}
           isSelected={selectedRoute === '/dashboard/settings'}
           onClick={() => {
             setDrawerOpen(false);
@@ -121,6 +124,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
         <SelectorLinks
           routeTo="/dashboard/help"
           text="Help"
+          dataTestId={'goto-help-dashboard'}
           isSelected={selectedRoute === '/dashboard/help'}
           onClick={() => {
             setDrawerOpen(false);
@@ -132,8 +136,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
           variant="contained"
           startIcon={<LogoutIcon />}
           onClick={handleLogout}
-          data-testid={'logout-button'}
-        >
+          data-testid={'logout-button'}>
           Logout
         </StyledLogoutButton>
       </SelectorContainer2>

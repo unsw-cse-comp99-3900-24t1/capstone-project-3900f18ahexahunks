@@ -111,11 +111,11 @@ const UblUploadBox = ({ handleUpload }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
+        aria-describedby="modal-description">
         <Box sx={modalStyle}>
           <ModalHeader id="modal-title">Upload XML</ModalHeader>
           <CustomInputBox
+            dataTestId={'validate-upload-name'}
             style={{
               width: '270px',
             }}
@@ -126,6 +126,7 @@ const UblUploadBox = ({ handleUpload }) => {
             placeholder="File A"
           />
           <FileInput
+            data-testid={'validate-upload-file'}
             type="file"
             accept="text/xml"
             onChange={handleFileChange}

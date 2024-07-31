@@ -201,7 +201,10 @@ const SettingsBoard = () => {
         </UserField>
       </UserInfo>
       <ButtonContainer>
-        <EditButton variant="contained" onClick={handleEditClick}>
+        <EditButton
+          data-testid={'edit-profile-button'}
+          variant="contained"
+          onClick={handleEditClick}>
           Edit Profile
         </EditButton>
         <DeleteButton variant="contained" onClick={handleDeleteClick}>
