@@ -129,12 +129,12 @@ const Dashboard = () => {
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
           >
-            <Selector />
+            <Selector setDrawerOpen={setDrawerOpen} />
           </DrawerContainer>
         </>
       ) : (
         <div style={{ width: '20%', backgroundColor: '#ffffff' }}>
-          <Selector />
+          <Selector setDrawerOpen={setDrawerOpen} />
         </div>
       )}
       <div

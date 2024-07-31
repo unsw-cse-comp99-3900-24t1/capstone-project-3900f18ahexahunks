@@ -50,7 +50,7 @@ const StyledLogoutButton = styled(Button)(({ theme }) => ({
 }));
 
 // Main component for rendering all selectors
-const AllSelectors = () => {
+const AllSelectors = ({ setDrawerOpen }) => {
   const { file, id } = useParams(); // Get file and id from URL parameters
   const [selectedRoute, setSelectedRoute] = useState(''); // State for storing selected route
 
@@ -93,9 +93,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/pdf/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/pdf/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/pdf/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<ReceiptIcon />}
         />
         <SelectorLinks
@@ -104,9 +105,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/ubl/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/ubl/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/ubl/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<DescriptionIcon />}
         />
         <SelectorLinks
@@ -115,9 +117,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/validate/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/validate/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/validate/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<CheckCircleIcon />}
         />
         <SelectorLinks
@@ -126,9 +129,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/share/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/share/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/share/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<ShareIcon />}
         />
         <SelectorLinks
@@ -137,9 +141,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/access/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/access/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/access/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<LockOpenIcon />}
         />
         <SelectorLinks
@@ -149,11 +154,12 @@ const AllSelectors = () => {
             selectedRoute ===
             `/handle-files/convertion-reports/email-history/${id}`
           }
-          onClick={() =>
+          onClick={() => {
             setSelectedRoute(
               `/handle-files/convertion-reports/email-history/${id}`
-            )
-          }
+            );
+            setDrawerOpen(false);
+          }}
           icon={<EmailIcon />}
         />
       </SelectorContainer1>
@@ -164,9 +170,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/convertion-reports/help/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/convertion-reports/help/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/convertion-reports/help/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<HelpIcon />}
         />
         <StyledLogoutButton

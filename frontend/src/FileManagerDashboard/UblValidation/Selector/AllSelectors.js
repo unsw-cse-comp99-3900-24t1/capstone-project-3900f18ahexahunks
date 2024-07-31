@@ -49,7 +49,7 @@ const StyledLogoutButton = styled(Button)(({ theme }) => ({
 }));
 
 // This is the main component for displaying all selectors
-const AllSelectors = () => {
+const AllSelectors = ({ setDrawerOpen }) => {
   const { file, id } = useParams(); // Get the file and id from URL parameters
   const [selectedRoute, setSelectedRoute] = useState(''); // State to store the selected route
 
@@ -90,9 +90,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/validation-reports/ubl/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/ubl/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/validation-reports/ubl/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<ReceiptIcon />}
         />
         {/* Link to validation report */}
@@ -102,9 +103,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/validation-reports/validate/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/validate/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/validation-reports/validate/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<CheckCircleIcon />}
         />
         {/* Link to share the validation report */}
@@ -114,9 +116,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/validation-reports/share/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/share/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/validation-reports/share/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<ShareIcon />}
         />
         {/* Link to access control for the validation report */}
@@ -126,9 +129,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/validation-reports/access/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/access/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/validation-reports/access/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<LockOpenIcon />}
         />
         {/* Link to email history of the validation report */}
@@ -139,11 +143,12 @@ const AllSelectors = () => {
             selectedRoute ===
             `/handle-files/validation-reports/email-history/${id}`
           }
-          onClick={() =>
+          onClick={() => {
             setSelectedRoute(
               `/handle-files/validation-reports/email-history/${id}`
-            )
-          }
+            );
+            setDrawerOpen(false);
+          }}
           icon={<EmailIcon />}
         />
       </SelectorContainer1>
@@ -155,9 +160,10 @@ const AllSelectors = () => {
           isSelected={
             selectedRoute === `/handle-files/validation-reports/help/${id}`
           }
-          onClick={() =>
-            setSelectedRoute(`/handle-files/validation-reports/help/${id}`)
-          }
+          onClick={() => {
+            setSelectedRoute(`/handle-files/validation-reports/help/${id}`);
+            setDrawerOpen(false);
+          }}
           icon={<HelpIcon />}
         />
         {/* Button to go to the dashboard */}
