@@ -16,12 +16,18 @@
   "author": "HexaHunks",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-joi-validation": "^5.0.1",
     "http": "^0.0.1-security",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.7.0",
-    "mongoose": "^8.4.1",
+    "mongoose": "^8.4.4",
+    "nodemailer": "^6.9.14",
     "supertest": "^7.0.0"
   },
   "devDependencies": {

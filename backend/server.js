@@ -1,20 +1,24 @@
-const express = require('express');
-const cors = require('cors');
 require('dotenv').config();
-const http = require('http');
+const express = require('express');
+const cookieParser = require('cookie-parser');
 const connectDB = require('./db');
-
-const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const authRoutes = require('../backend/routes/authRoutes');
+const authSendOTP = require('../backend/routes/authSendOtp')
+const http = require('http');
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+
+app.use('/', authRoutes);
+app.use('/user', authSendOTP);
 
 app.get('/test', (req, res) => {
-  res.json({ message: 'Hello World!' });
+  res.status(200).json({ message: 'Hello World!' });
 });
 
+const PORT = process.env.BACKEND_SERVER_PORT;
 const server = http.createServer(app);
 
 connectDB().then(() => {
