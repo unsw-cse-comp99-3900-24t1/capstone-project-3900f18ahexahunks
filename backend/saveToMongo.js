@@ -5,7 +5,7 @@ const saveToMongo = (xml, filename) => {
   console.log('111');
   try {
     const gfs = getGfs();
-    const stream = Readable.from(xml); // Use Readable.from() to create a readable stream from the XML string
+    const stream = Readable.from(xml);
     console.log('abc');
     const upload = gfs.openUploadStream(filename);
     console.log('def');
