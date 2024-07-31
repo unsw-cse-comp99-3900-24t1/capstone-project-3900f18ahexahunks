@@ -69,6 +69,10 @@ describe('Auth Testing', () => {
 
     cy.get('[data-testid="file-manager-validate-ubl"]').click();
     cy.get('[data-testid="file-manager-validate-validate"]').click();
+    cy.get('[data-testid="download-html"]').click();
+    cy.get('[data-testid="pdf-lol-validation"]').click();
+    cy.get('[data-testid="json-validation"]').click();
+    cy.get('[data-testid="json-download"]').click();
     cy.get('[data-testid="file-manager-validate-share"]').click();
     cy.get('[data-testid="file-manager-validate-access"]').click();
     cy.get('[data-testid="file-manager-validate-email-history"]').click();
