@@ -38,39 +38,37 @@ describe('Auth Testing', () => {
     cy.wait(1000);
 
     // Ensure the element exists and is visible before clicking
-    cy.get('[data-testid="convert-upload-button"]')
-      .should('be.visible')
-      .click();
-    cy.get('[data-testid="convert-upload-name"]').type('test');
-    cy.get('[data-testid="convert-vendor-gln"]').type('0847976000005');
-    cy.get('[data-testid="convert-customer-gln"]').type('0847976000005');
-    // Define the file path and MIME type
-    const fileName = 'Invoice_BIG.pdf';
-    const fileType = 'application/pdf';
+    cy.get('[data-testid="convert-upload-button"]').click();
+    cy.get('[data-testid="goto-gui-form"]').click();
+    cy.get('[data-testid="invoice-number"]').type('1');
+    cy.get('[data-testid="issue-date"]').type('2011-01-01');
+    cy.get('[data-testid="due-date"]').type('2011-01-01');
+    cy.get('[data-testid="purchase-order-number"]').type('1');
+    cy.get('[data-testid="subtotal-amount"]').type('1');
+    cy.get('[data-testid="tax-amount"]').type('1');
+    cy.get('[data-testid="total-amount"]').type('1');
+    cy.get('[data-testid="text-name"]').type('1');
+    cy.get('[data-testid="text-address"]').type('1');
+    cy.get('[data-testid="text-vat_number"]').type('1');
 
-    // Intercept the API call for uploading the PDF
-    cy.intercept('POST', '/convert/upload-pdf').as('fileUpload');
+    cy.get('[data-testid="text-name-customer"]').type('1');
+    cy.get('[data-testid="text-address-cus"]').type('1');
+    cy.get('[data-testid="text-vat_number-cus"]').type('1');
 
-    // Attach the PDF file with the correct MIME type
-    cy.fixture(fileName, 'base64').then((fileContent) => {
-      cy.get('[data-testid="convert-upload-file"]').attachFile({
-        fileContent,
-        fileName,
-        mimeType: fileType,
-        encoding: 'base64',
-      });
-    });
+    cy.get('[data-testid="text-id"]').type('1');
+    cy.get('[data-testid="text-id-number"]').type('1');
+    cy.get('[data-testid="text-id-total"]').type('1');
+    cy.get('[data-testid="text-id-description"]').type('1');
+    cy.get('[data-testid="text-id-price"]').type('1');
+    cy.get('[data-testid="user-name-file"]').type('1');
+    cy.get('[data-testid="user-vendor-name-2"]').type('0847976000005');
+    cy.get('[data-testid="user-customer-name-2"]').type('0847976000005');
 
-    cy.get('[data-testid="upload-pdf-submit-btn"]')
-      .should('be.visible')
-      .click();
-
-    // Wait for the API call to complete
+    cy.get('[data-testid="user-save-gln-check-this"]').find('input').check();
+    cy.intercept('POST', '/convert/gui-form').as('fileUpload');
+    cy.get('[data-testid="gui-form-submit-button"]').click();
     cy.wait('@fileUpload').its('response.statusCode').should('eq', 200);
-
-    cy.wait(1000);
     cy.get('[data-testid="conversion-record"]').click();
-    cy.wait(1000);
 
     cy.get('[data-testid="file-manager-convert-pdf"]').click();
     cy.get('[data-testid="file-manager-convert-ubl"]').click();
@@ -79,7 +77,6 @@ describe('Auth Testing', () => {
     cy.get('[data-testid="file-manager-convert-access"]').click();
     cy.get('[data-testid="file-manager-convert-email-history"]').click();
     cy.get('[data-testid="file-manager-convert-help"]').first().click();
-
     cy.get('[data-testid="file-manager-convert-share"]').click();
     // You can add further tests to interact with the modal if needed
     cy.get('[data-testid="email-share-board"]').type('hexahunks@gmail.com');
@@ -103,17 +100,4 @@ describe('Auth Testing', () => {
     cy.get('[data-testid="access-manager-convert-submit"]').click();
     cy.get('[data-testid="access-manager-convert-submit-yes"]').click();
   });
-
-  // after(() => {
-  //   cy.get('[data-testid="dashboard-button"]').click();
-  //   cy.get('[data-testid="logout-button"]').click();
-  //   // Making a request to delete the user after each test
-  //   cy.request({
-  //     method: 'DELETE',
-  //     url: `http://localhost:5003/auth/delete-user/${uniqueEmail}`,
-  //     failOnStatusCode: false,
-  //   }).then((response) => {
-  //     expect(response.status).to.eq(200);
-  //   });
-  // });
 });

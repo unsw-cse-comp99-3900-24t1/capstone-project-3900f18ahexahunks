@@ -152,6 +152,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
               }}
             />
             <Tab
+              data-testid={'goto-gui-form'}
               label="Fill Form"
               sx={{
                 '&.Mui-selected': {

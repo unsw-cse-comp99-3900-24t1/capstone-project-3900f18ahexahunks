@@ -88,6 +88,13 @@ describe('Auth Testing', () => {
     cy.wait('@fileSend').its('response.statusCode').should('eq', 200);
 
     cy.get('[data-testid="file-manager-validate-email-history"]').click();
+
+    cy.get('[data-testid="file-manager-validate-access"]').click();
+    cy.get('[data-testid="access-manager-validate-email"]').type(
+      'test@loler.com'
+    );
+    cy.get('[data-testid="access-manager-validate-submit"]').click();
+    cy.get('[data-testid="access-manager-validate-submit-yes"]').click();
   });
 
   // after(() => {
