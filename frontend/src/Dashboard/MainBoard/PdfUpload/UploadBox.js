@@ -20,6 +20,7 @@ const UploadContainer = styled('div')({
   alignItems: 'center',
   cursor: 'pointer',
   transition: 'all 0.3s ease',
+  marginLeft: '10px',
   '&:hover': {
     backgroundColor: '#007BFF',
     color: '#fff',
@@ -45,11 +46,10 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  height: '80vh',
   bgcolor: '#f9f9f9',
   borderRadius: '10px',
   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-  p: 4,
+  p: 3,
 };
 
 // This is the header for the modal
@@ -59,6 +59,7 @@ const ModalHeader = styled('h2')({
   fontFamily: 'Arial, sans-serif',
   fontWeight: 700,
   color: '#333',
+  marginTop: '20px',
 });
 
 // This is the styling for the file input field
@@ -68,6 +69,7 @@ const FileInput = styled('input')({
   fontSize: '1rem',
   padding: '8px',
   border: '1px solid #ccc',
+  width: '88%',
   borderRadius: '5px',
   transition: 'border-color 0.3s ease',
   '&:focus': {
@@ -129,7 +131,13 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
-        <Box sx={{ ...modalStyle, width: activeTab === 0 ? 500 : 920 }}>
+        <Box
+          sx={{
+            ...modalStyle,
+            width: activeTab === 0 ? 310 : 920,
+            height: activeTab === 0 ? 'fit-content' : '80vh',
+          }}
+        >
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
@@ -233,7 +241,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
                   label="Upload"
                   bgcolour="#651FFF"
                   additionalStyle={{
-                    width: '92%',
+                    width: '94%',
                     height: '50px',
                     fontSize: '13px',
                   }}

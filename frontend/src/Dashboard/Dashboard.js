@@ -74,6 +74,9 @@ const HeaderContainer = styled('div')(({ theme }) => ({
   },
 }));
 
+// Dynamic styling based on isMobile prop
+const ContentContainer = styled('div')(({ isMobile }) => ({}));
+
 // Main dashboard component where user first interacts with the app
 const Dashboard = () => {
   // Handles media queries for responsive design
@@ -126,12 +129,12 @@ const Dashboard = () => {
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
           >
-            <Selector />
+            <Selector setDrawerOpen={setDrawerOpen} />
           </DrawerContainer>
         </>
       ) : (
         <div style={{ width: '20%', backgroundColor: '#ffffff' }}>
-          <Selector />
+          <Selector setDrawerOpen={setDrawerOpen} />
         </div>
       )}
       <div
@@ -148,7 +151,7 @@ const Dashboard = () => {
             {user?.username}
           </Username>
         </HeaderContainer>
-        <div>{content}</div>
+        <ContentContainer isMobile={isMobile}>{content}</ContentContainer>
       </div>
     </Container>
   );
