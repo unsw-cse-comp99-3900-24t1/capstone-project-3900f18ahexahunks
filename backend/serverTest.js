@@ -8,6 +8,7 @@ const fs = require('fs');
 const { convertPdfToJson } = require('./src/conversion');
 const { convertJsonToUbl } = require('./src/jsonToUbl');
 const { connectDB, getGfs } = require('./db');
+const { saveToMongo } = require('./saveToMongo').default;
 require('dotenv').config();
 
 // Initialize Express app
@@ -242,7 +243,7 @@ app.post('/convert-pdf-to-ubl', uploadPdf.single('file'), async (req, res) => {
                 message: 'PDF file converted and XML file uploaded successfully',
                 xmlFile: fileInfo,
             });
-        });
+        
     } catch (error) {
         if (error.response && error.response.status === 400) {
             res.status(400).json({
