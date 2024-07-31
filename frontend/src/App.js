@@ -11,7 +11,7 @@ import PageNotFound from './PageNotFound/PageNotFound.js';
 import FileManagerDashboard from './FileManagerDashboard/FileManagerDashboard.js';
 import ResetPassword from './auth/Login/ResetPassword.js';
 import ProfileBoard from './Dashboard/Profile/ProfileBoard.js';
-
+//
 // Main App component that sets up routing and providers
 const App = () => {
   return (
