@@ -20,6 +20,7 @@ const SelectorContainer = styled('div')(() => ({
   paddingLeft: '20px',
   paddingRight: '20px',
   alignContent: 'center',
+  zIndex: 1000,
 }));
 
 // This is the styling for the first part of the selector container

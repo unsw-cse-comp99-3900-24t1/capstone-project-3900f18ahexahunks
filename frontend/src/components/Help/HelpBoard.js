@@ -21,7 +21,7 @@ const Navbar = styled(AppBar)(({ theme }) => ({
   top: '-30px',
   backgroundColor: '#fff',
   color: 'white',
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: 999,
 }));
 
 // This is a styled section for individual help components
