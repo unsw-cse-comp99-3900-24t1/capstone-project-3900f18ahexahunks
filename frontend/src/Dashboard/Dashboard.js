@@ -125,10 +125,10 @@ const Dashboard = () => {
       {isMobile ? (
         <>
           <DrawerContainer
+            data-testid={'hamburger'}
             anchor="left"
             open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-          >
+            onClose={() => setDrawerOpen(false)}>
             <Selector setDrawerOpen={setDrawerOpen} />
           </DrawerContainer>
         </>
@@ -138,8 +138,10 @@ const Dashboard = () => {
         </div>
       )}
       <div
-        style={{ width: isMobile ? '100%' : '80%', backgroundColor: '#F9F9F9' }}
-      >
+        style={{
+          width: isMobile ? '100%' : '80%',
+          backgroundColor: '#F9F9F9',
+        }}>
         <HeaderContainer>
           {isMobile && (
             <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
