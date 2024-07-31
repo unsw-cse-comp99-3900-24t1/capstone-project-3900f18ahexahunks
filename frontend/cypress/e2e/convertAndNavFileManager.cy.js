@@ -95,6 +95,13 @@ describe('Auth Testing', () => {
     cy.wait('@fileSend').its('response.statusCode').should('eq', 200);
 
     cy.get('[data-testid="file-manager-convert-email-history"]').click();
+
+    cy.get('[data-testid="file-manager-convert-access"]').click();
+    cy.get('[data-testid="access-manager-convert-email"]').type(
+      'test@loler.com'
+    );
+    cy.get('[data-testid="access-manager-convert-submit"]').click();
+    cy.get('[data-testid="access-manager-convert-submit-yes"]').click();
   });
 
   // after(() => {

@@ -207,7 +207,10 @@ const SettingsBoard = () => {
           onClick={handleEditClick}>
           Edit Profile
         </EditButton>
-        <DeleteButton variant="contained" onClick={handleDeleteClick}>
+        <DeleteButton
+          data-testid={'delete-profile-button'}
+          variant="contained"
+          onClick={handleDeleteClick}>
           Delete Account
         </DeleteButton>
       </ButtonContainer>
