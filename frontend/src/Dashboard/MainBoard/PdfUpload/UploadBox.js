@@ -46,7 +46,6 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  height: '80vh',
   bgcolor: '#f9f9f9',
   borderRadius: '10px',
   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
@@ -132,7 +131,13 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
-        <Box sx={{ ...modalStyle, width: activeTab === 0 ? 310 : 920 }}>
+        <Box
+          sx={{
+            ...modalStyle,
+            width: activeTab === 0 ? 310 : 920,
+            height: activeTab === 0 ? 'fit-content' : '80vh',
+          }}
+        >
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
