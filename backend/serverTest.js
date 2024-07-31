@@ -8,12 +8,11 @@ const fs = require('fs');
 const { convertPdfToJson } = require('./src/conversion');
 const { convertJsonToUbl } = require('./src/jsonToUbl');
 const { connectDB, getGfs } = require('./db');
-const { saveToMongo } = require('./saveToMongo').default;
+const { saveToMongo } = require('./saveToMongo');
 require('dotenv').config();
 
 // Initialize Express app
 const app = express();
-
 
 // Mongo URI and connection
 const mongoURI = process.env.MONGO_URI;
@@ -45,7 +44,6 @@ client.connect((err) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // Generate file URL
 const generateFileUrl = (req, fileId) => {
   return `${req.protocol}://${req.get('host')}/files/${fileId}`;
@@ -71,7 +69,7 @@ const storagePdf = new GridFsStorage({
         filename: filename,
         metadata: {
           userId: new ObjectId(userId),
-          url: fileUrl
+          url: fileUrl,
         },
         bucketName: 'uploads',
         contentType: file.mimetype,
@@ -109,7 +107,7 @@ const storageXml = new GridFsStorage({
         filename: filename,
         metadata: {
           userId: new ObjectId(userId),
-          url: fileUrl
+          url: fileUrl,
         },
         bucketName: 'uploads',
         contentType: file.mimetype,
@@ -131,8 +129,6 @@ const storageXml = new GridFsStorage({
 const uploadPdf = multer({ storage: storagePdf });
 const uploadXml = multer({ storage: storageXml });
 
-
-
 // API to upload PDF
 app.post('/upload/pdf', uploadPdf.single('file'), (req, res) => {
   const userId = req.body.userId;
@@ -149,7 +145,7 @@ app.post('/upload/pdf', uploadPdf.single('file'), (req, res) => {
     timestamp: new Date(),
     filename: req.file.filename,
     url: req.file.metadata.url,
-    userId: userId
+    userId: userId,
   };
 
   console.log('Uploaded PDF file:', req.file);
@@ -174,7 +170,7 @@ app.post('/upload/xml', uploadXml.single('file'), (req, res) => {
     timestamp: new Date(),
     filename: req.file.filename,
     url: req.file.metadata.url,
-    userId: userId
+    userId: userId,
   };
 
   console.log('Uploaded XML file:', req.file);
@@ -199,63 +195,63 @@ app.get('/files/:id', (req, res) => {
 
 // Endpoint to convert PDF to UBL XML
 app.post('/convert-pdf-to-ubl', uploadPdf.single('file'), async (req, res) => {
-    const userId = req.body.userId;
+  const userId = req.body.userId;
 
-    console.log('userId of conversion:', userId);
-    if (!req.file) {
-        return res.status(400).json({ error: 'No PDF file uploaded.' });
+  console.log('userId of conversion:', userId);
+  if (!req.file) {
+    return res.status(400).json({ error: 'No PDF file uploaded.' });
+  }
+
+  try {
+    const gfs = getGfs();
+    const fileId = req.file.id;
+    console.log(fileId);
+
+    // Retrieve the PDF file buffer from GridFS
+    const pdfFile = await new Promise((resolve, reject) => {
+      const chunks = [];
+      gfs
+        .openDownloadStream(fileId)
+        .on('data', (chunk) => chunks.push(chunk))
+        .on('error', reject)
+        .on('end', () => resolve(Buffer.concat(chunks)));
+    });
+    console.log('pdfFile: ', pdfFile);
+
+    // Process the PDF file buffer to convert it to UBL XML
+    const jsonResult = await convertPdfToJson(pdfFile);
+    const ublXml = convertJsonToUbl(jsonResult);
+    console.log('Successfully converted');
+
+    // Save the XML to a temporary file
+    const filename = 'hi.xml';
+    const ublId = saveToMongo(ublXml, filename);
+
+    const fileInfo = {
+      id: storageResult._id,
+      length: xmlReq.file.size,
+      timestamp: new Date(),
+      filename: storageResult.filename,
+      url: storageResult.metadata.url,
+      userId: userId,
+    };
+
+    res.status(201).json({
+      message: 'PDF file converted and XML file uploaded successfully',
+      xmlFile: fileInfo,
+    });
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      res.status(400).json({
+        error: 'Insufficient data in the PDF, please add more information',
+        requiredInformation: error.response.data.requiredInformation || [],
+      });
+    } else if (error.response && error.response.status === 404) {
+      res.status(404).json({ error: 'Failed to convert PDF to UBL' });
+    } else {
+      res.status(500).json({ error: 'Server error, please try again later' });
     }
-
-    try {
-        const gfs = getGfs();
-        const fileId = req.file.id;
-        console.log(fileId);
-
-        // Retrieve the PDF file buffer from GridFS
-        const pdfFile = await new Promise((resolve, reject) => {
-            const chunks = [];
-            gfs.openDownloadStream(fileId)
-                .on('data', (chunk) => chunks.push(chunk))
-                .on('error', reject)
-                .on('end', () => resolve(Buffer.concat(chunks)));
-        });
-        console.log("pdfFile: ", pdfFile);
-
-        // Process the PDF file buffer to convert it to UBL XML
-        const jsonResult = await convertPdfToJson(pdfFile);
-        const ublXml = convertJsonToUbl(jsonResult);
-        console.log('Successfully converted');
-
-        // Save the XML to a temporary file
-        const filename = 'hi.xml';
-        const ublId = saveToMongo(ublXml, filename);
-
-            const fileInfo = {
-                id: storageResult._id,
-                length: xmlReq.file.size,
-                timestamp: new Date(),
-                filename: storageResult.filename,
-                url: storageResult.metadata.url,
-                userId: userId
-            };
-
-            res.status(201).json({
-                message: 'PDF file converted and XML file uploaded successfully',
-                xmlFile: fileInfo,
-            });
-        
-    } catch (error) {
-        if (error.response && error.response.status === 400) {
-            res.status(400).json({
-                error: 'Insufficient data in the PDF, please add more information',
-                requiredInformation: error.response.data.requiredInformation || [],
-            });
-        } else if (error.response && error.response.status === 404) {
-            res.status(404).json({ error: 'Failed to convert PDF to UBL' });
-        } else {
-            res.status(500).json({ error: 'Server error, please try again later' });
-        }
-    }
+  }
 });
 
 /*
@@ -267,11 +263,13 @@ app.listen(PORT, () => {
 */
 
 // Connect to the database and start the server
-connectDB().then(() => {
+connectDB()
+  .then(() => {
     const PORT = process.env.BACKEND_SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-  }).catch(err => {
+  })
+  .catch((err) => {
     console.error('Failed to connect to the database', err);
   });

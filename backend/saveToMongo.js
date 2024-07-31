@@ -1,12 +1,11 @@
-import { getGfs } from './db';
-import { Readable } from 'stream';
+const { connectDB, getGfs } = require('./db');
+const { Readable } = require('stream');
 
 const saveToMongo = (xml, filename) => {
-    console.log('111');
+  console.log('111');
   try {
     const gfs = getGfs();
-    const stream = new Readable();
-    stream.push(xml);
+    const stream = Readable.from(xml); // Use Readable.from() to create a readable stream from the XML string
     console.log('abc');
     const upload = gfs.openUploadStream(filename);
     console.log('def');
@@ -14,7 +13,7 @@ const saveToMongo = (xml, filename) => {
       stream
         .pipe(upload)
         .on('error', (err) => {
-          console.log(err);
+          console.log('HERHEIURHEHREHRUEHURH', err);
           reject(err);
         })
         .on('finish', () => {
@@ -23,9 +22,9 @@ const saveToMongo = (xml, filename) => {
         });
     });
   } catch (err) {
-    console.log(err);
+    console.log('HERHEIURHEHREHRUEHURH', err);
     throw new Error(err);
   }
 };
 
-export default saveToMongo;
+module.exports = { saveToMongo };
