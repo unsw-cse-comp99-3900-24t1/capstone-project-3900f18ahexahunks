@@ -123,9 +123,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
   return (
     <>
       <UploadContainer onClick={handleOpen}>
-        <UploadLabel
-          data-testid={'validate-upload-button'}
-          htmlFor="pdf-upload">
+        <UploadLabel data-testid={'convert-upload-button'} htmlFor="pdf-upload">
           +
         </UploadLabel>
       </UploadContainer>
@@ -171,6 +169,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
               <div>
                 <ModalHeader id="modal-title">Upload PDF</ModalHeader>
                 <CustomInputBox
+                  dataTestId={'convert-upload-name'}
                   value={name}
                   setValue={setName}
                   type="text"
@@ -180,6 +179,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
                 />
                 <div style={{ position: 'relative', marginTop: '30px' }}>
                   <CustomInputBox
+                    dataTestId={'convert-vendor-gln'}
                     value={vendorGln}
                     setValue={setVendorGln}
                     type="text"
@@ -201,6 +201,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
                 </div>
                 <div style={{ position: 'relative', marginTop: '30px' }}>
                   <CustomInputBox
+                    dataTestId={'convert-customer-gln'}
                     value={customerGln}
                     setValue={setCustomerGln}
                     type="text"
@@ -221,6 +222,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
                   </Tooltip>
                 </div>
                 <FileInput
+                  data-testid={'convert-upload-file'}
                   type="file"
                   accept="application/pdf"
                   onChange={handleFileChange}
@@ -238,6 +240,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
                   label="Save your GLN for future uploads"
                 />
                 <CustomPrimaryButton
+                  dataTestid={'upload-pdf-submit-btn'}
                   label="Upload"
                   bgcolour="#651FFF"
                   additionalStyle={{

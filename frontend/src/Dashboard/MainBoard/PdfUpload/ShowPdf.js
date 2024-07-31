@@ -152,7 +152,10 @@ const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
   return (
     <>
       {pdfs.map((pdf) => (
-        <PdfBox key={pdf._id} onClick={() => handleOpenValidationReport(pdf)}>
+        <PdfBox
+          data-testid={'conversion-record'}
+          key={pdf._id}
+          onClick={() => handleOpenValidationReport(pdf)}>
           <DeleteButton
             onClick={(e) => {
               e.stopPropagation();
