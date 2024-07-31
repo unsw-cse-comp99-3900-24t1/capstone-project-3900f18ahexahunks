@@ -226,40 +226,8 @@ app.post('/convert-pdf-to-ubl', uploadPdf.single('file'), async (req, res) => {
         console.log('Successfully converted');
 
         // Save the XML to a temporary file
-        const tempXmlPath = path.join(__dirname, 'temp', `temp-${Date.now()}.xml`);
-        fs.writeFileSync(tempXmlPath, ublXml);
-
-        // Read the XML file buffer
-        const xmlFileBuffer = fs.readFileSync(tempXmlPath);
-        
-        // Set up a new Multer instance with memory storage
-        const storage = multer.memoryStorage();
-        const upload = multer({ storage });
-
-        // Create a new request object with the XML file buffer
-        const xmlReq = {
-            ...req,
-            file: {
-                buffer: xmlFileBuffer,
-                originalname: `converted-${req.file.originalname.replace('.pdf', '.xml')}`,
-                mimetype: 'application/xml',
-            }
-        };
-
-        upload.single('file')(xmlReq, res, async function (err) {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to process the file.' });
-            }
-
-            // Save the XML file to GridFS using storageXml
-            const storageResult = await storageXml.file(xmlReq, xmlReq.file);
-            
-            if (!storageResult) {
-                return res.status(500).json({ error: 'Failed to upload XML file.' });
-            }
-
-            // Clean up the temporary XML file
-            fs.unlinkSync(tempXmlPath);
+        const filename = 'hi.xml';
+        const ublId = saveToMongo(ublXml, filename);
 
             const fileInfo = {
                 id: storageResult._id,
