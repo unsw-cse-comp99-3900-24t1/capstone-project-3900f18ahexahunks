@@ -157,16 +157,14 @@ const ShowPdf = ({ isLoading, searchTerm, filterDate }) => {
             onClick={(e) => {
               e.stopPropagation();
               handleDeleteClick(pdf);
-            }}
-          >
+            }}>
             <DeleteIcon />
           </DeleteButton>
           <ShareButton
             onClick={(e) => {
               e.stopPropagation();
               handleShareClick(pdf);
-            }}
-          >
+            }}>
             <ShareIcon />
           </ShareButton>
           <h2 style={{ margin: '0', fontWeight: '500', color: '#333' }}>

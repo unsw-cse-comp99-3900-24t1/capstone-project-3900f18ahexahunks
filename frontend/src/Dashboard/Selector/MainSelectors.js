@@ -88,6 +88,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
         <SelectorLinks
           routeTo="/dashboard/validate"
           text="Validate"
+          dataTestId={'goto-validate-dashboard'}
           isSelected={selectedRoute === '/dashboard/validate'}
           onClick={() => {
             setDrawerOpen(false);
@@ -132,8 +133,7 @@ const MainSelectors = ({ handleLogout, setDrawerOpen }) => {
           variant="contained"
           startIcon={<LogoutIcon />}
           onClick={handleLogout}
-          data-testid={'logout-button'}
-        >
+          data-testid={'logout-button'}>
           Logout
         </StyledLogoutButton>
       </SelectorContainer2>

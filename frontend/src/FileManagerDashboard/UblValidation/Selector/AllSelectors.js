@@ -171,8 +171,7 @@ const AllSelectors = ({ setDrawerOpen }) => {
           variant="contained"
           startIcon={<DashboardIcon />}
           onClick={handleGotoDashboard}
-          data-testid={'logout-button'}
-        >
+          data-testid={'dashboard-button'}>
           Dashboard
         </StyledLogoutButton>
       </SelectorContainer2>

@@ -123,27 +123,28 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
   return (
     <>
       <UploadContainer onClick={handleOpen}>
-        <UploadLabel htmlFor="pdf-upload">+</UploadLabel>
+        <UploadLabel
+          data-testid={'validate-upload-button'}
+          htmlFor="pdf-upload">
+          +
+        </UploadLabel>
       </UploadContainer>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
+        aria-describedby="modal-description">
         <Box
           sx={{
             ...modalStyle,
             width: activeTab === 0 ? 310 : 920,
             height: activeTab === 0 ? 'fit-content' : '80vh',
-          }}
-        >
+          }}>
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
             centered
-            TabIndicatorProps={{ style: { backgroundColor: '#651FFF' } }}
-          >
+            TabIndicatorProps={{ style: { backgroundColor: '#651FFF' } }}>
             <Tab
               label="Upload"
               sx={{
@@ -165,8 +166,7 @@ const UploadBox = ({ handleUpload, setPdfs, setIsLoading }) => {
             style={{
               overflow: 'auto',
               height: '95%',
-            }}
-          >
+            }}>
             {activeTab === 0 && (
               <div>
                 <ModalHeader id="modal-title">Upload PDF</ModalHeader>
