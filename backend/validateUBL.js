@@ -66,7 +66,7 @@ const validateUBL = async (filePath) => {
       },
     });
 
-    console.log('Validation Result:', response.data);
+    console.log('Validation Result:', JSON.stringify(response.data, null, 2));
     generatePDFReport(response.data, fileName);
   } catch (error) {
     console.error('Error validating UBL:', error.response ? error.response.data : error.message);
@@ -94,14 +94,14 @@ const generatePDFReport = (validationResult, fileName) => {
 
   doc.moveDown().fontSize(16).text('Details:');
 
-  const errors = validationResult.report.reports.AUNZ_UBL_1_0_10;
+  const errors = validationResult.report.reports.AUNZ_UBL_1_0_10.firedAssertionErrors;
 
-  if (validationResult.report.firedAssertionErrorsCount > 0 && errors) {
-    Object.values(errors).forEach((error, index) => {
+  if (validationResult.report.firedAssertionErrorsCount > 0 && errors && errors.length > 0) {
+    errors.forEach((error, index) => {
       doc.moveDown().fontSize(12).text(`Error ${index + 1}:`);
-      doc.text(`  Message: ${error.message}`);
-      doc.text(`  XPath: ${error.xpath}`);
-      doc.text(`  Code: ${error.code}`);
+      doc.text(`  Message: ${error.text}`);
+      doc.text(`  XPath: ${error.location}`);
+      doc.text(`  Code: ${error.id}`);
     });
   } else {
     doc.moveDown().fontSize(12).text('No errors found.');
@@ -119,7 +119,10 @@ const generatePDFReport = (validationResult, fileName) => {
 };
 
 
-
 // const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/temp.xml';
-const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/validFile.xml';
+// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/validFile.xml';
+// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/UBL-Forecast-2.1-Example.xml';
+// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/test.xml';
+const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/invalid-ubl.xml';
+
 validateUBL(filePath);
