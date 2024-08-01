@@ -4,19 +4,20 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const postRegister = async (req, res) => {
+  console.log('hiiii');
   let { email, username, password, passwordCheck } = req.body;
 
   if (password !== passwordCheck) {
     return res.status(402).json({
-      message: "Passwords do not match"
+      message: 'Passwords do not match',
     });
   } else if (!/^[a-zA-Z ]*$/.test(username)) {
     return res.status(400).json({
-      message: "Invalid Username"
+      message: 'Invalid Username',
     });
   } else if (password.length < 8) {
     return res.status(400).json({
-      message: "Invalid password"
+      message: 'Invalid password',
     });
   }
 
@@ -24,7 +25,7 @@ const postRegister = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
-        message: "The user with the provided email already exists"
+        message: 'The user with the provided email already exists',
       });
     }
 
@@ -34,7 +35,7 @@ const postRegister = async (req, res) => {
     const newUser = new User({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     const savedUser = await newUser.save();
@@ -50,18 +51,22 @@ const postRegister = async (req, res) => {
     await savedUser.save();
 
     // Set token in cookie
-    res.cookie('token', token, { httpOnly: true, secure: true, maxAge: 3600000 }); // Set cookie for 1 hour
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 3600000,
+    }); // Set cookie for 1 hour
 
     return res.status(200).json({
       email: email,
-      googlePicture: "https://cdn-icons-png.flaticon.com/512/6596/6596121.png",
+      googlePicture: 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png',
       username: username,
-      _id: savedUser._id
+      _id: savedUser._id,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Please try again later"
+      message: 'Please try again later',
     });
   }
 };
