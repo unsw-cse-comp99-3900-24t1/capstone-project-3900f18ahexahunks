@@ -4,6 +4,8 @@ const axios = require('axios');
 const fs = require('fs');
 const crypto = require('crypto');
 const qs = require('qs');
+const PDFDocument = require('pdfkit');
+const path = require('path');
 
 console.log('TOKEN_ENDPOINT:', process.env.TOKEN_ENDPOINT);
 console.log('CLIENT_ID:', process.env.CLIENT_ID);
@@ -64,6 +66,7 @@ const validateUBL = async (filePath) => {
     });
 
     console.log('Validation Result:', response.data);
+    generatePDFReport(response.data);
   } catch (error) {
     console.error('Error validating UBL:', error.response ? error.response.data : error.message);
     if (error.response) {
@@ -72,6 +75,35 @@ const validateUBL = async (filePath) => {
       console.error('Data:', error.response.data);
     }
   }
+};
+
+const generatePDFReport = (validationResult) => {
+  const doc = new PDFDocument();
+  const outputPath = path.join(__dirname, 'validation_report.pdf');
+
+  doc.pipe(fs.createWriteStream(outputPath));
+
+  doc.fontSize(20).text('UBL Validation Report', { align: 'center' });
+
+  doc.moveDown().fontSize(14).text(`File: ${validationResult.report.filename}`);
+  doc.text(`Validation Status: ${validationResult.report.summary}`);
+  doc.text(`Total Failed Assertions: ${validationResult.report.firedAssertionErrorsCount}`);
+  doc.text(`Total Successful Reports: ${validationResult.report.firedSuccessfulReportsCount}`);
+
+  doc.moveDown().fontSize(16).text('Details:');
+
+  if (validationResult.report.reports.AUNZ_UBL_1_0_10.errors) {
+    validationResult.report.reports.AUNZ_UBL_1_0_10.errors.forEach((error, index) => {
+      doc.moveDown().fontSize(12).text(`Error ${index + 1}:`);
+      doc.text(`  Message: ${error.message}`);
+      doc.text(`  XPath: ${error.xpath}`);
+    });
+  } else {
+    doc.moveDown().fontSize(12).text('No errors found.');
+  }
+
+  doc.end();
+  console.log(`PDF report generated at ${outputPath}`);
 };
 
 const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/temp.xml';
