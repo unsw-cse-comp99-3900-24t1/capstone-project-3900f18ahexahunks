@@ -46,12 +46,13 @@ const validateUBL = async (filePath) => {
     return;
   }
 
+  const fileName = path.basename(filePath);
   const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
   const encodedContent = Buffer.from(fileContent).toString('base64');
   const checksum = crypto.createHash('md5').update(encodedContent).digest('hex');
 
   const payload = {
-    filename: 'temp.xml',
+    filename: fileName,
     content: encodedContent,
     checksum: checksum,
   };
@@ -66,7 +67,7 @@ const validateUBL = async (filePath) => {
     });
 
     console.log('Validation Result:', response.data);
-    generatePDFReport(response.data);
+    generatePDFReport(response.data, fileName);
   } catch (error) {
     console.error('Error validating UBL:', error.response ? error.response.data : error.message);
     if (error.response) {
@@ -77,11 +78,12 @@ const validateUBL = async (filePath) => {
   }
 };
 
-const generatePDFReport = (validationResult) => {
+const generatePDFReport = (validationResult, fileName) => {
   const doc = new PDFDocument();
   const outputPath = path.join(__dirname, 'validation_report.pdf');
 
-  doc.pipe(fs.createWriteStream(outputPath));
+  const stream = fs.createWriteStream(outputPath);
+  doc.pipe(stream);
 
   doc.fontSize(20).text('UBL Validation Report', { align: 'center' });
 
@@ -92,19 +94,32 @@ const generatePDFReport = (validationResult) => {
 
   doc.moveDown().fontSize(16).text('Details:');
 
-  if (validationResult.report.reports.AUNZ_UBL_1_0_10.errors) {
-    validationResult.report.reports.AUNZ_UBL_1_0_10.errors.forEach((error, index) => {
+  const errors = validationResult.report.reports.AUNZ_UBL_1_0_10;
+
+  if (validationResult.report.firedAssertionErrorsCount > 0 && errors) {
+    Object.values(errors).forEach((error, index) => {
       doc.moveDown().fontSize(12).text(`Error ${index + 1}:`);
       doc.text(`  Message: ${error.message}`);
       doc.text(`  XPath: ${error.xpath}`);
+      doc.text(`  Code: ${error.code}`);
     });
   } else {
     doc.moveDown().fontSize(12).text('No errors found.');
   }
 
   doc.end();
-  console.log(`PDF report generated at ${outputPath}`);
+
+  stream.on('finish', function () {
+    console.log(`PDF report generated at ${outputPath}`);
+  });
+
+  stream.on('error', function (err) {
+    console.error('Error writing PDF file:', err);
+  });
 };
 
-const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/temp.xml';
+
+
+// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/temp.xml';
+const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/validFile.xml';
 validateUBL(filePath);
