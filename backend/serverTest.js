@@ -227,18 +227,18 @@ app.post('/convert-pdf-to-ubl', uploadPdf.single('file'), async (req, res) => {
     const filename = 'hi.xml';
     const ublId = saveToMongo(ublXml, filename);
 
-    const fileInfo = {
-      id: storageResult._id,
-      length: xmlReq.file.size,
-      timestamp: new Date(),
-      filename: storageResult.filename,
-      url: storageResult.metadata.url,
-      userId: userId,
-    };
+    // const fileInfo = {
+    //   id: storageResult._id,
+    //   length: xmlReq.file.size,
+    //   timestamp: new Date(),
+    //   filename: storageResult.filename,
+    //   url: storageResult.metadata.url,
+    //   userId: userId,
+    // };
 
     res.status(201).json({
       message: 'PDF file converted and XML file uploaded successfully',
-      xmlFile: fileInfo,
+      //xmlFile: fileInfo,
     });
   } catch (error) {
     if (error.response && error.response.status === 400) {
