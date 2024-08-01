@@ -66,7 +66,7 @@ const validateUBL = async (filePath) => {
       },
     });
 
-    console.log('Validation Result:', JSON.stringify(response.data, null, 2));
+    console.log('Validation Result:', response.data);
     generatePDFReport(response.data, fileName);
   } catch (error) {
     console.error('Error validating UBL:', error.response ? error.response.data : error.message);
@@ -99,9 +99,10 @@ const generatePDFReport = (validationResult, fileName) => {
   if (validationResult.report.firedAssertionErrorsCount > 0 && errors && errors.length > 0) {
     errors.forEach((error, index) => {
       doc.moveDown().fontSize(12).text(`Error ${index + 1}:`);
-      doc.text(`  Message: ${error.text}`);
-      doc.text(`  XPath: ${error.location}`);
-      doc.text(`  Code: ${error.id}`);
+      doc.text(`  Issue: ${error.text}`);
+      doc.text(`  Location: ${error.location}`);
+      doc.text(`  Error Code: ${error.id}`);
+      doc.moveDown().fontSize(12).text(`Suggested Fix: ${getSuggestion(error.id)}`);
     });
   } else {
     doc.moveDown().fontSize(12).text('No errors found.');
@@ -118,11 +119,26 @@ const generatePDFReport = (validationResult, fileName) => {
   });
 };
 
+const getSuggestion = (errorCode) => {
+  switch (errorCode) {
+    case 'BR-09':
+      return 'Please make sure the Seller address includes a country code.';
+    case 'BR-11':
+      return 'Please make sure the Buyer address includes a country code.';
+    case 'BR-61':
+      return 'If the payment method is SEPA, Local, or International credit transfer, please include the payment account identifier.';
+    default:
+      return 'Please refer to the UBL 2.1 documentation for fixing this error.';
+  }
+};
+
 
 // const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/temp.xml';
-// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/validFile.xml';
+
 // const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/UBL-Forecast-2.1-Example.xml';
 // const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/test.xml';
-const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/invalid-ubl.xml';
+
+const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/validFile.xml';
+// const filePath = 'D:/comp3900/capstone-project-3900f18ahexahunks/backend/tests/invalid-ubl.xml';
 
 validateUBL(filePath);
