@@ -3,7 +3,6 @@ const User = require('./user');
 const File = require('./file');
 
 const getPdfUblService = async (userEmail) => {
-  console.log('userEmail', userEmail);
   if (!userEmail) {
     return {
       status: 400,
@@ -16,8 +15,6 @@ const getPdfUblService = async (userEmail) => {
 
   try {
     const user = await User.findOne({ email: userEmail });
-    console.log('user', user);
-    console.log('user._id', user._id);
 
     if (!user) {
       return {
@@ -27,7 +24,6 @@ const getPdfUblService = async (userEmail) => {
     }
 
     const files = await File.find({ 'metadata.userId': user._id }).lean();
-    console.log('files', files);
 
     if (files.length === 0) {
       return {
