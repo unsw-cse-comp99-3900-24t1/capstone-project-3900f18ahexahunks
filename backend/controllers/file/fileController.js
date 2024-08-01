@@ -1,12 +1,11 @@
 const { ObjectId, GridFSBucket } = require('mongodb');
-const connectDB = require('../../db');
+const mongoose = require('mongoose');
 
 const streamFile = async (req, res) => {
   const { id } = req.params;
-  const client = await connectDB();
-  const db = client.db();
 
   try {
+    const db = mongoose.connection.db; // Use the existing connection
     const bucket = new GridFSBucket(db, { bucketName: 'uploads' });
     const objectId = new ObjectId(id);
     const downloadStream = bucket.openDownloadStream(objectId);

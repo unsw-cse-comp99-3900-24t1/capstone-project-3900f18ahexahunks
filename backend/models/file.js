@@ -1,13 +1,37 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const fileSchema = new mongoose.Schema({
-  filename: { type: String, required: true },
-  contentType: { type: String, required: true },
-  length: { type: Number, required: true },
-  uploadDate: { type: Date, required: true },
+const fileSchema = new Schema({
+  length: {
+    type: Number,
+    required: true
+  },
+  chunkSize: {
+    type: Number,
+    required: true
+  },
+  uploadDate: {
+    type: Date,
+    required: true
+  },
+  filename: {
+    type: String,
+    required: true
+  },
+  contentType: {
+    type: String,
+    required: true
+  },
   metadata: {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    url: {
+      type: String,
+      required: true
+    }
   }
-});
+}, { collection: 'uploads.files' });
 
 module.exports = mongoose.model('File', fileSchema);
