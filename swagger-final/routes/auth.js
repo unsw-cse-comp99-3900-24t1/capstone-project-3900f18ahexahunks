@@ -51,7 +51,7 @@
  *         googlePicture: 'http://example.com/picture.jpg'
  *         gln: '123456789'
  *
- * /login:
+ * /auth/login:
  *   post:
  *     summary: User login
  *     description: Verifies user credentials and returns a JWT token if successful.
@@ -141,7 +141,7 @@
  *         googlePicture: 'https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o='
  *         gln: '123456789'
  *
- * /register:
+ * /auth/register:
  *   post:
  *     summary: User registration
  *     description: Creates a new user and returns a JWT token if successful.
@@ -240,7 +240,7 @@
  *         googleId: 'randomgoogleid'
  *         gln: '123456789'
  *
- * /google-login:
+ * /auth/google-login:
  *   post:
  *     summary: Google Login
  *     description: Handles user login via Google OAuth.
@@ -290,7 +290,7 @@
  *       example:
  *         message: 'OTP SENT TO user@example.com'
  *
- * /forgot-password:
+ * /auth/forgot-password:
  *   post:
  *     summary: Forgot Password
  *     description: Generates a password reset token and sends it to the user's email.
@@ -351,7 +351,7 @@
  *       example:
  *         message: 'Password reset successful'
  *
- * /reset-password:
+ * /auth/reset-password:
  *   post:
  *     summary: Reset Password
  *     description: Resets the user's password using the provided token and new password.
@@ -419,7 +419,7 @@
  *       example:
  *         message: 'User account deleted successfully'
  *
- * /delete-user-account:
+ * /auth/delete-user-account:
  *   delete:
  *     summary: Delete User Account
  *     description: Deletes a user account by verifying credentials.

@@ -74,7 +74,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /validate-ubl:
+ * /validate/validate-ubl:
  *   post:
  *     summary: Validate UBL file
  *     description: Uploads and validates a UBL file, then updates user information.
@@ -250,7 +250,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /get-all-validation-data:
+ * /validate/get-all-validation-data:
  *   get:
  *     summary: Get all validation data
  *     description: Retrieves all validation data for a user.
@@ -323,7 +323,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /delete-one-validation-data:
+ * /validate/delete-one-validation-data:
  *   delete:
  *     summary: Delete a validation data entry
  *     description: Deletes a specific validation data entry for a user.
@@ -443,7 +443,7 @@
  *       example:
  *         error: 'Internal server error'
  *
- * /give-access-validation-ubl:
+ * /validate/give-access-validation-ubl:
  *   post:
  *     summary: Give access to UBL validation data
  *     description: Grants access to a user for specific UBL validation data.
