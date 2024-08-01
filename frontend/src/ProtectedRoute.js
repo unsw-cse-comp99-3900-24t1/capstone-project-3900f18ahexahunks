@@ -1,54 +1,34 @@
-// import React from 'react';
-// import { Navigate } from 'react-router-dom';
-// import Cookies from 'js-cookie';
-
-// const ProtectedRoute = ({ children }) => {
-//   const token = Cookies.get('token');
-
-//   if (!token) {
-//     return <Navigate to="/login" />;
-//   }
-
-//   return children;
-// };
-
-// export default ProtectedRoute;
-
-// THIS ALSO WORKS
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-// import { initializeStore } from './zustandStore/usePresentationListStore';
 import Cookies from 'js-cookie';
 
-// A component that guards child components, ensuring the user is authenticated and store is initialized.
+// ProtectedRoute component to protect routes based on authentication
 const ProtectedRoute = ({ children }) => {
-  const [isInitialized, setIsInitialized] = React.useState(false); // State to track if the store has been initialized.
+  const [isInitialized, setIsInitialized] = useState(false); // State to check if the component is initialized
 
-  const token = Cookies.get('token'); // Retrieve authentication token from local storage.
+  const token = Cookies.get('token'); // Get the authentication token from cookies
 
-  console.log(token);
-
-  // If no token is found, redirect to login page.
+  // If no token or token is an empty string, redirect to login page
   if (token == null || token === '') {
     return <Navigate to="/login" />;
   }
 
-  // Effect to initialize the store and set 'isInitialized' to true once done.
+  // Use useEffect to run the initialization and authentication logic
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const initializeAndAuthenticate = async () => {
-      // await initializeStore(); // Calls the function to initialize the store.
-      setIsInitialized(true); // Set the initialized state to true.
+      setIsInitialized(true); // Set the initialization state to true after authenticating
     };
 
-    initializeAndAuthenticate();
-  }, []); // The empty dependency array ensures this effect runs only once after the initial render.
+    initializeAndAuthenticate(); // Call the initialization and authentication function
+  }, []);
 
-  // Render a loading message while the store is being initialized.
+  // If not initialized, show a loading indicator
   if (!isInitialized) {
     return <div>Loading...</div>;
   }
-  // Render the children components once the store is initialized and the user is authenticated.
+
+  // Render the children components if authenticated and initialized
   return children;
 };
 

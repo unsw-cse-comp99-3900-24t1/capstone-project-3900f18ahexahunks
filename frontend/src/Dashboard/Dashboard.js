@@ -1,4 +1,7 @@
-import { styled } from '@mui/system';
+import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/system';
+import { useMediaQuery, Drawer, IconButton, Avatar } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Selector from './Selector/Selector';
 import Board from './MainBoard/Board';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,63 +9,95 @@ import PdfUploadBoard from './MainBoard/PdfUpload/PdfUploadBoard';
 import ValidateBoard from './MainBoard/ValidateBoard/ValidateBoard';
 import useUserStore from '../zustand/useUserStore';
 import SettingsBoard from './Settings/SettingsBoard';
-import HelpBoard from './Help/HelpBoard';
-// import Menu from '@mui/material/Menu';
-// import MenuItem from '@mui/material/MenuItem';
-// import IconButton from '@mui/material/IconButton';
-// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { useState } from 'react';
-import ProfileBoard from './Profile/ProfileBoard';
+import HelpBoard from '../components/Help/HelpBoard';
 
-const Container = styled('div')({
+// This is the styling for the main container
+const Container = styled('div')(({ theme }) => ({
   width: '100vw',
   height: '100vh',
   display: 'flex',
+}));
+
+// This is the styling for the profile avatar
+const ProfileAvatar = styled(Avatar)({
+  width: '26px',
+  height: '26px',
+  borderRadius: '50%',
+  margin: 'auto',
+  marginRight: '10px',
 });
 
-const Container1 = styled('div')({
-  width: '20%',
-  height: '100vh',
-  backgroundColor: '#ffffff',
-});
-
-const Container2 = styled('div')({
-  width: '80%',
-  height: '100vh',
-  backgroundColor: '#F9F9F9',
-});
-
-const HeaderContainer = styled('div')({
-  height: '10vh',
-  width: '100%',
+// This is the styling for the username display
+const Username = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
+  fontSize: '17px',
+  fontWeight: '600',
+  fontFamily: 'Roboto, sans-serif',
+  padding: '8px 12px',
+  borderRadius: '30px',
+  background: '#ffffff',
+  cursor: 'pointer',
+  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.1s ease-in-out',
+  '&:hover': {
+    background: '#f0f0f0',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+  },
+  '& svg': {
+    marginRight: '5px',
+    fontSize: '1.2rem',
+  },
+}));
+
+// This is the styling for the drawer container
+const DrawerContainer = styled(Drawer)(({ theme }) => ({
+  width: '240px',
+  flexShrink: 0,
+  '& .MuiDrawer-paper': {
+    width: '240px',
+    boxSizing: 'border-box',
+  },
+}));
+
+// This is the styling for the header container
+const HeaderContainer = styled('div')(({ theme }) => ({
+  height: '10vh',
+  width: '80%',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 20px',
   justifyContent: 'right',
-  paddingRight: '20%',
-});
+  '@media (max-width: 1200px)': {
+    justifyContent: 'space-between',
+    right: '10%',
+  },
+}));
 
-// const UsernameContainer = styled('div')({
-//   display: 'flex',
-//   alignItems: 'center',
-//   cursor: 'pointer',
-// });
+// Dynamic styling based on isMobile prop
+const ContentContainer = styled('div')(({ isMobile }) => ({}));
 
+// Main dashboard component where user first interacts with the app
 const Dashboard = () => {
+  // Handles media queries for responsive design
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Get user info from the store
   const { getUser } = useUserStore();
-  const username = getUser().username;
+  const user = getUser();
+
   const { process } = useParams();
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const nav = useNavigate();
 
-  // const handleMenuOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
+  const nav = useNavigate();
 
-  // const handleMenuClose = () => {
-  //   nav('/dashboard/profile');
-  //   setAnchorEl(null);
-  // };
+  // To go to the profile page
+  const handleOpenProfile = () => {
+    nav(`/profile/${user._id}`);
+  };
 
+  // Sets the dashboard content according to the route params and user's choice
   let content;
   switch (process) {
     case 'convert':
@@ -77,9 +112,6 @@ const Dashboard = () => {
     case 'help':
       content = <HelpBoard />;
       break;
-    case 'profile':
-      content = <ProfileBoard />;
-      break;
     case 'main':
       content = <Board />;
       break;
@@ -87,38 +119,42 @@ const Dashboard = () => {
       content = <></>;
   }
 
+  // Here, we return the JSX for rendering the dashboard
   return (
     <Container>
-      <Container1>
-        <Selector />
-      </Container1>
-      <Container2>
+      {isMobile ? (
+        <>
+          <DrawerContainer
+            data-testid={'hamburger'}
+            anchor="left"
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}>
+            <Selector setDrawerOpen={setDrawerOpen} />
+          </DrawerContainer>
+        </>
+      ) : (
+        <div style={{ width: '20%', backgroundColor: '#ffffff' }}>
+          <Selector setDrawerOpen={setDrawerOpen} />
+        </div>
+      )}
+      <div
+        style={{
+          width: isMobile ? '100%' : '80%',
+          backgroundColor: '#F9F9F9',
+        }}>
         <HeaderContainer>
-          {/* <UsernameContainer onClick={handleMenuOpen}> */}
-          <p
-            style={{
-              fontWeight: '900',
-              fontSize: '14px',
-              fontFamily: 'Almarai, serif',
-              paddingRight: '20%',
-            }}
-          >
-            {username}
-          </p>
-          {/* <IconButton>
-              <AccountCircleIcon fontSize="large" />
+          {isMobile && (
+            <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+              <MenuIcon />
             </IconButton>
-          </UsernameContainer>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          </Menu> */}
+          )}
+          <Username onClick={handleOpenProfile}>
+            <ProfileAvatar src={user?.googlePicture} alt="Profile Picture" />
+            {user?.username}
+          </Username>
         </HeaderContainer>
-        <div>{content}</div>
-      </Container2>
+        <ContentContainer isMobile={isMobile}>{content}</ContentContainer>
+      </div>
     </Container>
   );
 };

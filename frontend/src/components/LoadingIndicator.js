@@ -1,5 +1,5 @@
 import React from 'react';
-import './LoadingIndicator.css'; // This will contain the CSS for the spinner
+import './LoadingIndicator.css';
 
 const LoadingIndicator = () => {
   return (

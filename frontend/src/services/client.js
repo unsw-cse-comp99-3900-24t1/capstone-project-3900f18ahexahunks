@@ -1,37 +1,18 @@
 import axios from 'axios';
-// import Cookies from 'js-cookie';
 
-// Creates an Axios instance configured with base settings.
+// Create an instance of axios with a base URL and withCredentials set to true
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5003', // Base URL for all requests.
-  timeout: 1000, // Request timeout set to 1000 milliseconds.
-  withCredentials: true, // Ensure cookies are sent with requests.
+  baseURL: 'http://localhost:5003', // Base URL for all requests
+  withCredentials: true, // Allow credentials (such as cookies) to be sent with requests
 });
+
+// Add an interceptor to handle responses and errors globally
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => response, // Simply return the response if it's successful
   (error) => {
-    console.error('Axios interceptor error:', error);
-    return Promise.reject(error);
+    console.error('Axios interceptor error:', error); // Log the error for debugging purposes
+    return Promise.reject(error); // Reject the promise with the error, allowing error handling in the calling code
   }
 );
-
-// Adds a request interceptor to include a bearer token in each request's headers.
-// apiClient.interceptors.request.use(
-//   (config) => {
-//     const token = Cookies.get('token');
-
-//     if (token) {
-//       try {
-//         config.headers.Authorization = `Bearer ${token}`;
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     }
-//     return config;
-//   },
-//   (err) => {
-//     return Promise.reject(err);
-//   }
-// );
 
 export default apiClient;

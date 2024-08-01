@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ const RedirectInfo = styled('p')({
   },
 });
 
+// If user clicks on register then user taken to the register page
 const RedirectToRegister = () => {
   const nav = useNavigate();
 
