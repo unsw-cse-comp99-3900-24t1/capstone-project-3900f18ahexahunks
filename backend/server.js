@@ -1,41 +1,39 @@
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-const http = require('http');
-const connectDB = require('./db');
-const validateUBL = require('./validateUBL'); // Import the validation function
-
-const PORT = process.env.BACKEND_SERVER_PORT || process.env.API_PORT;
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const { generatePDFReport, mockValidateUBL } = require('./ubl'); // Adjust as needed
 
 const app = express();
+const PORT = process.env.PORT || 5003;
 
-app.use(express.json());
-app.use(cors());
+// Setup Multer for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// Test endpoint
-app.get('/test', (req, res) => {
-  res.json({ message: 'Hello World!' });
-});
-
-// Endpoint to validate UBL
-app.post('/validate-ubl', async (req, res) => {
-  const xmlContent = req.body;
+// Endpoint to validate UBL file
+app.post('/validate/validate-ubl', upload.single('ublFile'), async (req, res) => {
   try {
-    const validationResult = await validateUBL(xmlContent);
-    res.status(200).json(validationResult);
+    const ublFile = req.file;
+    if (!ublFile) {
+      return res.status(400).json({ error: 'UBL file is required' });
+    }
+
+    const ublContent = ublFile.buffer.toString();
+
+    // Mock validation
+    const validationResult = mockValidateUBL(ublContent);
+
+    // Generate PDF Report
+    const reportPath = generatePDFReport(validationResult);
+
+    res.status(200).json({ message: 'Validation successful', report: reportPath });
   } catch (error) {
-    res.status(error.response ? error.response.status : 500).json({
-      error: error.response ? error.response.data : 'Server error, please try again later',
-    });
+    console.error('Error validating UBL:', error);
+    res.status(500).json({ error: 'Server error, please try again later' });
   }
 });
 
-const server = http.createServer(app);
-
-connectDB().then(() => {
-  server.listen(PORT, () => {
-    console.log('Server running on port:', PORT);
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`);
 });
-
-module.exports = app;
