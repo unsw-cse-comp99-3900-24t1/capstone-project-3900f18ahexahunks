@@ -37,7 +37,7 @@ const getPdfUblService = async (userEmail) => {
       length: file.length,
       timestamp: file.uploadDate,
       filename: file.filename,
-      url: `http://localhost:5003/file/${file._id}`
+      url: `http://localhost:5003/getFile?fileId=${file._id}`
     }));
 
     const ublResults = files.filter(file => file.contentType === 'application/xml').map(file => ({
@@ -45,7 +45,7 @@ const getPdfUblService = async (userEmail) => {
       length: file.length,
       timestamp: file.uploadDate,
       filename: file.filename,
-      url: `http://localhost:5003/file/${file._id}`
+      url: `http://localhost:5003/getFile?fileId=${file._id}`
     }));
 
     return {
