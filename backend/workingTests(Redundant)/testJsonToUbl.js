@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { convertJsonToUbl } = require('./jsonToUbl');
+const { convertJsonToUbl } = require('../src/jsonToUbl');
 
 // Function to test the JSON to UBL conversion
 const testJsonToUblConversion = () => {
