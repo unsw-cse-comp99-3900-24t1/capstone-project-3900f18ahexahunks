@@ -48,7 +48,7 @@ Make sure you have `nvm` installed. You can find installation instructions [here
 
    Message to know if install was successful: `Node.js and npm versions are correct.`
 
-### Set up Instructions:
+### Set up Instructions for Docker:
 
 You need to open the docker.
 You need to navigate to the folder where you can see the docker-compose.yml file and run “docker compose up –build”.
