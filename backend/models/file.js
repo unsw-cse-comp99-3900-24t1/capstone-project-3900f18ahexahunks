@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Define the file schema
 const fileSchema = new Schema({
   length: {
     type: Number,
@@ -32,6 +33,6 @@ const fileSchema = new Schema({
       required: true
     }
   }
-}, { collection: 'uploads.files' });
+}, { collection: 'uploads.files' }); // Specify the collection name
 
 module.exports = mongoose.model('File', fileSchema);

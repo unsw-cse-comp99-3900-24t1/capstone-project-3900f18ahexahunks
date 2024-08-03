@@ -1,9 +1,11 @@
 const { ObjectId, GridFSBucket } = require('mongodb');
 const mongoose = require('mongoose');
 
+// Controller function to stream a file
 const streamFile = async (req, res) => {
   const { fileId } = req.query;
 
+  // Check if file ID is provided
   if (!fileId) {
     return res.status(400).json({ error: 'File ID is required' });
   }
@@ -12,10 +14,12 @@ const streamFile = async (req, res) => {
     const db = mongoose.connection.db; // Use the existing connection
     const bucket = new GridFSBucket(db, { bucketName: 'uploads' });
     const objectId = new ObjectId(fileId);
-    const downloadStream = bucket.openDownloadStream(objectId);
+    const downloadStream = bucket.openDownloadStream(objectId); // Create a download stream
 
+    // Set the response headers
     res.set('Content-Type', 'application/octet-stream');
 
+    // Stream the file chunks to the response
     downloadStream.on('data', chunk => {
       res.write(chunk);
     });
