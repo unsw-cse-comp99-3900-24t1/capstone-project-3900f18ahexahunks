@@ -61,5 +61,5 @@ const testConvertGuiToUbl = async () => {
 };
 
 // Run the test functions
-//testConvertPdfToUbl();
+testConvertPdfToUbl();
 testConvertGuiToUbl();

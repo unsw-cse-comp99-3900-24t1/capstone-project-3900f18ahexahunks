@@ -4,7 +4,7 @@ const { OAuth2 } = google.auth;
 const fs = require('fs');
 
 // Load OAuth2 credentials from the JSON file you downloaded
-const credentials = require('./credentials.json');
+const credentials = require('../credentials.json');
 
 const { client_secret, client_id, redirect_uris } = credentials.web;
 const oAuth2Client = new OAuth2(

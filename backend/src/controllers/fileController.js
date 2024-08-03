@@ -6,10 +6,12 @@ const { saveToMongo } = require('../../saveToMongo');
 const path = require('path');
 const fs = require('fs');
 
+// Generate file url for fetching
 const generateFileUrl = (req, fileId) => {
   return `${req.protocol}://${req.get('host')}/files/${fileId}`;
 };
 
+// Function for upload pdf directly
 const uploadPdf = async (req, res) => {
   const userId = req.body.userId;
 
@@ -32,6 +34,7 @@ const uploadPdf = async (req, res) => {
   });
 };
 
+// Fuction for uploading xml directly
 const uploadXml = async (req, res) => {
   const userId = req.body.userId;
 
@@ -54,6 +57,7 @@ const uploadXml = async (req, res) => {
   });
 };
 
+// Uploads PDF, converts PDF to JSON, converts JSON to UBL, and finally uploads UBL
 const convertPdfToUbl = async (req, res) => {
   const userId = req.body.userId;
 
@@ -117,6 +121,7 @@ const convertPdfToUbl = async (req, res) => {
   }
 };
 
+// Uploads GUI, converts GUI to XML, and uploads XML
 const convertGuiToUbl = async (req, res) => {
     const userId = req.body.userId;
     const guiData = req.body.invoice;
@@ -182,6 +187,7 @@ const convertGuiToUbl = async (req, res) => {
     }
   };
 
+// Fetch file
 const serveFile = (req, res) => {
   const fileId = req.params.id;
 

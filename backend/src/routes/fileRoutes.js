@@ -71,7 +71,7 @@ const uploadXmlMiddleware = multer({ storage: storageXml });
 router.post('/upload/pdf', uploadPdfMiddleware.single('file'), uploadPdf);
 router.post('/upload/xml', uploadXmlMiddleware.single('file'), uploadXml);
 router.post('/upload-pdf', uploadPdfMiddleware.single('file'), convertPdfToUbl); // This route includes convertion
-router.post('/gui-form', convertGuiToUbl);
+router.post('/gui-form', convertGuiToUbl); // This route also includes convertion
 router.get('/files/:id', serveFile);
 
 module.exports = router;

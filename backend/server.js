@@ -1,19 +1,20 @@
-const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { connectDB } = require('./db');
 const fileRoutes = require('./src/routes/fileRoutes');
+const emailRoutes = require('./src/routes/emailRoutes');
 require('dotenv').config();
 
 // Initialize Express app
 const app = express();
-app.use(cors());
+
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api', fileRoutes);
+app.use('/api', emailRoutes);
 
 // Connect to the database and start the server
 connectDB()
