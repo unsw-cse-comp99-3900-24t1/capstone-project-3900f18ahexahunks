@@ -3,12 +3,21 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db');
 const authRoutes = require('../backend/routes/authRoutes');
-const authSendOTP = require('../backend/routes/authSendOtp')
+const authSendOTP = require('../backend/routes/authSendOtp');
 const http = require('http');
-
 const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:3000/',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use('/', authRoutes);
@@ -27,4 +36,4 @@ connectDB().then(() => {
   });
 });
 
-module.exports = app;
+module.exports = { app, server };
