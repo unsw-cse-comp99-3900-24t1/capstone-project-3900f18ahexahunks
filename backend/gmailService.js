@@ -16,13 +16,24 @@ const oAuth2Client = new OAuth2(
 // Set the access and refresh tokens obtained from the OAuth 2.0 Playground
 oAuth2Client.setCredentials({
   refresh_token: '1//04k5zCpeH1hThCgYIARAAGAQSNwF-L9Ir8t6WABDxLl_KMcTJ15Uzp0Y6RhdhNvssiep43Gccx_O-ad2wnQL3Q_E4cFymJiiqd_U',
-  access_token:"ya29.a0AXooCgtGHqlFaW9Wt5NGTFm_nCCMp94eIUTbR6iDTSJqlF1HTNWAjiz-9PMow4dcGFiZY1HGsUJAAI2pE8-cIusYUM-bCkOH0xljna0ROYdhhK6mhI8z2AQvVFYU4lxZ_58mZH9mys_sYTKzpJqVsVgJOfnG9oKgWqGnaCgYKAbkSARMSFQHGX2MiEyizpBWnl-Y7aaP7E6V2Ww0171"
+  //access_token:"ya29.a0AXooCgtGHqlFaW9Wt5NGTFm_nCCMp94eIUTbR6iDTSJqlF1HTNWAjiz-9PMow4dcGFiZY1HGsUJAAI2pE8-cIusYUM-bCkOH0xljna0ROYdhhK6mhI8z2AQvVFYU4lxZ_58mZH9mys_sYTKzpJqVsVgJOfnG9oKgWqGnaCgYKAbkSARMSFQHGX2MiEyizpBWnl-Y7aaP7E6V2Ww0171"
 });
+
+async function refreshAccessToken() {
+  try {
+    const { credentials } = await oAuth2Client.refreshAccessToken();
+    oAuth2Client.setCredentials(credentials);
+    return credentials.access_token;
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+    throw new Error('Failed to refresh access token');
+  }
+}
 
 async function sendEmail() {
   try {
     // const accessToken = await oAuth2Client.getAccessToken();
-
+		const accessToken = await refreshAccessToken(); // Get a fresh access token
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -31,7 +42,7 @@ async function sendEmail() {
         clientId: client_id,
         clientSecret: client_secret,
         refreshToken: '1//04k5zCpeH1hThCgYIARAAGAQSNwF-L9Ir8t6WABDxLl_KMcTJ15Uzp0Y6RhdhNvssiep43Gccx_O-ad2wnQL3Q_E4cFymJiiqd_U',
-        accessToken: "ya29.a0AXooCgtGHqlFaW9Wt5NGTFm_nCCMp94eIUTbR6iDTSJqlF1HTNWAjiz-9PMow4dcGFiZY1HGsUJAAI2pE8-cIusYUM-bCkOH0xljna0ROYdhhK6mhI8z2AQvVFYU4lxZ_58mZH9mys_sYTKzpJqVsVgJOfnG9oKgWqGnaCgYKAbkSARMSFQHGX2MiEyizpBWnl-Y7aaP7E6V2Ww0171",
+        accessToken: accessToken,
       },
     });
 
