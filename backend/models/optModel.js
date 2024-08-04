@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Defines the schema for the OTP (One-Time Password) model.
 const otpSchema = new mongoose.Schema({
   email: String,
   otp: String,

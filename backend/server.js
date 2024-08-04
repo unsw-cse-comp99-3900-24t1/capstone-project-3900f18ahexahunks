@@ -5,14 +5,25 @@ const cookieParser = require('cookie-parser');
 const { connectDB } = require('./db');
 const cors = require('cors');
 const authRoutes = require('../backend/routes/authRoutes');
-const authSendOTP = require('../backend/routes/authSendOtp')
+const authSendOTP = require('../backend/routes/authSendOtp');
 const fileRoutes = require('./routes/fileRoutes');
 const emailRoutes = require('./routes/emailRoutes');
 const http = require('http');
 
+const http = require('http');
 const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:3000/',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
@@ -36,4 +47,4 @@ connectDB().then(() => {
   });
 });
 
-module.exports = app;
+module.exports = { app, server };
