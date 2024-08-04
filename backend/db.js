@@ -1,57 +1,43 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
-const { MongoClient, GridFSBucket } = require('mongodb');
-const { Readable } = require("stream");
 require('dotenv').config();
 
-let db;
-let gfs;
-
-const mongoURI = process.env.MONGO_URI;
-console.log('Attempting to connect to MongoDB:', mongoURI);
+let gridFSBucket;
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURI);
-    console.log("Mongoose connected");
-		const client = await MongoClient.connect(mongoURI);
-		db = client.db();
-    gfs = new GridFSBucket(db, { bucketName: 'uploads' });
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+
     console.log('MongoDB connected');
-  } catch (error) {
-    console.error('DB connection error:', error);
+
+    // Initialize GridFSBucket
+    gridFSBucket = new mongoose.mongo.GridFSBucket(conn.connection.db, {
+      bucketName: 'uploads',
+    });
+    console.log('GridFSBucket initialized');
+
+    return conn;
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
     process.exit(1);
   }
 };
 
-const getDb = () => db;
-const getGfs = () => gfs;
+const getGridFSBucket = () => {
+  if (!gridFSBucket) {
+    throw new Error('GridFSBucket is not initialized');
+  }
+  return gridFSBucket;
+};
 
-const saveToMongo = (
-  data,
-  filename,
-  metadata,
-  contentType = "application/xml"
-) => {
+const disconnectDB = async () => {
   try {
-    const gfs = getGfs();
-    const stream = Readable.from(data);
-    const upload = gfs.openUploadStream(filename, {
-      metadata,
-      contentType: contentType,
-    });
-    return new Promise((resolve, reject) => {
-      stream
-        .pipe(upload)
-        .on("error", (err) => {
-          reject(err);
-        })
-        .on("finish", () => {
-          resolve(upload.id);
-        });
-    });
+    await mongoose.disconnect();
+    console.log('MongoDB disconnected');
   } catch (err) {
-    throw new Error(err);
+    console.error(err.message);
+    process.exit(1);
   }
 };
 
-module.exports = { connectDB, getDb, getGfs, saveToMongo };
+module.exports = { connectDB, getGridFSBucket, disconnectDB };
