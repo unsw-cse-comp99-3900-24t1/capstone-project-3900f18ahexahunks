@@ -63,3 +63,4 @@ After all these logs are shown you can directly visit localhost at 3000 for fron
 If you still face any issue please go to our Readme.md: https://github.com/unsw-cse-comp99-3900-24t1/capstone-project-3900f18ahexahunks
 And go to the “Setup Instructions” section and run the commands and then try docker again.
 If you still face issues then please open three terminals and go to frontend, backend and swagger-final in each folder respectively and simply run “npm start” in each.
+//
