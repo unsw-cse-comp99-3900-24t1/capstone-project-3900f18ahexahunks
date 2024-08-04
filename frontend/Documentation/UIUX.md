@@ -99,11 +99,42 @@ Bob has created several invoices that need to be validated according to Australi
 
 ### Wireframes
 
-- [Link to low-fidelity wireframes]
+- Homepage:
+- Simple navigation with key features highlighted.
+- Quick links to create, validate, and send invoices.
+- Overview of user statistics and recent activity.
+
+- Dashboard:
+- Overview of user.
+- Quick actions for creating, validating, and sending invoices.
+
+- Invoices:
+- Forms for creating, validating, and sending invoices.
+- Clear instructions and tooltips for required fields and also help section created for user to lear the tools.
+
+- Settings:
+- User profile management.
+- Other settings and account deletion options and user can change the name and profile pic as well.
 
 ### Mockups
 
-- [Link to high-fidelity mockups]
+- HomePage:
+- Polished design with primary and secondary colors.
+- Brand assets integrated.
+- Intuitive layout for easy navigation.
+
+- Dashboard:
+- Clean and concise display of user history.
+- Accessible quick actions.
+- Modern design with consistent typography and colors.
+
+- Invoices:
+- User-friendly forms with real-time validation.
+- Mobile-friendly design.
+
+- Settings:
+- Simple and intuitive user profile management.
+- Easy-to-navigate preferences section.
 
 ## Design System
 
@@ -139,7 +170,27 @@ Bob has created several invoices that need to be validated according to Australi
 
 ### Findings
 
-- [Summary of usability test results]
+- Navigation: Users found the navigation intuitive but suggested adding a search function for quicker access to specific invoices.
+
+- Feedback Mechanisms: Real-time validation and error messages were appreciated, but some users requested more detailed explanations for complex validation errors.
+
+- Mobile Interface: The mobile-friendly design was generally well-received, but a few users noted that some elements were too small and difficult to interact with on smaller screens.
+
+- Invoice Creation: Users found the process straightforward, but some requested a step-by-step guide for first-time users.
+
+- Validation Reports: Users liked the detailed validation reports but suggested an option to download them in different formats (PDF, HTML, JSON).
+
+### Improvements Based on Feedback:
+
+- Search Function: Added a search bar in the navigation for quicker access to invoices.
+
+- Detailed Error Messages: Enhanced error messages with links to more detailed explanations.
+
+- Mobile UI Enhancements: Increased the size of interactive elements and improved the touch response.
+
+- Step-by-Step Guide: Implemented a guided tour for first-time users to help them navigate the invoice creation process.
+
+- Download Options: Added options to download validation reports in multiple formats.
 
 ## Accessibility
 
@@ -176,12 +227,11 @@ We follow WCAG 2.1 guidelines to ensure accessibility:
 
 ### Tools
 
-- **Figma**: For creating interactive prototypes
-- **Adobe XD**: For high-fidelity designs
+- **Figma**: https://www.figma.com/design/fsc91U4aO0bs5JRX0q6LNh/MAIN-COMP3900-Design?node-id=0-1&t=3Hh25P7q9Jrzu9fh-0
 
 ### Prototypes
 
-- [Link to interactive prototypes]
+https://www.figma.com/design/fsc91U4aO0bs5JRX0q6LNh/MAIN-COMP3900-Design?node-id=0-1&t=3Hh25P7q9Jrzu9fh-0
 
 ## Feedback and Iteration
 
@@ -192,22 +242,54 @@ We follow WCAG 2.1 guidelines to ensure accessibility:
 
 ### Iterations
 
-- [Description of major design iterations]
+- Iteration 1: Initial Prototype
+- Goal: Demonstrate core functionalities (create, validate, send e-invoices).
+- Features: Basic invoice creation form, simple validation, basic sending functionality.
+- Feedback: Users found the process straightforward but noted a lack of detailed feedback and UI inconsistencies.
+
+- Iteration 2: Enhanced User Interface and Real-time Validation
+- Changes:
+- Standardized colors, fonts, and button styles for UI consistency.
+- Added tooltips and guidance text for the invoice creation form.
+- Implemented real-time validation and enhanced error messages with detailed explanations.
+- Feedback: Improved intuitiveness and user-friendliness; issues with mobile responsiveness were noted.
+
+- Iteration 3: Responsiveness and Final Tweaks
+- Changes:
+- Ensured all features were accessible on smaller screens.
+- Added download options for validation reports (PDF, HTML, JSON).
+- Final tweaks for overall user experience improvement.
+- Feedback: Positive reception due to responsiveness and detailed validation reports.
 
 ## Tools and Resources
 
 ### Design Tools
 
-- **Figma**: [Link to Figma files]
+- **Figma**: https://www.figma.com/design/fsc91U4aO0bs5JRX0q6LNh/MAIN-COMP3900-Design?node-id=0-1&t=3Hh25P7q9Jrzu9fh-0
 - **Sketch**: [Link to Sketch files]
 - **Adobe Creative Suite**: [Link to assets]
 
-### Resources
-
-- **Design Blogs**: [List of recommended blogs]
-- **UI/UX Communities**: [List of recommended communities]
-
 ## Conclusion
+
+This documentation serves as a comprehensive guide to the UI/UX design process for the E-Invoicing Application for SMEs. By following the outlined principles and guidelines, we aimed to deliver a user-friendly, compliant, and efficient solution for small and medium-sized enterprises. The user-centered design approach ensured that the application meets the needs of our target users, providing a seamless experience in creating, validating, and sending e-invoices.
+
+### Key Achievements
+
+- User-Centered Design: Prioritized user needs through extensive research and usability testing.
+
+- Consistent and Simple Interface: Maintained a consistent look and feel, ensuring a simple and uncluttered user interface.
+
+- Accessibility: Adhered to WCAG 2.1 guidelines, ensuring the application is usable by people with diverse abilities.
+
+- Mobile-Friendly Design: Ensured the application works well on various devices, enhancing usability for users on the go.
+
+- Iterative Improvements: Continuously improved the design based on user feedback, leading to a more refined and user-friendly application.
+
+### Future Directions
+
+- Enhanced Features: Explore additional features like advanced reporting, analytics, and integration with other business tools.
+
+- Ongoing Feedback Loop: Maintain an ongoing feedback loop with users to continually refine and improve the application.
 
 ### Summary
 

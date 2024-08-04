@@ -93,7 +93,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /upload-pdf:
+ * /convert/upload-pdf:
  *   post:
  *     summary: Convert file to PDF
  *     description: Converts an uploaded file to PDF and updates user information.
@@ -250,7 +250,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /gui-form:
+ * /convert/gui-form:
  *   post:
  *     summary: Convert GUI Form to PDF
  *     description: Converts form data to PDF and updates user information.
@@ -353,7 +353,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /get-all-convertion-data:
+ * /convert/get-all-convertion-data:
  *   get:
  *     summary: Get all conversion data
  *     description: Retrieves all conversion data for a user.
@@ -426,7 +426,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /delete-one-convertion-data:
+ * /convert/delete-one-convertion-data:
  *   delete:
  *     summary: Delete a conversion data entry
  *     description: Deletes a specific conversion data entry for a user.

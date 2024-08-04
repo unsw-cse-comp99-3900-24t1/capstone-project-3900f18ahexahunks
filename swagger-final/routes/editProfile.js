@@ -40,7 +40,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /change-username:
+ * /edit/change-username:
  *   put:
  *     summary: Change username
  *     description: Updates the username of a user.
@@ -132,7 +132,7 @@
  *       example:
  *         error: 'Server error, try again later'
  *
- * /change-profile-photo:
+ * /edit/change-profile-photo:
  *   post:
  *     summary: Change profile photo
  *     description: Uploads a new profile photo and updates the user's profile picture URL.

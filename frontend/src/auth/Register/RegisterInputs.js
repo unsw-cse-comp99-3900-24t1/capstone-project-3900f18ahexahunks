@@ -48,7 +48,10 @@ const RegisterInputs = ({ goToDashboard }) => {
     setLoading(true);
     const response = await register({ username: name, email, password });
     if (response.error) {
-      showAlert(response.data.error, 'tomato');
+      showAlert(
+        response.data.error ? response.data.error : "Can't Register",
+        'tomato'
+      );
     } else {
       showAlert(`Welcome ${name}`, 'green');
       setUser({ user: response.data });
@@ -84,6 +87,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         Create an Account
       </h2>
       <CustomInputBox
+        style={{ width: '80%' }}
         placeholder="Johnson Doe"
         label="Your Name"
         type="text"
@@ -93,6 +97,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         data-testid={'register-name'}
       />
       <CustomInputBox
+        style={{ width: '80%' }}
         placeholder="johnsondoe@nomail.com"
         label="Email"
         type="text"
@@ -103,6 +108,7 @@ const RegisterInputs = ({ goToDashboard }) => {
       />
       <div style={{ position: 'relative', marginTop: '30px' }}>
         <CustomInputBox
+          style={{ width: '80%' }}
           placeholder="########"
           label="Password"
           type="password"
@@ -124,7 +130,7 @@ const RegisterInputs = ({ goToDashboard }) => {
         </Tooltip>
       </div>
       <CustomInputBox
-        style={{ marginTop: '30px' }}
+        style={{ marginTop: '30px', width: '80%' }}
         placeholder="########"
         label="Password"
         type="password"
@@ -151,11 +157,13 @@ const RegisterInputs = ({ goToDashboard }) => {
       />
 
       <RedirectToLogin />
-      <GoogleAuth
-        setNewUser={setNewUser}
-        newUser={newUser}
-        goToDashboard={goToDashboard}
-      />
+      <div style={{ width: '90%' }}>
+        <GoogleAuth
+          setNewUser={setNewUser}
+          newUser={newUser}
+          goToDashboard={goToDashboard}
+        />
+      </div>
 
       {loading && <LoadingIndicator />}
     </div>
